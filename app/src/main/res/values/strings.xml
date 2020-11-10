@@ -2,4 +2,6 @@
     <string name="app_name">MarvelDataverse</string>
     <string name="singin">Registrarse</string>
     <string name="login">Iniciar Sesión</string>
+    <string name="about">Acerca de...</string>
+    <string name="exit">Salir</string>
 </resources>
