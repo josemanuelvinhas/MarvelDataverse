@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/lbAcercaDe"
+        android:title="@string/about" />
+
+    <item
+        android:id="@+id/lbSalir"
+        android:title="@string/exit" />
+
+</menu>
