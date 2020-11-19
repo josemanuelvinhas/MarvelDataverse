@@ -4,4 +4,10 @@
     <string name="login">Iniciar Sesión</string>
     <string name="about">Acerca de...</string>
     <string name="exit">Salir</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="gestion_de_personajes">Gestión de Personajes</string>
+    <string name="gestion_de_series">Gestión de Series</string>
+    <string name="gestion_de_comics">Gestión de Comics</string>
 </resources>

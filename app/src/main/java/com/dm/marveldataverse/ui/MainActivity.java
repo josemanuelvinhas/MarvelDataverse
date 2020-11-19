@@ -3,23 +3,52 @@ package com.dm.marveldataverse.ui;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.dm.marveldataverse.R;
+import com.dm.marveldataverse.core.Session;
 
 public class MainActivity extends AppCompatActivity {
+
+    private Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        this.session = Session.getSession(MainActivity.this);
+
+        final Button BT_LOGIN = MainActivity.this.findViewById(R.id.btnLogin);
+        BT_LOGIN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.this.startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            }
+        });
+
+        final Button BT_REGISTER = MainActivity.this.findViewById(R.id.btnSingin);
+        BT_REGISTER.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.this.startActivity(new Intent(MainActivity.this, RegisterActivity.class));
+            }
+        });
+
+        this.startCoreActivity();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.startCoreActivity();
     }
 
     @Override
@@ -51,6 +80,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return toret;
+    }
+
+    private void startCoreActivity(){
+        if (this.session.isSessionActive()){
+            this.startActivity(new Intent(MainActivity.this, CoreActivity.class));
+        }
     }
 
     private void acercaDe() {

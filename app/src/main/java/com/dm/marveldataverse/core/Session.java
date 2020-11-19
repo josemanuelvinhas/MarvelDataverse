@@ -1,29 +1,40 @@
 package com.dm.marveldataverse.core;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.dm.marveldataverse.model.User;
 
-public class Sesion {
+public class Session {
 
-    private SQL_IO sqlIo;
+    private static Session session;
+
+    private DBManager sqlIo;
     SharedPreferences prefs;
     private boolean sessionActive;
     private User user;
 
-    public Sesion(SQL_IO sqlIo, SharedPreferences prefs) {
-        this.sqlIo = sqlIo;
-        this.prefs = prefs;
+    public static Session getSession(Context c) {
+        if (session == null) {
+            session = new Session(c.getApplicationContext());
+        }
+        return session;
+    }
+
+    private Session(Context context) {
+        this.sqlIo = DBManager.getManager(context);
+        this.prefs = context.getSharedPreferences("preferences",Context.MODE_PRIVATE);
         this.sessionActive = obtenerSesion();
     }
 
     private boolean obtenerSesion() {
         String username = prefs.getString("username", null);
         String passwd = prefs.getString("passwd", null);
-        if(username!= null && passwd != null){
+        if(username != null && passwd != null){
             user = new User(username, passwd);
+            return true;
         }
-        return true;
+        return false;
     }
 
     public boolean iniciarSesion(User user){
@@ -34,6 +45,7 @@ public class Sesion {
             editor.putString("passwd", user.getPasswd());
             editor.commit();
             this.user = user;
+            this.sessionActive = true;
             return true;
         }else{
             return false;
@@ -46,6 +58,10 @@ public class Sesion {
         editor.remove("passwd");
         editor.commit();
 
-        sessionActive = false;
+        this.sessionActive = false;
+    }
+
+    public boolean isSessionActive() {
+        return sessionActive;
     }
 }

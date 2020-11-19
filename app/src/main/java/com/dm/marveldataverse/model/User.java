@@ -40,4 +40,14 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public boolean isValidForRegister() {
+        //TODO validacion registrar usuario
+        return true;
+    }
+
+    public boolean isValidForLogin() {
+        //TODO validacion login usuario
+        return true;
+    }
 }
