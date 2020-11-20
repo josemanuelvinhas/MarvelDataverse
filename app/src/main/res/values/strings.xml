@@ -1,13 +1,33 @@
 <resources>
     <string name="app_name">MarvelDataverse</string>
-    <string name="singin">Registrarse</string>
-    <string name="login">Iniciar Sesión</string>
-    <string name="about">Acerca de...</string>
-    <string name="exit">Salir</string>
+    <string name="singin">Sing-In</string>
+    <string name="login">Log-In</string>
+    <string name="about">About...</string>
+    <string name="exit">Exit</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
-    <string name="gestion_de_personajes">Gestión de Personajes</string>
-    <string name="gestion_de_series">Gestión de Series</string>
-    <string name="gestion_de_comics">Gestión de Comics</string>
+    <string name="characters_management">Characters Management</string>
+    <string name="series_management">Series Management</string>
+    <string name="comics_management">Comics Management</string>
+    <string name="logout">Log-out</string>
+    <string name="add_character">Add Character</string>
+    <string name="invalid_fields">Invalid Fields</string>
+    <string name="singin_successful">Sing-In Successful</string>
+    <string name="invalid_credentials">Invalid Credentials</string>
+    <string name="login_successful">Login Successful</string>
+    <string name="email_invalid">The email is not valid</string>
+    <string name="passwd_invalid">The password must be 3 -10 letters (a-zA-Z) or numbers</string>
+    <string name="username_invalid">The username must be 3-10 letters (a-zA-Z) or numbers</string>
+    <string name="bd_error">Database error, please try again</string>
+    <string name="username_exists">Username already exists</string>
+    <string name="email_exists">Email already exists</string>
+    <string name="welcome_message">Welcome to MarvelDataverse</string>
+    <string name="hint_username">Enter username</string>
+    <string name="hint_password">Enter password</string>
+    <string name="hint_email">Enter email</string>
+    <string name="authors">Authors</string>
+    <string name="yomar_costa_orellana" translatable="false">Yomar Costa Orellana</string>
+    <string name="raul_varandela_marra" translatable="false">Raúl Varandela Marra</string>
+    <string name="jose_manuel_vinas_cid" translatable="false">José Manuel Viñas Cid</string>
 </resources>

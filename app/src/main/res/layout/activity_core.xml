@@ -4,59 +4,60 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20dp"
     tools:context=".ui.CoreActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight=".33"
-        android:orientation="horizontal"
+        android:orientation="vertical"
+        android:padding="20dp"
         android:gravity="center">
 
         <Button
-            android:id="@+id/btnGestionPersonajes"
-            android:layout_width="wrap_content"
+            android:id="@+id/btnCharactersManagement"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/custom_button"
             android:padding="10dp"
             android:textColor="@android:color/white"
-            android:text="@string/gestion_de_personajes"/>
+            android:text="@string/characters_management"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight=".33"
-        android:orientation="horizontal"
+        android:padding="20dp"
+        android:orientation="vertical"
         android:gravity="center">
 
         <Button
-            android:id="@+id/btnGestionComics"
-            android:layout_width="wrap_content"
+            android:id="@+id/btnComicsManagement"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/custom_button_disabled"
             android:padding="10dp"
             android:textColor="@android:color/white"
-            android:text="@string/gestion_de_comics"/>
+            android:text="@string/comics_management"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight=".33"
-        android:orientation="horizontal"
+        android:padding="20dp"
+        android:orientation="vertical"
         android:gravity="center">
 
         <Button
-            android:id="@+id/btnGestionSeries"
-            android:layout_width="wrap_content"
+            android:id="@+id/btnSeriesManagement"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/custom_button_disabled"
             android:padding="10dp"
             android:textColor="@android:color/white"
-            android:text="@string/gestion_de_series"/>
+            android:text="@string/series_management"/>
 
     </LinearLayout>
 
