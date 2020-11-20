@@ -23,38 +23,32 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.session = Session.getSession(MainActivity.this);
+        MainActivity.this.session = Session.getSession(MainActivity.this);
 
         final Button BT_LOGIN = MainActivity.this.findViewById(R.id.btnLogin);
-        BT_LOGIN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainActivity.this.startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            }
-        });
+        BT_LOGIN.setOnClickListener(v -> MainActivity.this.startActivity(new Intent(MainActivity.this, LoginActivity.class)));
 
         final Button BT_REGISTER = MainActivity.this.findViewById(R.id.btnSingin);
-        BT_REGISTER.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainActivity.this.startActivity(new Intent(MainActivity.this, RegisterActivity.class));
-            }
-        });
+        BT_REGISTER.setOnClickListener(v -> MainActivity.this.startActivity(new Intent(MainActivity.this, RegisterActivity.class)));
 
-        this.startCoreActivity();
+        if (MainActivity.this.session.isSessionActive()) {
+            MainActivity.this.startCoreActivity();
+        }
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        this.startCoreActivity();
+        if (MainActivity.this.session.isSessionActive()) {
+            MainActivity.this.startCoreActivity();
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        this.getMenuInflater().inflate(R.menu.menu_principal, menu);
+        this.getMenuInflater().inflate(R.menu.menu_main, menu);
 
         return true;
     }
@@ -62,33 +56,30 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         super.onOptionsItemSelected(item);
-        boolean toret = false;
+        boolean toret;
 
         switch (item.getItemId()) {
-            case R.id.lbAcercaDe:
+            case R.id.itAcercaDe:
+                MainActivity.this.startAboutActivity();
                 toret = true;
-                acercaDe();
                 break;
-            case R.id.lbSalir:
-                toret = true;
+            case R.id.itSalir:
                 System.exit(0);
+                toret = true;
                 break;
             default:
-                Toast.makeText(this,
-                        "ERROR producido en el menu principal",
-                        Toast.LENGTH_LONG);
+                toret = false;
         }
 
         return toret;
     }
 
-    private void startCoreActivity(){
-        if (this.session.isSessionActive()){
-            this.startActivity(new Intent(MainActivity.this, CoreActivity.class));
-        }
+    private void startCoreActivity() {
+        MainActivity.this.startActivity(new Intent(MainActivity.this, CoreActivity.class));
+        MainActivity.this.finish();
     }
 
-    private void acercaDe() {
-        this.startActivity(new Intent(this, AboutActivity.class));
+    private void startAboutActivity() {
+        MainActivity.this.startActivity(new Intent(this, AboutActivity.class));
     }
 }
