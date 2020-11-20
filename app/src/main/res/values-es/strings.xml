@@ -28,4 +28,6 @@
     <string name="hint_password">Introduce la contraseña</string>
     <string name="hint_email">Introduce el correo electrónico</string>
     <string name="authors">Autores</string>
+    <string name="soon">Próximamente...</string>
+    <string name="go_back">Volver</string>
 </resources>

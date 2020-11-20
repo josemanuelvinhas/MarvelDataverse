@@ -7,6 +7,10 @@
 
     <item
         android:id="@+id/itGoBack"
-        android:title="@string/exit" />
+        android:title="@string/go_back" />
+
+    <item
+        android:id="@+id/itLogout"
+        android:title="@string/logout" />
 
 </menu>

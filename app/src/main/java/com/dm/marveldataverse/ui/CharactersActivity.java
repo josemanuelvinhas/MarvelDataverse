@@ -43,7 +43,7 @@ public class CharactersActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         super.onCreateOptionsMenu(menu);
-        CharactersActivity.this.getMenuInflater().inflate(R.menu.menu_core, menu);
+        CharactersActivity.this.getMenuInflater().inflate(R.menu.menu_characters, menu);
         return true;
     }
 
@@ -60,6 +60,10 @@ public class CharactersActivity extends AppCompatActivity {
                 break;
             case R.id.itAcercaDe:
                 CharactersActivity.this.startAboutActivity();
+                toret = true;
+                break;
+            case R.id.itGoBack:
+                CharactersActivity.this.finish();
                 toret = true;
                 break;
             default:

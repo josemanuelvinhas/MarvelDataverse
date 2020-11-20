@@ -30,14 +30,12 @@ public class CoreActivity extends AppCompatActivity {
 
         final Button BT_COMICS_MANAGEMENT = CoreActivity.this.findViewById(R.id.btnComicsManagement);
         BT_COMICS_MANAGEMENT.setOnClickListener(v -> {
-            //TODO internacionalizar
-            Toast.makeText( CoreActivity.this, "Futura funcionalidad", Toast.LENGTH_SHORT ).show();
+            Toast.makeText( CoreActivity.this, R.string.soon, Toast.LENGTH_SHORT ).show();
         });
 
         final Button BT_SERIES_MANAGEMENT = CoreActivity.this.findViewById(R.id.btnSeriesManagement);
         BT_SERIES_MANAGEMENT.setOnClickListener(v -> {
-            //TODO internacionalizar
-            Toast.makeText( CoreActivity.this, "Futura funcionalidad", Toast.LENGTH_SHORT ).show();
+            Toast.makeText( CoreActivity.this, R.string.soon, Toast.LENGTH_SHORT ).show();
         });
 
         if (!CoreActivity.this.session.isSessionActive()){

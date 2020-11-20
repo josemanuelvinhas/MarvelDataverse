@@ -1,18 +1,17 @@
 package com.dm.marveldataverse.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.dm.marveldataverse.R;
-import com.dm.marveldataverse.core.DBManager;
 import com.dm.marveldataverse.core.Session;
 import com.dm.marveldataverse.core.ValidationException;
 import com.dm.marveldataverse.model.User;
@@ -93,6 +92,31 @@ public class RegisterActivity extends AppCompatActivity {
         if (RegisterActivity.this.session.isSessionActive()) {
             RegisterActivity.this.finish();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        this.getMenuInflater().inflate(R.menu.menu_go_back, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        super.onOptionsItemSelected(item);
+        boolean toret;
+
+        switch (item.getItemId()) {
+            case R.id.itGoBack:
+                RegisterActivity.this.finish();
+                toret = true;
+                break;
+            default:
+                toret = false;
+        }
+
+        return toret;
     }
 
     private void register() {

@@ -7,9 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.dm.marveldataverse.R;
 import com.dm.marveldataverse.core.Session;
@@ -63,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startAboutActivity();
                 toret = true;
                 break;
-            case R.id.itSalir:
-                System.exit(0);
+            case R.id.itGoBack:
+                MainActivity.this.finish();
                 toret = true;
                 break;
             default:

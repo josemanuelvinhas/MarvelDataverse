@@ -30,4 +30,6 @@
     <string name="yomar_costa_orellana" translatable="false">Yomar Costa Orellana</string>
     <string name="raul_varandela_marra" translatable="false">Raúl Varandela Marra</string>
     <string name="jose_manuel_vinas_cid" translatable="false">José Manuel Viñas Cid</string>
+    <string name="soon">Soon...</string>
+    <string name="go_back">Go Back</string>
 </resources>
