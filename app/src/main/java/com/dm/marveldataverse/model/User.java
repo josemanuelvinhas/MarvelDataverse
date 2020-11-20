@@ -1,5 +1,10 @@
 package com.dm.marveldataverse.model;
 
+import com.dm.marveldataverse.R;
+import com.dm.marveldataverse.core.ValidationException;
+
+import java.util.regex.Pattern;
+
 public class User {
 
     private String username;
@@ -15,6 +20,9 @@ public class User {
     public User(String username, String passwd) {
         this.username = username;
         this.passwd = passwd;
+    }
+
+    public User() {
     }
 
     public String getUsername() {
@@ -41,13 +49,37 @@ public class User {
         this.email = email;
     }
 
-    public boolean isValidForRegister() {
-        //TODO validacion registrar usuario
-        return true;
+    public void validateForRegister() throws ValidationException {
+        validateUsername(this.username);
+        validateEmail(this.email);
+        validatePasswd(this.passwd);
     }
 
-    public boolean isValidForLogin() {
-        //TODO validacion login usuario
-        return true;
+    public void validateForLogin() throws ValidationException {
+        validateUsername(this.username);
+        validatePasswd(this.passwd);
     }
+
+    public static void validateUsername(String username) throws ValidationException {
+        final String regexp = "[a-zA-Z0-9]{3,10}";
+        if (!Pattern.matches(regexp, username)) {
+            throw new ValidationException("Validation Login Error", R.string.username_invalid);
+        }
+    }
+
+    public static void validatePasswd(String passwd) throws ValidationException {
+        final String regexp = "[a-zA-Z0-9]{3,10}";
+        if (!Pattern.matches(regexp, passwd)) {
+            throw new ValidationException("Validation Login Error", R.string.passwd_invalid);
+        }
+    }
+
+    public static void validateEmail(String email) throws ValidationException {
+        final String regexp = "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$";
+        if (!Pattern.matches(regexp, email)) {
+            throw new ValidationException("Validation Login Error", R.string.email_invalid);
+        }
+    }
+
+
 }
