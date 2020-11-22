@@ -23,6 +23,10 @@ public class DBManager extends SQLiteOpenHelper {
     public static final String CAMPO_USUARIOS_PASSWD = "passwd";
     public static final String CAMPO_USUARIOS_EMAIL = "email";
 
+    public static final String TABLA_PERSONAJES= "characters";
+    public static final String CAMPO_PERSONAJES_NAME = "name";
+    public static final String CAMPO_PERSONAJES_DESCRIPTION = "description";
+
     /**
      * Este método devuelve la instancia de conexión con la base de datos. Si no existe, la crea.
      * @param context El contexto de la applicación
@@ -30,7 +34,7 @@ public class DBManager extends SQLiteOpenHelper {
      */
     public static DBManager getManager(Context context) {
         if (instance == null) {
-            instance = new DBManager(context.getApplicationContext()); //hola
+            instance = new DBManager(context.getApplicationContext());
         }
         return instance;
     }
@@ -61,6 +65,13 @@ public class DBManager extends SQLiteOpenHelper {
                     + ")"
             );
 
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLA_PERSONAJES
+                    + "("
+                    + CAMPO_PERSONAJES_NAME + " TEXT PRIMARY KEY," //TODO no es inseguro hacer consultas sql con + ?
+                    + CAMPO_PERSONAJES_DESCRIPTION + " TEXT NOT NULL"
+                    + ")"
+            );
+
             db.setTransactionSuccessful();
         } catch (SQLException error) {
             Log.e(DB_NOMBRE, error.getMessage());
@@ -82,6 +93,7 @@ public class DBManager extends SQLiteOpenHelper {
             db.beginTransaction();
 
             db.execSQL("DROP TABLE IF EXISTS " + TABLA_USUARIOS);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLA_PERSONAJES);
 
             db.setTransactionSuccessful();
         } catch (SQLException error) {

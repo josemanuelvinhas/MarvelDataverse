@@ -10,33 +10,32 @@ import android.view.MenuItem;
 import com.dm.marveldataverse.R;
 import com.dm.marveldataverse.core.Session;
 
-public class CharactersActivity extends AppCompatActivity {
+public class AddCharacterActivity extends AppCompatActivity {
 
     private Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_characters);
+        setContentView(R.layout.activity_add_character);
 
-        //Inicialización las variables
-        CharactersActivity.this.session = Session.getSession(CharactersActivity.this);
+        //Inicialización de variables
+        AddCharacterActivity.this.session = Session.getSession(AddCharacterActivity.this);
 
-        //Inicialización de eventos
-        //TODO eventos de actividad de personajes
-        //el boton de añadir click listener llamar metodo abajo
 
-        //Si no existe la sesion
-        if (!CharactersActivity.this.session.isSessionActive()){
-            this.finish();
+
+        //Salir si existe una sesión
+        if (!AddCharacterActivity.this.session.isSessionActive()) {
+            AddCharacterActivity.this.finish();
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (!CharactersActivity.this.session.isSessionActive()){
-            this.finish();
+        //Salir si existe una sesión
+        if (!AddCharacterActivity.this.session.isSessionActive()) {
+            AddCharacterActivity.this.finish();
         }
     }
 
@@ -44,7 +43,7 @@ public class CharactersActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         super.onCreateOptionsMenu(menu);
-        CharactersActivity.this.getMenuInflater().inflate(R.menu.menu_characters, menu);
+        AddCharacterActivity.this.getMenuInflater().inflate(R.menu.menu_characters, menu);
         return true;
     }
 
@@ -55,16 +54,16 @@ public class CharactersActivity extends AppCompatActivity {
 
         switch (menuItem.getItemId()) {
             case R.id.itLogout:
-                CharactersActivity.this.session.closeSession();
-                CharactersActivity.this.finish();
+                AddCharacterActivity.this.session.closeSession();
+                AddCharacterActivity.this.finish();
                 toret = true;
                 break;
             case R.id.itAcercaDe:
-                CharactersActivity.this.startAboutActivity();
+                AddCharacterActivity.this.startAboutActivity();
                 toret = true;
                 break;
             case R.id.itGoBack:
-                CharactersActivity.this.finish();
+                AddCharacterActivity.this.finish();
                 toret = true;
                 break;
             default:
@@ -74,7 +73,6 @@ public class CharactersActivity extends AppCompatActivity {
     }
 
     private void startAboutActivity() {
-        this.startActivity(new Intent(CharactersActivity.this, AboutActivity.class));
+        this.startActivity(new Intent(AddCharacterActivity.this, AboutActivity.class));
     }
-    //aqui el metodo que llama al boton
 }

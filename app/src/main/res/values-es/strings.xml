@@ -30,4 +30,12 @@
     <string name="authors">Autores</string>
     <string name="soon">Próximamente...</string>
     <string name="go_back">Volver</string>
+    <string name="description_invalid">La descripción debe tener entre 3-255 letras o numeros</string>
+    <string name="name_invalid">El nombre debe tener entre 3 y 20 letras (a-zA-Z) o números</string>
+    <string name="search_invalid">Debe haber entre 1 y 20 caracteres ( números, letras . o - )</string>
+    <string name="CreateCharacter">Crea tu propio personaje</string>
+    <string name="send">Enviar</string>
+    <string name="reset">Limpiar</string>
+    <string name="name">Nombre:</string>
+    <string name="description">Descripción:</string>
 </resources>

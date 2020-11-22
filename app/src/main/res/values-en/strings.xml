@@ -30,4 +30,12 @@
     <string name="authors">Authors</string>
     <string name="soon">Soon...</string>
     <string name="go_back">Go Back</string>
+    <string name="description_invalid">The description must be 3-255 letters (a-zA-Z) or numbers</string>
+    <string name="name_invalid">The name must be 3-20 letters (a-zA-Z) or numbers</string>
+    <string name="search_invalid">Must be between 1 and 20 characters ( number, letters . or - )</string>
+    <string name="CreateCharacter">Create your own character</string>
+    <string name="send">Send</string>
+    <string name="reset">Reset</string>
+    <string name="name">Name:</string>
+    <string name="description">Description:</string>
 </resources>
