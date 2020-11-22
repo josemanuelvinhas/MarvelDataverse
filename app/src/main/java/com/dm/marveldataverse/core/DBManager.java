@@ -30,7 +30,7 @@ public class DBManager extends SQLiteOpenHelper {
      */
     public static DBManager getManager(Context context) {
         if (instance == null) {
-            instance = new DBManager(context.getApplicationContext());
+            instance = new DBManager(context.getApplicationContext()); //hola
         }
         return instance;
     }
