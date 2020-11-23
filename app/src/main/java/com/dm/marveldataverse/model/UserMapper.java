@@ -52,7 +52,6 @@ public class UserMapper extends BaseMapper {
             Log.e("DB", error.getMessage());
             throw new RuntimeException("Error en la BD");
         } finally {
-            System.out.println("prueba");
             DB.endTransaction();
         }
     }
@@ -65,9 +64,7 @@ public class UserMapper extends BaseMapper {
      */
     public boolean isUsernameExist(String username) {
         final SQLiteDatabase DB = instance.getReadableDatabase();
-        final ContentValues VALORES = new ContentValues();
 
-        VALORES.put(CAMPO_USUARIOS_USERNAME, username);
         String[] args = new String[]{username};
 
         boolean toret;

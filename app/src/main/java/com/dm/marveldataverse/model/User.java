@@ -61,14 +61,14 @@ public class User {
     }
 
     public static void validateUsername(String username) throws ValidationException {
-        final String regexp = "[a-zA-Z0-9]{3,10}";
+        final String regexp = "[a-zA-Z0-9]{3,20}";
         if (!Pattern.matches(regexp, username)) {
             throw new ValidationException("Validation Login Error", R.string.username_invalid);
         }
     }
 
     public static void validatePasswd(String passwd) throws ValidationException {
-        final String regexp = "[a-zA-Z0-9]{3,10}";
+        final String regexp = "[a-zA-Z0-9]{3,20}";
         if (!Pattern.matches(regexp, passwd)) {
             throw new ValidationException("Validation Login Error", R.string.passwd_invalid);
         }

@@ -136,23 +136,23 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (isUsernameExist || isEmailExist) {
                     if (isUsernameExist) {
-                        Toast.makeText(RegisterActivity.this, R.string.username_exists, Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegisterActivity.this, R.string.username_exists, Toast.LENGTH_SHORT).show();
                     }
                     if (isEmailExist) {
-                        Toast.makeText(RegisterActivity.this, R.string.email_exists, Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegisterActivity.this, R.string.email_exists, Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     RegisterActivity.this.userMapper.addUser(RegisterActivity.this.user);
-                    Toast.makeText(RegisterActivity.this, R.string.singin_successful, Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this, R.string.singin_successful, Toast.LENGTH_SHORT).show();
                     RegisterActivity.this.finish();
                 }
 
             } catch (RuntimeException e) {
-                Toast.makeText(RegisterActivity.this, R.string.bd_error, Toast.LENGTH_LONG).show();
+                Toast.makeText(RegisterActivity.this, R.string.bd_error, Toast.LENGTH_SHORT).show();
             }
 
         } catch (ValidationException e) {
-            Toast.makeText(RegisterActivity.this, R.string.invalid_fields, Toast.LENGTH_LONG).show();
+            Toast.makeText(RegisterActivity.this, R.string.invalid_fields, Toast.LENGTH_SHORT).show();
         }
 
     }
