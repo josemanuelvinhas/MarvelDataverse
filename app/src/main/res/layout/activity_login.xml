@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.LoginActivity"
-    android:gravity="center"
     android:padding="20dp"
     android:orientation="vertical">
 
@@ -25,6 +24,8 @@
             android:id="@+id/edUsername"
             android:layout_width="match_parent"
             android:hint="@string/hint_username"
+            android:maxLength="20"
+            android:inputType="text"
             android:layout_height="wrap_content"
             android:layout_weight=".6"/>
 
@@ -47,6 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_password"
+            android:maxLength="20"
             android:inputType="textPassword"/>
 
     </LinearLayout>

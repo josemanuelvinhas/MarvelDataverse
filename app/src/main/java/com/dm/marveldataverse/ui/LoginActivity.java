@@ -103,17 +103,17 @@ public class LoginActivity extends AppCompatActivity {
             LoginActivity.this.user.validateForLogin();
             try {
                 if (LoginActivity.this.session.startSession(LoginActivity.this.user)) {
-                    Toast.makeText(LoginActivity.this, R.string.login_successful, Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, R.string.login_successful, Toast.LENGTH_SHORT).show();
                     LoginActivity.this.finish();
                 } else {
-                    Toast.makeText(LoginActivity.this, R.string.invalid_credentials, Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, R.string.invalid_credentials, Toast.LENGTH_SHORT).show();
                 }
             }catch (RuntimeException e){
-                Toast.makeText(LoginActivity.this, R.string.bd_error, Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, R.string.bd_error, Toast.LENGTH_SHORT).show();
             }
 
         }catch (ValidationException ve){
-            Toast.makeText( LoginActivity.this, R.string.invalid_fields, Toast.LENGTH_LONG ).show();
+            Toast.makeText( LoginActivity.this, R.string.invalid_fields, Toast.LENGTH_SHORT ).show();
         }
 
     }

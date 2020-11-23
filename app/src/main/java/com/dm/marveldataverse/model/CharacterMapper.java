@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import static com.dm.marveldataverse.core.DBManager.CAMPO_PERSONAJES_ID;
 import static com.dm.marveldataverse.core.DBManager.CAMPO_PERSONAJES_NAME;
 import static com.dm.marveldataverse.core.DBManager.CAMPO_PERSONAJES_DESCRIPTION;
 import static com.dm.marveldataverse.core.DBManager.TABLA_PERSONAJES;
@@ -17,7 +18,7 @@ public class CharacterMapper extends BaseMapper {
      *
      * @param context El contexto de la aplicación
      */
-    protected CharacterMapper(Context context) {
+    public CharacterMapper(Context context) {
         super(context);
     }
 
@@ -115,6 +116,7 @@ public class CharacterMapper extends BaseMapper {
 
     /**
      * Este método permite eliminar personajes de la BD
+     *
      * @param character El personaje
      * @throws RuntimeException si se produce algun error en la BD
      */
@@ -128,7 +130,7 @@ public class CharacterMapper extends BaseMapper {
             Log.i("DB", "eliminando personaje: " + character.getName());
             DB.beginTransaction();
 
-            DB.delete( TABLA_PERSONAJES, CAMPO_PERSONAJES_NAME + "=?",args);
+            DB.delete(TABLA_PERSONAJES, CAMPO_PERSONAJES_NAME + "=?", args);
 
             DB.setTransactionSuccessful();
         } catch (SQLException error) {
@@ -140,23 +142,21 @@ public class CharacterMapper extends BaseMapper {
     }
 
 
-
-
-
     /**
      * Este método permite saber si un personaje ya existe.
-     * @param character El nombre de personaje
+     *
+     * @param name El nombre de personaje
      * @return true si existe el personaje y false si no
      * @throws RuntimeException si se produce algun error en la BD
      */
-    public boolean thisCharacterExist(String character) {
+    public boolean thisCharacterExist(String name) {
         final SQLiteDatabase DB = instance.getReadableDatabase();
 
-        String[] args = new String[]{character};
+        String[] args = new String[]{name};
 
         boolean toret;
         try {
-            Log.i("DB", "buscando personaje: " + character);
+            Log.i("DB", "buscando personaje: " + name);
 
             try (Cursor cursor = DB.query(TABLA_PERSONAJES, null, CAMPO_PERSONAJES_NAME + "=?", args, null, null, null)) {
                 toret = cursor.getCount() == 1;
@@ -170,62 +170,38 @@ public class CharacterMapper extends BaseMapper {
 
     /**
      * Este método devuelve todos los personajes.
+     *
      * @return lista de personajes
      * @throws RuntimeException si se produce algun error en la BD
      */
-    public String[] getCharactersList() {
+
+    public Cursor getCharactersList() {
         final SQLiteDatabase DB = instance.getReadableDatabase();
-        //TODO si se quiere ordenada poner en orderBy new String[]{CAMPO_PERSONAJES_NAME} + "DESC"
-         String[] toret = new String[]{};
-         int pos = 0;
 
-        try {
-            Log.i("DB", "recuperando lista de todos los personajes: ");
+        Log.i("DB", "recuperando lista de todos los personajes: ");
 
-            try ( Cursor cursor = DB.query( TABLA_PERSONAJES, new String[]{CAMPO_PERSONAJES_NAME}, null, null, null, null, null, null );) {
-                if ( cursor.moveToFirst() ) {
-                    do {
-                        toret[pos] = cursor.getString( 0 ); //TODO se puede poner el nombre del campo?
-                        pos++;
-                    } while ( cursor.moveToNext() );
-                }
-            }
-        } catch (SQLException error) {
-            Log.e("DB", error.getMessage());
-            throw new RuntimeException("Error en la BD");
-        }
-        return toret;
+        Cursor cursor = DB.query(TABLA_PERSONAJES, new String[]{CAMPO_PERSONAJES_ID,CAMPO_PERSONAJES_NAME}, null, null, null, null, CAMPO_PERSONAJES_NAME + " ASC", null);
+
+        return cursor;
     }
+
 
     /**
      * Este método busca a uno o varios personaje.
+     *
      * @return una lista de personajes que coincidan con el criterio de busqueda
      * @throws RuntimeException si se produce algun error en la BD
      */
-    public Character[] searchCharacter(String character) {
+    public Cursor searchCharacter(String character) {
         final SQLiteDatabase DB = instance.getReadableDatabase();
 
-        String[] args = new String[]{character};
-        Character[] toret = new Character[]{};
-        int pos=0;
+        String[] args = new String[]{"%"+character+"%"};
 
-        try {
-            Log.i("DB", "recuperando lista de personajes buscados: ");
+        Log.i("DB", "recuperando lista de personajes buscados: ");
 
-            try ( Cursor cursor = DB.query( TABLA_PERSONAJES, null, CAMPO_PERSONAJES_NAME + "LIKE ?", args, null, null, null, null );) {
-                if ( cursor.moveToFirst() ) {
-                    do {
-                        Character c = new Character(cursor.getString( 0),cursor.getString( 1));//TODO se puede poner el nombre del campo?
-                        toret[pos] = c;
-                        pos++;
-                    } while ( cursor.moveToNext() );
-                }
-            }
-        } catch (SQLException error) {
-            Log.e("DB", error.getMessage());
-            throw new RuntimeException("Error en la BD");
-        }
-        return toret;
+        Cursor cursor = DB.query(TABLA_PERSONAJES, null, CAMPO_PERSONAJES_NAME + " LIKE ?", args, null, null, CAMPO_PERSONAJES_NAME + " ASC", null);
+
+        return cursor;
     }
 
 

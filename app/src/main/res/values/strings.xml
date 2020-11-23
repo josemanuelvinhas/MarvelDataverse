@@ -17,8 +17,8 @@
     <string name="invalid_credentials">Invalid Credentials</string>
     <string name="login_successful">Login Successful</string>
     <string name="email_invalid">The email is not valid</string>
-    <string name="passwd_invalid">The password must be 3 -10 letters (a-zA-Z) or numbers</string>
-    <string name="username_invalid">The username must be 3-10 letters (a-zA-Z) or numbers</string>
+    <string name="passwd_invalid">The password must be 3 -20 letters (a-zA-Z) or numbers</string>
+    <string name="username_invalid">The username must be 3-20 letters (a-zA-Z) or numbers</string>
     <string name="bd_error">Database error, please try again</string>
     <string name="username_exists">Username already exists</string>
     <string name="email_exists">Email already exists</string>
@@ -34,10 +34,12 @@
     <string name="go_back">Go Back</string>
     <string name="description_invalid">The description must be 3-255 letters (a-zA-Z) or numbers</string>
     <string name="name_invalid">The name must be 3-20 letters (a-zA-Z) or numbers</string>
-    <string name="search_invalid">Must be between 1 and 20 characters ( number, letters . or - )</string>
+    <string name="search_invalid">Must be between 0 and 20 characters ( number, letters . or - )</string>
     <string name="CreateCharacter">Create your own character</string>
     <string name="send">Send</string>
     <string name="reset">Reset</string>
-    <string name="name">Name:</string>
-    <string name="description">Description:</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="character_exists">This character already exists</string>
+    <string name="character_add_successful">Character successfully created</string>
 </resources>

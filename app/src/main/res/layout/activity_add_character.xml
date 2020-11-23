@@ -11,84 +11,119 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:layout_weight=".05"
         android:gravity="center">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:text="@string/CreateCharacter"
             android:textAlignment="center"
-            android:textColor = "@android:color/black"
-            android:textStyle="bold"
+            android:textColor="@android:color/black"
             android:textSize="30sp"
-            android:text="@string/CreateCharacter">
+            android:textStyle="bold">
 
         </TextView>
 
 
-
     </LinearLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_weight=".2">
+        android:layout_marginBottom="30dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name" />
 
         <EditText
-            android:gravity="top"
-            android:id="@+id/btnCharacterName"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/name"
-            />
+            android:id="@+id/edName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/name"
+            android:inputType="text"
+            android:maxLength="20" />
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="30dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
-        android:layout_weight=".6">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/description" />
 
         <EditText
+            android:id="@+id/edDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="top"
-            android:id="@+id/btnCharacterDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/description"
-            />
+            android:hint="@string/description"
+            android:inputType="textMultiLine"
+            android:maxLength="255" />
+
     </LinearLayout>
 
-
     <LinearLayout
+
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight=".15"
-        android:gravity="center"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="30dp"
+        android:gravity="bottom"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btnReset"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/custom_button"
-            android:padding="10dp"
             android:layout_marginRight="20dp"
-            android:text="@string/send"
-            android:textColor="@android:color/white" />
-        <!-- TODO Se pueden separar sin margen los botones? y quiero hacerlos mas grandes-->
-        <Button
-            android:id="@+id/btnAdd"
-            android:layout_width="wrap_content"
+            android:layout_weight=".5"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnReset"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:background="@drawable/custom_button"
+                android:padding="10dp"
+                android:text="@string/reset"
+                android:textColor="@android:color/white" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/custom_button"
-            android:padding="10dp"
             android:layout_marginLeft="20dp"
-            android:text="@string/reset"
-            android:textColor="@android:color/white" />
+            android:layout_weight=".5"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <Button
+                android:id="@+id/btnAddCharacter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_button"
+                android:padding="10dp"
+                android:text="@string/send"
+                android:textColor="@android:color/white" />
+
+
+        </LinearLayout>
 
     </LinearLayout>
+
 
 </LinearLayout>
