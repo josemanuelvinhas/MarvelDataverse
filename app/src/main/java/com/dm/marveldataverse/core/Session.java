@@ -41,7 +41,7 @@ public class Session {
      */
     private Session(Context context) {
         this.userMapper = new UserMapper(context);
-        this.prefs = context.getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        this.prefs = context.getSharedPreferences("session", Context.MODE_PRIVATE);
         this.sessionActive = getSesion();
     }
 
