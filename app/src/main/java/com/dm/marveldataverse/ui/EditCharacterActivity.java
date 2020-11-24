@@ -4,12 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.dm.marveldataverse.R;
@@ -18,7 +16,7 @@ import com.dm.marveldataverse.core.ValidationException;
 import com.dm.marveldataverse.model.Character;
 import com.dm.marveldataverse.model.CharacterMapper;
 
-public class EditActivity extends AppCompatActivity {
+public class EditCharacterActivity extends AppCompatActivity {
 
 
     private Session session;
@@ -29,20 +27,20 @@ public class EditActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit);
+        setContentView(R.layout.activity_edit_character);
 
         //Inicialización de variables
         this.character = new Character();
         this.characterMapper = new CharacterMapper(this);
-        EditActivity.this.session = Session.getSession(EditActivity.this);
-        final Button BT_RESET = EditActivity.this.findViewById(R.id.btnReset);
-        final Button BT_SEND = EditActivity.this.findViewById(R.id.btnAddCharacter);
-        final EditText ED_NAME = EditActivity.this.findViewById(R.id.edName);
-        final EditText ED_DESC = EditActivity.this.findViewById(R.id.edDescription);
+        EditCharacterActivity.this.session = Session.getSession(EditCharacterActivity.this);
+        final Button BT_RESET = EditCharacterActivity.this.findViewById(R.id.btnReset);
+        final Button BT_SEND = EditCharacterActivity.this.findViewById(R.id.btnAddCharacter);
+        final EditText ED_NAME = EditCharacterActivity.this.findViewById(R.id.edName);
+        final EditText ED_DESC = EditCharacterActivity.this.findViewById(R.id.edDescription);
 
 
-        BT_RESET.setOnClickListener(v -> EditActivity.this.reset());
-        BT_SEND.setOnClickListener(v -> EditActivity.this.editCharacter());
+        BT_RESET.setOnClickListener(v -> EditCharacterActivity.this.reset());
+        BT_SEND.setOnClickListener(v -> EditCharacterActivity.this.editCharacter());
         ED_NAME.setOnFocusChangeListener((v, hasFocus) -> {
             try {
                 Character.validateName(ED_NAME.getText().toString());
@@ -61,35 +59,35 @@ public class EditActivity extends AppCompatActivity {
 
 
         //Salir si existe una sesión
-        if (!EditActivity.this.session.isSessionActive()) {
-            EditActivity.this.finish();
+        if (!EditCharacterActivity.this.session.isSessionActive()) {
+            EditCharacterActivity.this.finish();
         }
     }
 
     private void reset() {
-        final EditText ED_NAME = EditActivity.this.findViewById(R.id.edName);
-        final EditText ED_DESCRIPTION = EditActivity.this.findViewById(R.id.edDescription);
+        final EditText ED_NAME = EditCharacterActivity.this.findViewById(R.id.edName);
+        final EditText ED_DESCRIPTION = EditCharacterActivity.this.findViewById(R.id.edDescription);
         ED_DESCRIPTION.setText("");
         ED_NAME.setText("");
     }
 
     private void editCharacter() {
         //todo: hacer que aparezcan en los campos los datos que hay actualmente en la base de datos y recuperar el personaje primero
-        final EditText ED_NAME = EditActivity.this.findViewById(R.id.edName);
-        final EditText ED_DESCRIPTION = EditActivity.this.findViewById(R.id.edDescription);
+        final EditText ED_NAME = EditCharacterActivity.this.findViewById(R.id.edName);
+        final EditText ED_DESCRIPTION = EditCharacterActivity.this.findViewById(R.id.edDescription);
         this.character.setName(ED_NAME.getText().toString());
         this.character.setDescription(ED_DESCRIPTION.getText().toString());
         try {
             this.character.validateForCreate();
             try {
                 characterMapper.updateCharacter(character);
-                Toast.makeText(EditActivity.this, R.string.character_edit_successful, Toast.LENGTH_SHORT).show();
-                EditActivity.this.finish();
+                Toast.makeText(EditCharacterActivity.this, R.string.character_edit_successful, Toast.LENGTH_SHORT).show();
+                EditCharacterActivity.this.finish();
             } catch (RuntimeException ex) {
-                Toast.makeText(EditActivity.this, R.string.bd_error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditCharacterActivity.this, R.string.bd_error, Toast.LENGTH_SHORT).show();
             }
         } catch (ValidationException e) {
-            Toast.makeText(EditActivity.this, R.string.invalid_fields, Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditCharacterActivity.this, R.string.invalid_fields, Toast.LENGTH_SHORT).show();
         }
 
 
@@ -99,8 +97,8 @@ public class EditActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //Salir si existe una sesión
-        if (!EditActivity.this.session.isSessionActive()) {
-            EditActivity.this.finish();
+        if (!EditCharacterActivity.this.session.isSessionActive()) {
+            EditCharacterActivity.this.finish();
         }
     }
 
@@ -108,7 +106,7 @@ public class EditActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         super.onCreateOptionsMenu(menu);
-        EditActivity.this.getMenuInflater().inflate(R.menu.menu_characters, menu);
+        EditCharacterActivity.this.getMenuInflater().inflate(R.menu.menu_characters, menu);
         return true;
     }
 
@@ -119,16 +117,16 @@ public class EditActivity extends AppCompatActivity {
 
         switch (menuItem.getItemId()) {
             case R.id.itLogout:
-                EditActivity.this.session.closeSession();
-                EditActivity.this.finish();
+                EditCharacterActivity.this.session.closeSession();
+                EditCharacterActivity.this.finish();
                 toret = true;
                 break;
             case R.id.itAcercaDe:
-                EditActivity.this.startAboutActivity();
+                EditCharacterActivity.this.startAboutActivity();
                 toret = true;
                 break;
             case R.id.itGoBack:
-                EditActivity.this.finish();
+                EditCharacterActivity.this.finish();
                 toret = true;
                 break;
             default:
@@ -138,6 +136,6 @@ public class EditActivity extends AppCompatActivity {
     }
 
     private void startAboutActivity() {
-        this.startActivity(new Intent(EditActivity.this, AboutActivity.class));
+        this.startActivity(new Intent(EditCharacterActivity.this, AboutActivity.class));
     }
 }

@@ -180,7 +180,7 @@ public class CharacterMapper extends BaseMapper {
 
         Log.i("DB", "recuperando lista de todos los personajes: ");
 
-        Cursor cursor = DB.query(TABLA_PERSONAJES, new String[]{CAMPO_PERSONAJES_ID,CAMPO_PERSONAJES_NAME}, null, null, null, null, CAMPO_PERSONAJES_NAME + " ASC", null);
+        Cursor cursor = DB.query(TABLA_PERSONAJES, new String[]{CAMPO_PERSONAJES_ID, CAMPO_PERSONAJES_NAME}, null, null, null, null, CAMPO_PERSONAJES_NAME + " ASC", null);
 
         return cursor;
     }
@@ -195,13 +195,29 @@ public class CharacterMapper extends BaseMapper {
     public Cursor searchCharacter(String character) {
         final SQLiteDatabase DB = instance.getReadableDatabase();
 
-        String[] args = new String[]{"%"+character+"%"};
+        String[] args = new String[]{"%" + character + "%"};
 
         Log.i("DB", "recuperando lista de personajes buscados: ");
 
         Cursor cursor = DB.query(TABLA_PERSONAJES, null, CAMPO_PERSONAJES_NAME + " LIKE ?", args, null, null, CAMPO_PERSONAJES_NAME + " ASC", null);
 
         return cursor;
+    }
+
+    public Character getCharacterById(int id) {
+        final SQLiteDatabase DB = instance.getReadableDatabase();
+        Character character = null;
+        Log.i("DB", "recuperando un personaje por su id: " + id);
+
+        String[] args = new String[]{Integer.toString(id)};
+
+        try (Cursor cursor = DB.query(TABLA_PERSONAJES, null, CAMPO_PERSONAJES_ID + " = ?", args, null, null, null, null)) {
+            if (cursor.moveToFirst()) {
+                character = new Character(cursor.getString(1), cursor.getString(2));
+            }
+        }
+
+        return character;
     }
 
 
