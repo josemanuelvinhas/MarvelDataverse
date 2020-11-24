@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -21,8 +22,9 @@ public class EditCharacterActivity extends AppCompatActivity {
 
     private Session session;
     private Character character;
+    private Character characterOld;
     private CharacterMapper characterMapper;
-
+    private int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +36,19 @@ public class EditCharacterActivity extends AppCompatActivity {
         this.characterMapper = new CharacterMapper(this);
         EditCharacterActivity.this.session = Session.getSession(EditCharacterActivity.this);
         final Button BT_RESET = EditCharacterActivity.this.findViewById(R.id.btnReset);
-        final Button BT_SEND = EditCharacterActivity.this.findViewById(R.id.btnAddCharacter);
+        final Button BT_EDIT = EditCharacterActivity.this.findViewById(R.id.btEditCharacter);
         final EditText ED_NAME = EditCharacterActivity.this.findViewById(R.id.edName);
         final EditText ED_DESC = EditCharacterActivity.this.findViewById(R.id.edDescription);
+        id = this.getIntent().getIntExtra("id", -1);
+        characterMapper = new CharacterMapper(this);
+        character = characterMapper.getCharacterById(id);
+        characterOld = new Character(character.getName(), character.getDescription());
 
+        ED_NAME.setText(character.getName());
+        ED_DESC.setText(character.getDescription());
 
         BT_RESET.setOnClickListener(v -> EditCharacterActivity.this.reset());
-        BT_SEND.setOnClickListener(v -> EditCharacterActivity.this.editCharacter());
+        BT_EDIT.setOnClickListener(v -> EditCharacterActivity.this.editCharacter());
         ED_NAME.setOnFocusChangeListener((v, hasFocus) -> {
             try {
                 Character.validateName(ED_NAME.getText().toString());
@@ -67,14 +75,15 @@ public class EditCharacterActivity extends AppCompatActivity {
     private void reset() {
         final EditText ED_NAME = EditCharacterActivity.this.findViewById(R.id.edName);
         final EditText ED_DESCRIPTION = EditCharacterActivity.this.findViewById(R.id.edDescription);
-        ED_DESCRIPTION.setText("");
-        ED_NAME.setText("");
+        ED_NAME.setText(characterOld.getName());
+        ED_DESCRIPTION.setText(characterOld.getDescription());
+
     }
 
     private void editCharacter() {
-        //todo: hacer que aparezcan en los campos los datos que hay actualmente en la base de datos y recuperar el personaje primero
         final EditText ED_NAME = EditCharacterActivity.this.findViewById(R.id.edName);
         final EditText ED_DESCRIPTION = EditCharacterActivity.this.findViewById(R.id.edDescription);
+        Toast.makeText(this, ED_NAME.getText().toString(), Toast.LENGTH_SHORT);
         this.character.setName(ED_NAME.getText().toString());
         this.character.setDescription(ED_DESCRIPTION.getText().toString());
         try {

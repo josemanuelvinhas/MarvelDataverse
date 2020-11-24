@@ -10,6 +10,7 @@ public class Character {
 
     private String name;
     private String description;
+    private int id;
     //Posible foto
 
     public Character(String name, String description) {
@@ -17,8 +18,22 @@ public class Character {
         this.description = description;
     }
 
+    public Character(String name, String description, int id) {
+        this.name = name;
+        this.description = description;
+        this.id = id;
+    }
+
     public Character() {
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

@@ -1,5 +1,6 @@
 package com.dm.marveldataverse.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -14,7 +15,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
 
 import com.dm.marveldataverse.R;
 import com.dm.marveldataverse.core.DBManager;
@@ -75,13 +75,21 @@ public class CharactersActivity extends AppCompatActivity {
                 Cursor cursor = cursorAdapter.getCursor();
                 cursor.moveToFirst();
                 cursor.move(position);
-                CharactersActivity.this.startDetailActivity(cursor.getInt(cursor.getColumnIndex(DBManager.CAMPO_PERSONAJES_ID)));
-                //Toast.makeText(CharactersActivity.this, cursor.getString(1), Toast.LENGTH_SHORT).show();
+                CharactersActivity.this.startDetailCharacterActivity(cursor.getInt(cursor.getColumnIndex(DBManager.CAMPO_PERSONAJES_ID)));
             }
         });
 
 
-
+        /*LV_CHARACTERS.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Cursor cursor = cursorAdapter.getCursor();
+                cursor.moveToFirst();
+                cursor.move(position);
+                CharactersActivity.this.startEditActivity(cursor.getInt(cursor.getColumnIndex(DBManager.CAMPO_PERSONAJES_ID)));
+                return false;
+            }
+        });*/
 
         this.refresh();
 
@@ -160,6 +168,28 @@ public class CharactersActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        super.onContextItemSelected(item);
+        boolean toret = false;
+        AdapterView.AdapterContextMenuInfo menu = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.itEdit:
+                Cursor cursor = cursorAdapter.getCursor();
+                cursor.moveToFirst();
+                cursor.move(menu.position);
+                CharactersActivity.this.startEditCharacterActivity(cursor.getInt(cursor.getColumnIndex(DBManager.CAMPO_PERSONAJES_ID)));
+                toret = true;
+                break;
+            case R.id.itDelete:
+                //todo: hacer delete
+                toret = true;
+                break;
+        }
+
+        return toret;
+    }
+
     private void startAddCharacterActivity() {
         this.startActivity(new Intent(CharactersActivity.this, AddCharacterActivity.class));
     }
@@ -168,13 +198,15 @@ public class CharactersActivity extends AppCompatActivity {
         this.startActivity(new Intent(CharactersActivity.this, AboutActivity.class));
     }
 
-    private void startDetailActivity(int id) {
-        Intent intent = new Intent(CharactersActivity.this,DetailCharacterActivity.class);
-        intent.putExtra("id",id);
+    private void startDetailCharacterActivity(int id) {
+        Intent intent = new Intent(CharactersActivity.this, DetailCharacterActivity.class);
+        intent.putExtra("id", id);
         this.startActivity(intent);
     }
 
-    private void startEditActivity() {
-        this.startActivity(new Intent(CharactersActivity.this, EditCharacterActivity.class));
+    private void startEditCharacterActivity(int id) {
+        Intent intent = new Intent(CharactersActivity.this, EditCharacterActivity.class);
+        intent.putExtra("id", id);
+        this.startActivity(intent);
     }
 }

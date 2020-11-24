@@ -64,7 +64,7 @@ public class CharacterMapper extends BaseMapper {
         final SQLiteDatabase DB = instance.getWritableDatabase();
         final ContentValues VALORES = new ContentValues();
 
-        String[] args = new String[]{character.getName(), character.getDescription()};
+        String[] args = new String[]{Integer.toString(character.getId())};
 
         VALORES.put(CAMPO_PERSONAJES_NAME, character.getName());
         VALORES.put(CAMPO_PERSONAJES_DESCRIPTION, character.getDescription());
@@ -73,7 +73,7 @@ public class CharacterMapper extends BaseMapper {
             Log.i("DB", "actualizando personaje: " + character.getName());
             DB.beginTransaction();
 
-            DB.update(TABLA_PERSONAJES, VALORES, CAMPO_PERSONAJES_NAME + "=? AND " + CAMPO_PERSONAJES_DESCRIPTION + "=?", args);
+            DB.update(TABLA_PERSONAJES, VALORES, CAMPO_PERSONAJES_ID + "=?", args);
 
             DB.setTransactionSuccessful();
         } catch (SQLException error) {
@@ -124,13 +124,13 @@ public class CharacterMapper extends BaseMapper {
     public void deleteCharacter(Character character) {
         final SQLiteDatabase DB = instance.getWritableDatabase();
 
-        String[] args = new String[]{character.getName()};
+        String[] args = new String[]{Integer.toString(character.getId())};
 
         try {
             Log.i("DB", "eliminando personaje: " + character.getName());
             DB.beginTransaction();
 
-            DB.delete(TABLA_PERSONAJES, CAMPO_PERSONAJES_NAME + "=?", args);
+            DB.delete(TABLA_PERSONAJES, CAMPO_PERSONAJES_ID + "=?", args);
 
             DB.setTransactionSuccessful();
         } catch (SQLException error) {
@@ -213,7 +213,7 @@ public class CharacterMapper extends BaseMapper {
 
         try (Cursor cursor = DB.query(TABLA_PERSONAJES, null, CAMPO_PERSONAJES_ID + " = ?", args, null, null, null, null)) {
             if (cursor.moveToFirst()) {
-                character = new Character(cursor.getString(1), cursor.getString(2));
+                character = new Character(cursor.getString(1), cursor.getString(2), cursor.getInt(0));
             }
         }
 

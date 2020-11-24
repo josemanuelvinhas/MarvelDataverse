@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,9 +31,22 @@ public class DetailCharacterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_character);
         DetailCharacterActivity.this.session = Session.getSession(DetailCharacterActivity.this);
+
+        //inicializar las variables
         id = this.getIntent().getIntExtra("id", -1);
         characterMapper = new CharacterMapper(this);
         character = characterMapper.getCharacterById(id);
+        final Button BT_EDITAR = DetailCharacterActivity.this.findViewById(R.id.btnEditCharacter);
+        final Button BT_ELIMINAR = DetailCharacterActivity.this.findViewById(R.id.btnDelete);
+
+        BT_EDITAR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startEditCharacterActivity(id);
+            }
+        });
+
+
         DetailCharacterActivity.this.show();
 
         //Salir si existe una sesión
@@ -57,6 +72,8 @@ public class DetailCharacterActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        character = characterMapper.getCharacterById(id);
+        this.show();
         //Salir si existe una sesión
         if (!DetailCharacterActivity.this.session.isSessionActive()) {
             DetailCharacterActivity.this.finish();
@@ -98,5 +115,11 @@ public class DetailCharacterActivity extends AppCompatActivity {
 
     private void startAboutActivity() {
         this.startActivity(new Intent(DetailCharacterActivity.this, AboutActivity.class));
+    }
+
+    private void startEditCharacterActivity(int id) {
+        Intent intent = new Intent(DetailCharacterActivity.this, EditCharacterActivity.class);
+        intent.putExtra("id", id);
+        this.startActivity(intent);
     }
 }
