@@ -40,4 +40,9 @@
     <string name="description">Description</string>
     <string name="character_exists">This character already exists</string>
     <string name="character_add_successful">Character successfully created</string>
+    <string name="character_details">Character Details</string>
+    <string name="edit_charecter">Edit a Charecter</string>
+    <string name="character_edit_successful">Character successfully edited</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 </resources>

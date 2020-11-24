@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
@@ -15,7 +17,6 @@ import android.widget.SimpleCursorAdapter;
 import com.dm.marveldataverse.R;
 import com.dm.marveldataverse.core.DBManager;
 import com.dm.marveldataverse.core.Session;
-import com.dm.marveldataverse.model.Character;
 import com.dm.marveldataverse.model.CharacterMapper;
 
 public class CharactersActivity extends AppCompatActivity {
@@ -48,6 +49,7 @@ public class CharactersActivity extends AppCompatActivity {
         final Button BT_ADDCHAR = CharactersActivity.this.findViewById(R.id.btnAddCharacter);
         final ListView LV_CHARACTERS = CharactersActivity.this.findViewById(R.id.lvCharacters);
         final SearchView SV_CHARACTERS = CharactersActivity.this.findViewById(R.id.svSearch);
+       // CharactersActivity.this.registerForContextMenu(LV_CHARACTERS);
         BT_ADDCHAR.setOnClickListener(v -> CharactersActivity.this.startAddCharacterActivity());
         LV_CHARACTERS.setAdapter(this.cursorAdapter);
         SV_CHARACTERS.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -61,6 +63,16 @@ public class CharactersActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 CharactersActivity.this.search(newText);
+                return false;
+            }
+        });
+
+        LV_CHARACTERS.setOnItemClickListener((parent, view, position, id) -> CharactersActivity.this.startDetailActivity());
+
+        LV_CHARACTERS.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                CharactersActivity.this.startEditActivity();
                 return false;
             }
         });
@@ -96,7 +108,7 @@ public class CharactersActivity extends AppCompatActivity {
 
     private void deleteSearchContent() {
         final SearchView SV_CHARACTERS = CharactersActivity.this.findViewById(R.id.svSearch);
-        SV_CHARACTERS.setQuery("",false);
+        SV_CHARACTERS.setQuery("", false);
         SV_CHARACTERS.clearFocus();
         SV_CHARACTERS.onActionViewCollapsed();
     }
@@ -134,11 +146,28 @@ public class CharactersActivity extends AppCompatActivity {
         return toret;
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        if (v.getId() == R.id.lvCharacters) {
+            this.getMenuInflater().inflate(R.menu.menu_contex_character_activity, menu);
+        }
+    }
+
     private void startAddCharacterActivity() {
         this.startActivity(new Intent(CharactersActivity.this, AddCharacterActivity.class));
     }
 
     private void startAboutActivity() {
         this.startActivity(new Intent(CharactersActivity.this, AboutActivity.class));
+    }
+
+    private void startDetailActivity() {
+        this.startActivity(new Intent(CharactersActivity.this, DetailActivity.class));
+    }
+
+    private void startEditActivity() {
+        this.startActivity(new Intent(CharactersActivity.this, EditActivity.class));
     }
 }
