@@ -17,10 +17,12 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 import com.dm.marveldataverse.R;
 import com.dm.marveldataverse.core.DBManager;
 import com.dm.marveldataverse.core.Session;
+import com.dm.marveldataverse.model.Character;
 import com.dm.marveldataverse.model.CharacterMapper;
 
 public class CharactersActivity extends AppCompatActivity {
@@ -116,6 +118,7 @@ public class CharactersActivity extends AppCompatActivity {
         super.onResume();
         this.deleteSearchContent();
         this.refresh();
+        cursorAdapter.notifyDataSetChanged();
         if (!CharactersActivity.this.session.isSessionActive()) {
             this.finish();
         }
@@ -196,22 +199,23 @@ public class CharactersActivity extends AppCompatActivity {
         return toret;
     }
 
-    private void deleteCharacter(int id) {
+    private void deleteCharacter(long id) {
         AlertDialog.Builder DLG = new AlertDialog.Builder(this);
         DLG.setTitle(R.string.delete);
         DLG.setMessage(R.string.delete_character_msg);
-        DLG.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        DLG.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 characterMapper.deleteCharacter(id);
+                Toast.makeText(CharactersActivity.this,R.string.character_remove_successful,Toast.LENGTH_SHORT).show();
+                CharactersActivity.this.refresh();
             }
         });
 
-        DLG.setNegativeButton("No",null);
+        DLG.setNegativeButton(R.string.no,null);
 
         DLG.create().show();
-        cursorAdapter.notifyDataSetChanged();
-        this.refresh();
+
 
     }
 
@@ -223,13 +227,13 @@ public class CharactersActivity extends AppCompatActivity {
         this.startActivity(new Intent(CharactersActivity.this, AboutActivity.class));
     }
 
-    private void startDetailCharacterActivity(int id) {
+    private void startDetailCharacterActivity(long id) {
         Intent intent = new Intent(CharactersActivity.this, DetailCharacterActivity.class);
         intent.putExtra("id", id);
         this.startActivity(intent);
     }
 
-    private void startEditCharacterActivity(int id) {
+    private void startEditCharacterActivity(long id) {
         Intent intent = new Intent(CharactersActivity.this, EditCharacterActivity.class);
         intent.putExtra("id", id);
         this.startActivity(intent);

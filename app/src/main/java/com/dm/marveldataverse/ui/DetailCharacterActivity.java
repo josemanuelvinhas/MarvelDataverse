@@ -1,7 +1,9 @@
 package com.dm.marveldataverse.ui;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -24,7 +26,7 @@ public class DetailCharacterActivity extends AppCompatActivity {
     private Cursor cursorAdapter;
     private Session session;
     private Character character;
-    private int id;
+    private long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,7 @@ public class DetailCharacterActivity extends AppCompatActivity {
         DetailCharacterActivity.this.session = Session.getSession(DetailCharacterActivity.this);
 
         //inicializar las variables
-        id = this.getIntent().getIntExtra("id", -1);
+        id = this.getIntent().getLongExtra("id", -1);
         characterMapper = new CharacterMapper(this);
         character = characterMapper.getCharacterById(id);
         final Button BT_EDITAR = DetailCharacterActivity.this.findViewById(R.id.btnEditCharacter);
@@ -44,6 +46,14 @@ public class DetailCharacterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 startEditCharacterActivity(id);
             }
+        });
+
+        BT_ELIMINAR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DetailCharacterActivity.this.deleteCharacter();
+            }
+
         });
 
 
@@ -117,9 +127,27 @@ public class DetailCharacterActivity extends AppCompatActivity {
         this.startActivity(new Intent(DetailCharacterActivity.this, AboutActivity.class));
     }
 
-    private void startEditCharacterActivity(int id) {
+    private void startEditCharacterActivity(long id) {
         Intent intent = new Intent(DetailCharacterActivity.this, EditCharacterActivity.class);
         intent.putExtra("id", id);
         this.startActivity(intent);
+    }
+
+    private void deleteCharacter() {
+        AlertDialog.Builder DLG = new AlertDialog.Builder(this);
+        DLG.setTitle(R.string.delete);
+        DLG.setMessage(R.string.delete_character_msg);
+        DLG.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                characterMapper.deleteCharacter(id);
+                Toast.makeText(DetailCharacterActivity.this,R.string.character_remove_successful,Toast.LENGTH_SHORT).show();
+                DetailCharacterActivity.this.finish();
+            }
+        });
+
+        DLG.setNegativeButton(R.string.no,null);
+
+        DLG.create().show();
     }
 }

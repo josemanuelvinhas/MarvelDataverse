@@ -46,4 +46,7 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="delete_character_msg">Are you sure you want to remove this character?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="character_remove_successful">Character successfully remove</string>
 </resources>

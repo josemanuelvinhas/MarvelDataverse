@@ -24,7 +24,7 @@ public class EditCharacterActivity extends AppCompatActivity {
     private Character character;
     private Character characterOld;
     private CharacterMapper characterMapper;
-    private int id;
+    private long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class EditCharacterActivity extends AppCompatActivity {
         final Button BT_EDIT = EditCharacterActivity.this.findViewById(R.id.btEditCharacter);
         final EditText ED_NAME = EditCharacterActivity.this.findViewById(R.id.edName);
         final EditText ED_DESC = EditCharacterActivity.this.findViewById(R.id.edDescription);
-        id = this.getIntent().getIntExtra("id", -1);
+        id = this.getIntent().getLongExtra("id", -1);
         characterMapper = new CharacterMapper(this);
         character = characterMapper.getCharacterById(id);
         characterOld = new Character(character.getName(), character.getDescription());
@@ -52,6 +52,9 @@ public class EditCharacterActivity extends AppCompatActivity {
         ED_NAME.setOnFocusChangeListener((v, hasFocus) -> {
             try {
                 Character.validateName(ED_NAME.getText().toString());
+                if (!characterOld.getName().equals(character.getName()) && this.characterMapper.thisCharacterExist(this.character.getName())){
+                    ED_NAME.setError(getResources().getString(R.string.character_exists));
+                }
             } catch (ValidationException e) {
                 ED_NAME.setError(getResources().getString(e.getError()));
             }
@@ -86,17 +89,21 @@ public class EditCharacterActivity extends AppCompatActivity {
         Toast.makeText(this, ED_NAME.getText().toString(), Toast.LENGTH_SHORT);
         this.character.setName(ED_NAME.getText().toString());
         this.character.setDescription(ED_DESCRIPTION.getText().toString());
-        try {
-            this.character.validateForCreate();
+        if (!characterOld.getName().equals(character.getName()) && this.characterMapper.thisCharacterExist(this.character.getName())) {
+            Toast.makeText(EditCharacterActivity.this, R.string.character_exists, Toast.LENGTH_SHORT).show();
+        } else {
             try {
-                characterMapper.updateCharacter(character);
-                Toast.makeText(EditCharacterActivity.this, R.string.character_edit_successful, Toast.LENGTH_SHORT).show();
-                EditCharacterActivity.this.finish();
-            } catch (RuntimeException ex) {
-                Toast.makeText(EditCharacterActivity.this, R.string.bd_error, Toast.LENGTH_SHORT).show();
+                this.character.validateForCreate();
+                try {
+                    characterMapper.updateCharacter(character);
+                    Toast.makeText(EditCharacterActivity.this, R.string.character_edit_successful, Toast.LENGTH_SHORT).show();
+                    EditCharacterActivity.this.finish();
+                } catch (RuntimeException ex) {
+                    Toast.makeText(EditCharacterActivity.this, R.string.bd_error, Toast.LENGTH_SHORT).show();
+                }
+            } catch (ValidationException e) {
+                Toast.makeText(EditCharacterActivity.this, R.string.invalid_fields, Toast.LENGTH_SHORT).show();
             }
-        } catch (ValidationException e) {
-            Toast.makeText(EditCharacterActivity.this, R.string.invalid_fields, Toast.LENGTH_SHORT).show();
         }
 
 

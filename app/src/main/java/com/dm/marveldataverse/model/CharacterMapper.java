@@ -29,9 +29,10 @@ public class CharacterMapper extends BaseMapper {
      * @throws RuntimeException si se produce algun error en la BD
      */
 
-    public void addCharacter(Character character) {
+    public long addCharacter(Character character) {
         final SQLiteDatabase DB = instance.getWritableDatabase();
         final ContentValues VALORES = new ContentValues();
+        long id = -1;
 
         VALORES.put(CAMPO_PERSONAJES_NAME, character.getName());
         VALORES.put(CAMPO_PERSONAJES_DESCRIPTION, character.getDescription());
@@ -39,11 +40,12 @@ public class CharacterMapper extends BaseMapper {
         try {
             Log.i("DB", "insertando personaje: " + character.getName());
             DB.beginTransaction();
-            DB.insertOrThrow(
+            id = DB.insertOrThrow(
                     TABLA_PERSONAJES,
                     null,
                     VALORES
             );
+
             DB.setTransactionSuccessful();
         } catch (SQLException error) {
             Log.e("DB", error.getMessage());
@@ -51,6 +53,8 @@ public class CharacterMapper extends BaseMapper {
         } finally {
             DB.endTransaction();
         }
+
+        return id;
     }
 
     /**
@@ -64,7 +68,7 @@ public class CharacterMapper extends BaseMapper {
         final SQLiteDatabase DB = instance.getWritableDatabase();
         final ContentValues VALORES = new ContentValues();
 
-        String[] args = new String[]{Integer.toString(character.getId())};
+        String[] args = new String[]{Long.toString(character.getId())};
 
         VALORES.put(CAMPO_PERSONAJES_NAME, character.getName());
         VALORES.put(CAMPO_PERSONAJES_DESCRIPTION, character.getDescription());
@@ -121,10 +125,10 @@ public class CharacterMapper extends BaseMapper {
      * @throws RuntimeException si se produce algun error en la BD
      */
 
-    public void deleteCharacter(int id) {
+    public void deleteCharacter(long id) {
         final SQLiteDatabase DB = instance.getWritableDatabase();
 
-        String[] args = new String[]{Integer.toString(id)};
+        String[] args = new String[]{Long.toString(id)};
 
         try {
             Log.i("DB", "eliminando personaje con ID: " + id);
@@ -204,12 +208,12 @@ public class CharacterMapper extends BaseMapper {
         return cursor;
     }
 
-    public Character getCharacterById(int id) {
+    public Character getCharacterById(long id) {
         final SQLiteDatabase DB = instance.getReadableDatabase();
         Character character = null;
         Log.i("DB", "recuperando un personaje por su id: " + id);
 
-        String[] args = new String[]{Integer.toString(id)};
+        String[] args = new String[]{Long.toString(id)};
 
         try (Cursor cursor = DB.query(TABLA_PERSONAJES, null, CAMPO_PERSONAJES_ID + " = ?", args, null, null, null, null)) {
             if (cursor.moveToFirst()) {
