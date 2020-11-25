@@ -117,17 +117,17 @@ public class CharacterMapper extends BaseMapper {
     /**
      * Este método permite eliminar personajes de la BD
      *
-     * @param character El personaje
+     * @param id El id del personaje
      * @throws RuntimeException si se produce algun error en la BD
      */
 
-    public void deleteCharacter(Character character) {
+    public void deleteCharacter(int id) {
         final SQLiteDatabase DB = instance.getWritableDatabase();
 
-        String[] args = new String[]{Integer.toString(character.getId())};
+        String[] args = new String[]{Integer.toString(id)};
 
         try {
-            Log.i("DB", "eliminando personaje: " + character.getName());
+            Log.i("DB", "eliminando personaje con ID: " + id);
             DB.beginTransaction();
 
             DB.delete(TABLA_PERSONAJES, CAMPO_PERSONAJES_ID + "=?", args);

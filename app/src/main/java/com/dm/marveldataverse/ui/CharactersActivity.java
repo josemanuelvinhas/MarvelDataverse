@@ -1,8 +1,10 @@
 package com.dm.marveldataverse.ui;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -172,22 +174,45 @@ public class CharactersActivity extends AppCompatActivity {
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         super.onContextItemSelected(item);
         boolean toret = false;
+        Cursor cursor;
         AdapterView.AdapterContextMenuInfo menu = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
             case R.id.itEdit:
-                Cursor cursor = cursorAdapter.getCursor();
+                cursor = cursorAdapter.getCursor();
                 cursor.moveToFirst();
                 cursor.move(menu.position);
                 CharactersActivity.this.startEditCharacterActivity(cursor.getInt(cursor.getColumnIndex(DBManager.CAMPO_PERSONAJES_ID)));
                 toret = true;
                 break;
             case R.id.itDelete:
-                //todo: hacer delete
+                cursor = cursorAdapter.getCursor();
+                cursor.moveToFirst();
+                cursor.move(menu.position);
+                CharactersActivity.this.deleteCharacter(cursor.getInt(cursor.getColumnIndex(DBManager.CAMPO_PERSONAJES_ID)));
                 toret = true;
                 break;
         }
 
         return toret;
+    }
+
+    private void deleteCharacter(int id) {
+        AlertDialog.Builder DLG = new AlertDialog.Builder(this);
+        DLG.setTitle(R.string.delete);
+        DLG.setMessage(R.string.delete_character_msg);
+        DLG.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                characterMapper.deleteCharacter(id);
+            }
+        });
+
+        DLG.setNegativeButton("No",null);
+
+        DLG.create().show();
+        cursorAdapter.notifyDataSetChanged();
+        this.refresh();
+
     }
 
     private void startAddCharacterActivity() {

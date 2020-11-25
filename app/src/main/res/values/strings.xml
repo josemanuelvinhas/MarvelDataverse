@@ -47,4 +47,5 @@
     <string name="character_edit_successful">Character successfully edited</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="delete_character_msg">Delete</string>
 </resources>
