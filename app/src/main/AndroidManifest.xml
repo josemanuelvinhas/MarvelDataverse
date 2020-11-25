@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.AddCharacterActivity"></activity>
+        <activity android:name=".ui.EditCharacterActivity"></activity>
+        <activity android:name=".ui.DetailCharacterActivity" />
+        <activity android:name=".ui.AddCharacterActivity" />
         <activity android:name=".ui.CharactersActivity" />
         <activity android:name=".ui.CoreActivity" />
         <activity android:name=".ui.RegisterActivity" />

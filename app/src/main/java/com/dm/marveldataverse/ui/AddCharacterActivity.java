@@ -89,9 +89,11 @@ public class AddCharacterActivity extends AppCompatActivity {
             try {
                 this.character.validateForCreate();
                 try {
-                    characterMapper.addCharacter(character);
+                   long id = characterMapper.addCharacter(character);
                     Toast.makeText(AddCharacterActivity.this, R.string.character_add_successful, Toast.LENGTH_SHORT).show();
-                    AddCharacterActivity.this.finish();//TODO RAÜL Cambiar a pantalla de personaje creado
+                    AddCharacterActivity.this.finish();
+                    AddCharacterActivity.this.startDetailCharacterActivity(id);
+                    //TODO RAÜL Cambiar a pantalla de personaje creado
                     //TODO Ver si cambiamos los toast por LENGTH_SHORT
                 } catch (RuntimeException ex) {
                     Toast.makeText(AddCharacterActivity.this, R.string.bd_error, Toast.LENGTH_SHORT).show();
@@ -147,5 +149,11 @@ public class AddCharacterActivity extends AppCompatActivity {
 
     private void startAboutActivity() {
         this.startActivity(new Intent(AddCharacterActivity.this, AboutActivity.class));
+    }
+
+    private void startDetailCharacterActivity(long id) {
+        Intent intent = new Intent(AddCharacterActivity.this, DetailCharacterActivity.class);
+        intent.putExtra("id", id);
+        this.startActivity(intent);
     }
 }

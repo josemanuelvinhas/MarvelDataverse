@@ -1,16 +1,23 @@
 package com.dm.marveldataverse.ui;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 import com.dm.marveldataverse.R;
 import com.dm.marveldataverse.core.DBManager;
@@ -48,6 +55,7 @@ public class CharactersActivity extends AppCompatActivity {
         final Button BT_ADDCHAR = CharactersActivity.this.findViewById(R.id.btnAddCharacter);
         final ListView LV_CHARACTERS = CharactersActivity.this.findViewById(R.id.lvCharacters);
         final SearchView SV_CHARACTERS = CharactersActivity.this.findViewById(R.id.svSearch);
+        CharactersActivity.this.registerForContextMenu(LV_CHARACTERS);
         BT_ADDCHAR.setOnClickListener(v -> CharactersActivity.this.startAddCharacterActivity());
         LV_CHARACTERS.setAdapter(this.cursorAdapter);
         SV_CHARACTERS.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -65,6 +73,27 @@ public class CharactersActivity extends AppCompatActivity {
             }
         });
 
+        LV_CHARACTERS.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Cursor cursor = cursorAdapter.getCursor();
+                cursor.moveToFirst();
+                cursor.move(position);
+                CharactersActivity.this.startDetailCharacterActivity(cursor.getInt(cursor.getColumnIndex(DBManager.CAMPO_PERSONAJES_ID)));
+            }
+        });
+
+
+        /*LV_CHARACTERS.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Cursor cursor = cursorAdapter.getCursor();
+                cursor.moveToFirst();
+                cursor.move(position);
+                CharactersActivity.this.startEditActivity(cursor.getInt(cursor.getColumnIndex(DBManager.CAMPO_PERSONAJES_ID)));
+                return false;
+            }
+        });*/
 
         this.refresh();
 
@@ -89,6 +118,7 @@ public class CharactersActivity extends AppCompatActivity {
         super.onResume();
         this.deleteSearchContent();
         this.refresh();
+        cursorAdapter.notifyDataSetChanged();
         if (!CharactersActivity.this.session.isSessionActive()) {
             this.finish();
         }
@@ -96,7 +126,7 @@ public class CharactersActivity extends AppCompatActivity {
 
     private void deleteSearchContent() {
         final SearchView SV_CHARACTERS = CharactersActivity.this.findViewById(R.id.svSearch);
-        SV_CHARACTERS.setQuery("",false);
+        SV_CHARACTERS.setQuery("", false);
         SV_CHARACTERS.clearFocus();
         SV_CHARACTERS.onActionViewCollapsed();
     }
@@ -134,11 +164,78 @@ public class CharactersActivity extends AppCompatActivity {
         return toret;
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        if (v.getId() == R.id.lvCharacters) {
+            this.getMenuInflater().inflate(R.menu.menu_contex_character_activity, menu);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        super.onContextItemSelected(item);
+        boolean toret = false;
+        Cursor cursor;
+        AdapterView.AdapterContextMenuInfo menu = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.itEdit:
+                cursor = cursorAdapter.getCursor();
+                cursor.moveToFirst();
+                cursor.move(menu.position);
+                CharactersActivity.this.startEditCharacterActivity(cursor.getInt(cursor.getColumnIndex(DBManager.CAMPO_PERSONAJES_ID)));
+                toret = true;
+                break;
+            case R.id.itDelete:
+                cursor = cursorAdapter.getCursor();
+                cursor.moveToFirst();
+                cursor.move(menu.position);
+                CharactersActivity.this.deleteCharacter(cursor.getInt(cursor.getColumnIndex(DBManager.CAMPO_PERSONAJES_ID)));
+                toret = true;
+                break;
+        }
+
+        return toret;
+    }
+
+    private void deleteCharacter(long id) {
+        AlertDialog.Builder DLG = new AlertDialog.Builder(this);
+        DLG.setTitle(R.string.delete);
+        DLG.setMessage(R.string.delete_character_msg);
+        DLG.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                characterMapper.deleteCharacter(id);
+                Toast.makeText(CharactersActivity.this,R.string.character_remove_successful,Toast.LENGTH_SHORT).show();
+                CharactersActivity.this.refresh();
+            }
+        });
+
+        DLG.setNegativeButton(R.string.no,null);
+
+        DLG.create().show();
+
+
+    }
+
     private void startAddCharacterActivity() {
         this.startActivity(new Intent(CharactersActivity.this, AddCharacterActivity.class));
     }
 
     private void startAboutActivity() {
         this.startActivity(new Intent(CharactersActivity.this, AboutActivity.class));
+    }
+
+    private void startDetailCharacterActivity(long id) {
+        Intent intent = new Intent(CharactersActivity.this, DetailCharacterActivity.class);
+        intent.putExtra("id", id);
+        this.startActivity(intent);
+    }
+
+    private void startEditCharacterActivity(long id) {
+        Intent intent = new Intent(CharactersActivity.this, EditCharacterActivity.class);
+        intent.putExtra("id", id);
+        this.startActivity(intent);
     }
 }
