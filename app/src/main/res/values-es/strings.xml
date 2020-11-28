@@ -50,4 +50,7 @@
     <string name="no">No</string>
     <string name="character_remove_successful">Personaje eliminado con éxito</string>
     <string name="comment_invalid">Los comentarios deben tener entre 1-255 letras o números</string>
+    <string name="admin_view">Vista de Administrador</string>
+    <string name="user_view">Vista de Usuario</string>
+    <string name="isAdmin">¿Es Administrador?</string>
 </resources>

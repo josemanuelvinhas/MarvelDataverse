@@ -1,6 +1,5 @@
 package com.dm.marveldataverse.core;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -9,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
 
 import com.dm.marveldataverse.R;
 
@@ -21,7 +18,6 @@ public class CharacterUserArrayAdapter extends ArrayAdapter {
     public CharacterUserArrayAdapter(Context context, ArrayList<Pair<String, Boolean>> items) {
         super(context, 0, items);
     }
-
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
