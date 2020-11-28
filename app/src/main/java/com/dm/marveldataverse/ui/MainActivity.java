@@ -12,8 +12,7 @@ import android.widget.Button;
 import com.dm.marveldataverse.R;
 import com.dm.marveldataverse.core.Session;
 import com.dm.marveldataverse.ui.admin.AdminActivity;
-import com.dm.marveldataverse.ui.admin.CoreAdminActivity;
-import com.dm.marveldataverse.ui.user.UserActivity;
+import com.dm.marveldataverse.ui.user.CoreUserActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -89,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startUserActivity() {
-        MainActivity.this.startActivity(new Intent(MainActivity.this, UserActivity.class));
+        MainActivity.this.startActivity(new Intent(MainActivity.this, CoreUserActivity.class));
         MainActivity.this.finish();
     }
 

@@ -1,9 +1,11 @@
 package com.dm.marveldataverse.ui.admin;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -35,6 +37,9 @@ public class CharactersAdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_characters_admin);
+
+        final ActionBar ACTION_BAR = this.getSupportActionBar();
+        ACTION_BAR.setTitle(R.string.characters);
 
         //Inicialización las variables
         CharactersAdminActivity.this.session = Session.getSession(CharactersAdminActivity.this);
@@ -74,7 +79,8 @@ public class CharactersAdminActivity extends AppCompatActivity {
             Cursor cursor = cursorAdapter.getCursor();
             cursor.moveToFirst();
             cursor.move(position);
-            CharactersAdminActivity.this.startDetailCharacterActivity(cursor.getInt(cursor.getColumnIndex(DBManager.CAMPO_PERSONAJES_ID)));
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, view , "characterName");
+            CharactersAdminActivity.this.startDetailCharacterActivity(cursor.getInt(cursor.getColumnIndex(DBManager.CAMPO_PERSONAJES_ID)),options);
         });
 
         this.refresh();
@@ -205,10 +211,10 @@ public class CharactersAdminActivity extends AppCompatActivity {
         CharactersAdminActivity.this.startActivity(new Intent(CharactersAdminActivity.this, AboutActivity.class));
     }
 
-    private void startDetailCharacterActivity(long id) {
+    private void startDetailCharacterActivity(long id, ActivityOptions options) {
         Intent intent = new Intent(CharactersAdminActivity.this, DetailCharacterAdminActivity.class);
         intent.putExtra("id", id);
-        CharactersAdminActivity.this.startActivity(intent);
+        CharactersAdminActivity.this.startActivity(intent, options.toBundle());
     }
 
     private void startEditCharacterActivity(long id) {

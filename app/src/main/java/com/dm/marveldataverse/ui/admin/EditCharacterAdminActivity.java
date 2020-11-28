@@ -1,5 +1,6 @@
 package com.dm.marveldataverse.ui.admin;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -30,6 +31,9 @@ public class EditCharacterAdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_character_admin);
+
+        final ActionBar ACTION_BAR = this.getSupportActionBar();
+        ACTION_BAR.setTitle(R.string.edit_character);
 
         //Inicialización de variables
         EditCharacterAdminActivity.this.character = new Character();

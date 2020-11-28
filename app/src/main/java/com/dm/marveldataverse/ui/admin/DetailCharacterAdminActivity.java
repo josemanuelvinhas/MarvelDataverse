@@ -1,5 +1,6 @@
 package com.dm.marveldataverse.ui.admin;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,8 +8,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.transition.Transition;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +34,10 @@ public class DetailCharacterAdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_character_admin);
+
+        final ActionBar ACTION_BAR = this.getSupportActionBar();
+        ACTION_BAR.setTitle(R.string.character_details);
+
         DetailCharacterAdminActivity.this.session = Session.getSession(DetailCharacterAdminActivity.this);
 
         //inicializar las variables

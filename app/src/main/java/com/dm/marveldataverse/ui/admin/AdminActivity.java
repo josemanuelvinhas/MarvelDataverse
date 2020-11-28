@@ -12,7 +12,7 @@ import com.dm.marveldataverse.R;
 import com.dm.marveldataverse.core.Session;
 import com.dm.marveldataverse.ui.AboutActivity;
 import com.dm.marveldataverse.ui.MainActivity;
-import com.dm.marveldataverse.ui.user.UserActivity;
+import com.dm.marveldataverse.ui.user.CoreUserActivity;
 
 public class AdminActivity extends AppCompatActivity {
 
@@ -90,6 +90,6 @@ public class AdminActivity extends AppCompatActivity {
     }
 
     private void startUserActivity() {
-        AdminActivity.this.startActivity(new Intent(AdminActivity.this, UserActivity.class));
+        AdminActivity.this.startActivity(new Intent(AdminActivity.this, CoreUserActivity.class));
     }
 }

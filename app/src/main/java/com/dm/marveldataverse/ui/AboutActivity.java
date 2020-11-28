@@ -1,6 +1,7 @@
 package com.dm.marveldataverse.ui;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -15,6 +16,9 @@ public class AboutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+
+        final ActionBar ACTION_BAR = this.getSupportActionBar();
+        ACTION_BAR.setTitle(R.string.about);
     }
 
     @Override

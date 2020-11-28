@@ -21,8 +21,7 @@ public class CharacterUserArrayAdapter extends ArrayAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        final Context CONTEXT = this.getContext();
-        final LayoutInflater INFLATER = LayoutInflater.from(CONTEXT);
+        final LayoutInflater INFLATER = LayoutInflater.from(this.getContext());
         final Pair<String, Boolean> par = (Pair<String, Boolean>) this.getItem(position);
 
         if (view == null) {

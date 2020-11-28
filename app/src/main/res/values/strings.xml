@@ -43,7 +43,7 @@
     <string name="character_exists">This character already exists</string>
     <string name="character_add_successful">Character successfully created</string>
     <string name="character_details">Character Details</string>
-    <string name="edit_charecter">Edit a Charecter</string>
+    <string name="edit_character">Edit  Character</string>
     <string name="character_edit_successful">Character successfully edited</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
@@ -55,4 +55,10 @@
     <string name="admin_view">Admin View</string>
     <string name="user_view">User View</string>
     <string name="isAdmin">Is Admin?</string>
+    <string name="characters">Characters</string>
+    <string name="comics">Comics</string>
+    <string name="series">Series</string>
+    <string name="edit_this_character">Edit this character</string>
+    <string name="welcome_to">Welcome to</string>
+    <string name="marvel_dataverse">Marvel Dataverse</string>
 </resources>

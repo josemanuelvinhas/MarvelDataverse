@@ -21,7 +21,7 @@
             android:background="@drawable/custom_button"
             android:padding="10dp"
             android:textColor="@android:color/white"
-            android:text="Characters"/>
+            android:text="@string/characters"/>
 
     </LinearLayout>
 
@@ -39,7 +39,7 @@
             android:background="@drawable/custom_button_disabled"
             android:padding="10dp"
             android:textColor="@android:color/white"
-            android:text="Comics"/>
+            android:text="@string/comics"/>
 
     </LinearLayout>
 
@@ -57,7 +57,7 @@
             android:background="@drawable/custom_button_disabled"
             android:padding="10dp"
             android:textColor="@android:color/white"
-            android:text="Series"/>
+            android:text="@string/series"/>
 
     </LinearLayout>
 
