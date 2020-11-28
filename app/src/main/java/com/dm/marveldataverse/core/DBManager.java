@@ -37,8 +37,8 @@ public class DBManager extends SQLiteOpenHelper {
 
     public static final String TABLA_FAVS = "favs";
     public static final String CAMPO_FAV_ID = "_id";
-    public static final String CAMPO_PERSONAJE_FAV = "character";
-    public static final String CAMPO_USUARIO_FAV = "user";
+    public static final String CAMPO_FAV_PERSONAJE = "character";
+    public static final String CAMPO_FAV_USUARIO = "user";
 
     /**
      * Este método devuelve la instancia de conexión con la base de datos. Si no existe, la crea.
@@ -99,7 +99,7 @@ public class DBManager extends SQLiteOpenHelper {
                     + "("
                     + CAMPO_COMENTARIO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + CAMPO_COMENTARIO + " TEXT NOT NULL,"
-                    + CAMPO_COMENTARIO_PERSONAJE + " TEXT NOT NULL,"
+                    + CAMPO_COMENTARIO_PERSONAJE + " INTEGER NOT NULL,"
                     + CAMPO_COMENTARIO_USUARIO + " TEXT NOT NULL,"
                     + "FOREIGN KEY(" + CAMPO_COMENTARIO_PERSONAJE + ") REFERENCES " + TABLA_PERSONAJES + "(" + CAMPO_PERSONAJES_ID + "),"
                     + "FOREIGN KEY(" + CAMPO_COMENTARIO_USUARIO + ") REFERENCES " + TABLA_USUARIOS + "(" + CAMPO_USUARIOS_USERNAME + ")"
@@ -109,10 +109,10 @@ public class DBManager extends SQLiteOpenHelper {
             db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLA_FAVS
                     + "("
                     + CAMPO_FAV_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + CAMPO_PERSONAJE_FAV + " TEXT NOT NULL ,"
-                    + CAMPO_USUARIO_FAV + " TEXT NOT NULL,"
-                    + "FOREIGN KEY(" + CAMPO_PERSONAJE_FAV + ") REFERENCES " + TABLA_PERSONAJES + "(" + CAMPO_PERSONAJES_ID + "),"
-                    + "FOREIGN KEY(" + CAMPO_USUARIO_FAV + ") REFERENCES " + TABLA_USUARIOS + "(" + CAMPO_USUARIOS_USERNAME + ")"
+                    + CAMPO_FAV_PERSONAJE + " INTEGER NOT NULL ,"
+                    + CAMPO_FAV_USUARIO + " TEXT NOT NULL,"
+                    + "FOREIGN KEY(" + CAMPO_FAV_PERSONAJE + ") REFERENCES " + TABLA_PERSONAJES + "(" + CAMPO_PERSONAJES_ID + "),"
+                    + "FOREIGN KEY(" + CAMPO_FAV_USUARIO + ") REFERENCES " + TABLA_USUARIOS + "(" + CAMPO_USUARIOS_USERNAME + ")"
                     + ")"
             );
 

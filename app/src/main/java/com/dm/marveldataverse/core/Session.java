@@ -23,6 +23,7 @@ public class Session {
 
     /**
      * Este método permite acceder a la sesión. Si no existe, la crea.
+     *
      * @param context El contexto de la applicación
      * @return La instancia de la sesión.
      */
@@ -47,6 +48,7 @@ public class Session {
 
     /**
      * Este método inicia la sesión con los datos almacenados en las preferencias.
+     *
      * @return true si los datos son correctos y false en otro cualquier caso
      */
     private boolean getSession() {
@@ -72,6 +74,7 @@ public class Session {
 
     /**
      * Este método inicia la sesión con un User.
+     *
      * @param user Almacena los datos del usuario
      * @return true si los datos son correctos y false en cualquier otro caso
      */
@@ -113,13 +116,20 @@ public class Session {
 
     /**
      * Este método permite saber si la sesión está o no activa
+     *
      * @return true si está activa y false si no lo está
      */
     public boolean isSessionActive() {
         return sessionActive;
     }
 
-    public boolean isAdmin(){
+    public boolean isAdmin() {
         return user.isAdmin();
     }
+
+    public String getUsername() {
+        return user.getUsername();
+    }
+
+    ;
 }

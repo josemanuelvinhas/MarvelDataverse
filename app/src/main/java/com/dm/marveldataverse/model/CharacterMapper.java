@@ -6,10 +6,16 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.util.Pair;
 
+import java.util.ArrayList;
+
+import static com.dm.marveldataverse.core.DBManager.CAMPO_FAV_PERSONAJE;
+import static com.dm.marveldataverse.core.DBManager.CAMPO_FAV_USUARIO;
 import static com.dm.marveldataverse.core.DBManager.CAMPO_PERSONAJES_ID;
 import static com.dm.marveldataverse.core.DBManager.CAMPO_PERSONAJES_NAME;
 import static com.dm.marveldataverse.core.DBManager.CAMPO_PERSONAJES_DESCRIPTION;
+import static com.dm.marveldataverse.core.DBManager.TABLA_FAVS;
 import static com.dm.marveldataverse.core.DBManager.TABLA_PERSONAJES;
 
 public class CharacterMapper extends BaseMapper {
@@ -86,35 +92,6 @@ public class CharacterMapper extends BaseMapper {
         } finally {
             DB.endTransaction();
         }
-
-        /** TODO Esto pone en los apuntes que es realizar una inserción o actualización en
-         función de que el registro se encuentre o no.
-         Cursor cursor = null;
-         SQLiteDatabase db = this.getWritableDatabase();
-         ContentValues values = new ContentValues();
-         values.put( ESTUDIANTES_NOMBRE, nombre );
-         values.put( ESTUDIANTES_DNI, dni );
-         try {
-         db.beginTransaction();
-         cursor = db.query( TABLA_ESTUDIANTES, null, ESTUDIANTES_DNI + "=?",
-         new String[]{ Integer.toString( dni ) },
-         null, null, null, null );
-         if ( cursor.getCount() > 0 ) {
-         db.update( TABLA_ESTUDIANTES,
-         values, ESTUDIANTES_NOMBRE + "= ?", new String[]{ nombre } );
-         } else {
-         db.insert( TABLA_ESTUDIANTES, null, values );
-         }
-         db.setTransactionSuccessful();
-         } catch(SQLException exc) {
-         Log.e( "DBManager.guarda", exc.getMessage() );
-         } finally {
-         if ( cursor != null ) {
-         cursor.close();
-         }
-         db.endTransaction();
-         }
-         **/
 
     }
 
@@ -206,6 +183,43 @@ public class CharacterMapper extends BaseMapper {
         Cursor cursor = DB.query(TABLA_PERSONAJES, null, CAMPO_PERSONAJES_NAME + " LIKE ?", args, null, null, CAMPO_PERSONAJES_NAME + " ASC", null);
 
         return cursor;
+    }
+
+    /**
+     * Este método busca a uno o varios personaje.
+     *
+     * @return una lista de personajes que coincidan con el criterio de busqueda
+     * @throws RuntimeException si se produce algun error en la BD
+     */
+    public ArrayList<Pair<String, Boolean>> searchCharacterWithFav(String character, String username) {
+        final SQLiteDatabase DB = instance.getReadableDatabase();
+
+        String[] argsFav = new String[]{username};
+        ArrayList<Long> favs = new ArrayList<>();
+        try (Cursor cursor = DB.query(TABLA_FAVS, null, CAMPO_FAV_USUARIO + " = ?", argsFav, null, null, null, null)) {
+            if (cursor.moveToFirst()) {
+                do {
+                    favs.add((cursor.getLong(cursor.getColumnIndex(CAMPO_FAV_PERSONAJE))));
+                } while (cursor.moveToNext());
+            }
+        }
+
+        String[] argsCharacter = new String[]{"%" + character + "%"};
+        ArrayList<Pair<String, Boolean>> toret = new ArrayList<>();
+        try (Cursor cursor = DB.query(TABLA_PERSONAJES, null, CAMPO_PERSONAJES_NAME + " LIKE ?", argsCharacter, null, null, CAMPO_PERSONAJES_NAME + " ASC", null)) {
+            if (cursor.moveToFirst()) {
+                do {
+                    String tempCharacter = cursor.getString(cursor.getColumnIndex(CAMPO_PERSONAJES_NAME));
+                    long tempId = cursor.getLong(cursor.getColumnIndex(CAMPO_PERSONAJES_ID));
+                    if (favs.contains(tempId)){
+                        toret.add(new Pair<>(tempCharacter,true));
+                    }else{
+                        toret.add(new Pair<>(tempCharacter,false));
+                    }
+                } while (cursor.moveToNext());
+            }
+        }
+        return toret;
     }
 
     public Character getCharacterById(long id) {

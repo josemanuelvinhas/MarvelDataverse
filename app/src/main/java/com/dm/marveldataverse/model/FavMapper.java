@@ -7,19 +7,10 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import static com.dm.marveldataverse.core.DBManager.CAMPO_COMENTARIO;
-import static com.dm.marveldataverse.core.DBManager.CAMPO_COMENTARIO_ID;
-import static com.dm.marveldataverse.core.DBManager.CAMPO_COMENTARIO_PERSONAJE;
-import static com.dm.marveldataverse.core.DBManager.CAMPO_COMENTARIO_USUARIO;
 import static com.dm.marveldataverse.core.DBManager.CAMPO_FAV_ID;
-import static com.dm.marveldataverse.core.DBManager.CAMPO_PERSONAJES_ID;
-import static com.dm.marveldataverse.core.DBManager.CAMPO_PERSONAJES_NAME;
-import static com.dm.marveldataverse.core.DBManager.CAMPO_PERSONAJES_DESCRIPTION;
-import static com.dm.marveldataverse.core.DBManager.CAMPO_PERSONAJE_FAV;
-import static com.dm.marveldataverse.core.DBManager.CAMPO_USUARIO_FAV;
-import static com.dm.marveldataverse.core.DBManager.TABLA_COMENTARIOS;
+import static com.dm.marveldataverse.core.DBManager.CAMPO_FAV_PERSONAJE;
+import static com.dm.marveldataverse.core.DBManager.CAMPO_FAV_USUARIO;
 import static com.dm.marveldataverse.core.DBManager.TABLA_FAVS;
-import static com.dm.marveldataverse.core.DBManager.TABLA_PERSONAJES;
 
 public class FavMapper extends BaseMapper {
     /**
@@ -43,8 +34,8 @@ public class FavMapper extends BaseMapper {
         final ContentValues VALORES = new ContentValues();
         long id = -1;
 
-        VALORES.put(CAMPO_PERSONAJE_FAV, fav.getCharacter());
-        VALORES.put(CAMPO_USUARIO_FAV, fav.getUser());
+        VALORES.put(CAMPO_FAV_PERSONAJE, fav.getCharacter());
+        VALORES.put(CAMPO_FAV_PERSONAJE, fav.getUser());
 
 
         try {
@@ -108,7 +99,7 @@ public class FavMapper extends BaseMapper {
         String[] args = new String[]{Long.toString(user_id)};
         Log.i("DB", "recuperando lista de todos los favs de un usuario: ");
 
-        Cursor cursor = DB.query(TABLA_FAVS, new String[]{CAMPO_PERSONAJE_FAV}, CAMPO_USUARIO_FAV + "=?", args, null, null, null, null);
+        Cursor cursor = DB.query(TABLA_FAVS, new String[]{CAMPO_FAV_PERSONAJE}, CAMPO_FAV_USUARIO + "=?", args, null, null, null, null);
 
         return cursor;
     }

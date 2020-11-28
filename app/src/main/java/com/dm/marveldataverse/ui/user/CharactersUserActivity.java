@@ -4,22 +4,27 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 import com.dm.marveldataverse.R;
+import com.dm.marveldataverse.core.CharacterUserArrayAdapter;
 import com.dm.marveldataverse.core.DBManager;
 import com.dm.marveldataverse.core.Session;
 import com.dm.marveldataverse.model.CharacterMapper;
 import com.dm.marveldataverse.ui.AboutActivity;
 
+import java.util.ArrayList;
+
 public class CharactersUserActivity extends AppCompatActivity {
 
     private Session session;
-    private SimpleCursorAdapter cursorAdapter;
+    private CharacterUserArrayAdapter characterUserArrayAdapter;
     private CharacterMapper characterMapper;
+    private ArrayList<Pair<String, Boolean>> lista;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,18 +35,13 @@ public class CharactersUserActivity extends AppCompatActivity {
 
         CharactersUserActivity.this.characterMapper = new CharacterMapper(this);
 
-        CharactersUserActivity.this.cursorAdapter = new SimpleCursorAdapter(this,
-                R.layout.entry_character_user,
-                null,
-                new String[]{DBManager.CAMPO_PERSONAJES_NAME},
-                new int[]{R.id.lblName},
-                0
-        );
+        CharactersUserActivity.this.lista = CharactersUserActivity.this.characterMapper.searchCharacterWithFav("",session.getUsername());
+
+        CharactersUserActivity.this.characterUserArrayAdapter = new CharacterUserArrayAdapter(this,CharactersUserActivity.this.lista);
 
         final ListView LV_CHARACTERS = CharactersUserActivity.this.findViewById(R.id.lvCharacters);
-        LV_CHARACTERS.setAdapter(this.cursorAdapter);
+        LV_CHARACTERS.setAdapter(CharactersUserActivity.this.characterUserArrayAdapter);
 
-        CharactersUserActivity.this.refresh();
 
         if (!CharactersUserActivity.this.session.isSessionActive()) {
             this.finish();
@@ -54,15 +54,6 @@ public class CharactersUserActivity extends AppCompatActivity {
         if (!CharactersUserActivity.this.session.isSessionActive()) {
             this.finish();
         }
-    }
-
-    private void search(String query) {
-        this.cursorAdapter.swapCursor(this.characterMapper.searchCharacter(query));
-    }
-
-
-    private void refresh() {
-        this.search("");
     }
 
     @Override
