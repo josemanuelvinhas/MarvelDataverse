@@ -51,4 +51,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="character_remove_successful">Character successfully remove</string>
+    <string name="admin_view">Admin View</string>
+    <string name="user_view">User View</string>
+    <string name="isAdmin">Is Admin?</string>
 </resources>

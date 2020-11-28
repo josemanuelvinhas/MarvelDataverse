@@ -42,14 +42,14 @@ public class Session {
     private Session(Context context) {
         this.userMapper = new UserMapper(context);
         this.prefs = context.getSharedPreferences("session", Context.MODE_PRIVATE);
-        this.sessionActive = getSesion();
+        this.sessionActive = getSession();
     }
 
     /**
      * Este método inicia la sesión con los datos almacenados en las preferencias.
      * @return true si los datos son correctos y false en otro cualquier caso
      */
-    private boolean getSesion() {
+    private boolean getSession() {
         String username = prefs.getString("username", null);
         String passwd = prefs.getString("passwd", null);
         if (username != null && passwd != null) {
@@ -57,6 +57,7 @@ public class Session {
             try {
                 user.validateForLogin();
                 if (userMapper.isValidUser(user)) {
+                    user.setAdmin(userMapper.isAdminUser(username));
                     return true;
                 } else {
                     return false;
@@ -83,6 +84,7 @@ public class Session {
         }
 
         if (userMapper.isValidUser(user)) {
+            user.setAdmin(userMapper.isAdminUser(user.getUsername()));
             SharedPreferences.Editor editor = this.prefs.edit();
             editor.putString("username", user.getUsername());
             editor.putString("passwd", user.getPasswd());
@@ -115,5 +117,9 @@ public class Session {
      */
     public boolean isSessionActive() {
         return sessionActive;
+    }
+
+    public boolean isAdmin(){
+        return user.isAdmin();
     }
 }

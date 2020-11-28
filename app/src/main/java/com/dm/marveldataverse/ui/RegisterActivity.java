@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -123,10 +125,12 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText ED_USERNAME = RegisterActivity.this.findViewById(R.id.edUsername);
         final EditText ED_EMAIL = RegisterActivity.this.findViewById(R.id.edEmail);
         final EditText ED_PASSWD = RegisterActivity.this.findViewById(R.id.edPasswd);
+        final CheckBox CB_IS_ADMIN = findViewById(R.id.cbIsAdmin);
 
         RegisterActivity.this.user.setUsername(ED_USERNAME.getText().toString());
         RegisterActivity.this.user.setEmail(ED_EMAIL.getText().toString());
         RegisterActivity.this.user.setPasswd(ED_PASSWD.getText().toString());
+        RegisterActivity.this.user.setAdmin(CB_IS_ADMIN.isChecked());
 
         try {
             RegisterActivity.this.user.validateForRegister();
