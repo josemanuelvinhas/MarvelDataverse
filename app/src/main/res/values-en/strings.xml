@@ -49,4 +49,5 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="character_remove_successful">Character successfully remove</string>
+    <string name="comment_invalid">Comments must have 1-255 letters (a-zA-Z) or numbers</string>
 </resources>
