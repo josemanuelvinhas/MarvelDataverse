@@ -35,26 +35,15 @@ public class DetailCharacterActivity extends AppCompatActivity {
         DetailCharacterActivity.this.session = Session.getSession(DetailCharacterActivity.this);
 
         //inicializar las variables
-        id = this.getIntent().getLongExtra("id", -1);
-        characterMapper = new CharacterMapper(this);
-        character = characterMapper.getCharacterById(id);
+        DetailCharacterActivity.this.id = this.getIntent().getLongExtra("id", -1);
+        DetailCharacterActivity.this.characterMapper = new CharacterMapper(this);
+        DetailCharacterActivity.this.character = characterMapper.getCharacterById(id);
         final Button BT_EDITAR = DetailCharacterActivity.this.findViewById(R.id.btnEditCharacter);
         final Button BT_ELIMINAR = DetailCharacterActivity.this.findViewById(R.id.btnDelete);
 
-        BT_EDITAR.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startEditCharacterActivity(id);
-            }
-        });
+        BT_EDITAR.setOnClickListener(v -> startEditCharacterActivity(id));
 
-        BT_ELIMINAR.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DetailCharacterActivity.this.deleteCharacter();
-            }
-
-        });
+        BT_ELIMINAR.setOnClickListener(v -> DetailCharacterActivity.this.deleteCharacter());
 
 
         DetailCharacterActivity.this.show();
@@ -66,23 +55,18 @@ public class DetailCharacterActivity extends AppCompatActivity {
 
     }
 
-    private Cursor getCharactersList() {
-        return characterMapper.getCharactersList();
-    }
-
-
     private void show() {
-        final TextView TW_NAME = this.findViewById(R.id.edName);
-        final TextView TW_DESCRIPTION = this.findViewById(R.id.edDescription);
-        TW_NAME.setText(character.getName());
-        TW_DESCRIPTION.setText(character.getDescription());
+        final TextView TW_NAME = DetailCharacterActivity.this.findViewById(R.id.edName);
+        final TextView TW_DESCRIPTION = DetailCharacterActivity.this.findViewById(R.id.edDescription);
 
+        TW_NAME.setText(DetailCharacterActivity.this.character.getName());
+        TW_DESCRIPTION.setText(DetailCharacterActivity.this.character.getDescription());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        character = characterMapper.getCharacterById(id);
+        DetailCharacterActivity.this.character = DetailCharacterActivity.this.characterMapper.getCharacterById(id);
         this.show();
         //Salir si existe una sesión
         if (!DetailCharacterActivity.this.session.isSessionActive()) {
@@ -124,13 +108,13 @@ public class DetailCharacterActivity extends AppCompatActivity {
     }
 
     private void startAboutActivity() {
-        this.startActivity(new Intent(DetailCharacterActivity.this, AboutActivity.class));
+        DetailCharacterActivity.this.startActivity(new Intent(DetailCharacterActivity.this, AboutActivity.class));
     }
 
     private void startEditCharacterActivity(long id) {
         Intent intent = new Intent(DetailCharacterActivity.this, EditCharacterActivity.class);
         intent.putExtra("id", id);
-        this.startActivity(intent);
+        DetailCharacterActivity.this.startActivity(intent);
     }
 
     private void deleteCharacter() {
@@ -140,7 +124,7 @@ public class DetailCharacterActivity extends AppCompatActivity {
         DLG.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                characterMapper.deleteCharacter(id);
+                DetailCharacterActivity.this.characterMapper.deleteCharacter(id);
                 Toast.makeText(DetailCharacterActivity.this,R.string.character_remove_successful,Toast.LENGTH_SHORT).show();
                 DetailCharacterActivity.this.finish();
             }

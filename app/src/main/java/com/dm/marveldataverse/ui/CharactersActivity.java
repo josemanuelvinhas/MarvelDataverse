@@ -39,8 +39,8 @@ public class CharactersActivity extends AppCompatActivity {
 
         //Inicialización las variables
         CharactersActivity.this.session = Session.getSession(CharactersActivity.this);
-        this.characterMapper = new CharacterMapper(this);
-        this.cursorAdapter = new SimpleCursorAdapter(this,
+        CharactersActivity.this.characterMapper = new CharacterMapper(this);
+        CharactersActivity.this.cursorAdapter = new SimpleCursorAdapter(this,
                 R.layout.entry_character,
                 null,
                 new String[]{DBManager.CAMPO_PERSONAJES_NAME},
@@ -48,16 +48,14 @@ public class CharactersActivity extends AppCompatActivity {
                 0
         );
 
-        //Inicialización de eventos
-        //TODO eventos de actividad de personajes
-        //el boton de añadir click listener llamar metodo abajo
-
         final Button BT_ADDCHAR = CharactersActivity.this.findViewById(R.id.btnAddCharacter);
         final ListView LV_CHARACTERS = CharactersActivity.this.findViewById(R.id.lvCharacters);
         final SearchView SV_CHARACTERS = CharactersActivity.this.findViewById(R.id.svSearch);
+
         CharactersActivity.this.registerForContextMenu(LV_CHARACTERS);
         BT_ADDCHAR.setOnClickListener(v -> CharactersActivity.this.startAddCharacterActivity());
         LV_CHARACTERS.setAdapter(this.cursorAdapter);
+
         SV_CHARACTERS.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -73,27 +71,12 @@ public class CharactersActivity extends AppCompatActivity {
             }
         });
 
-        LV_CHARACTERS.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Cursor cursor = cursorAdapter.getCursor();
-                cursor.moveToFirst();
-                cursor.move(position);
-                CharactersActivity.this.startDetailCharacterActivity(cursor.getInt(cursor.getColumnIndex(DBManager.CAMPO_PERSONAJES_ID)));
-            }
+        LV_CHARACTERS.setOnItemClickListener((parent, view, position, id) -> {
+            Cursor cursor = cursorAdapter.getCursor();
+            cursor.moveToFirst();
+            cursor.move(position);
+            CharactersActivity.this.startDetailCharacterActivity(cursor.getInt(cursor.getColumnIndex(DBManager.CAMPO_PERSONAJES_ID)));
         });
-
-
-        /*LV_CHARACTERS.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Cursor cursor = cursorAdapter.getCursor();
-                cursor.moveToFirst();
-                cursor.move(position);
-                CharactersActivity.this.startEditActivity(cursor.getInt(cursor.getColumnIndex(DBManager.CAMPO_PERSONAJES_ID)));
-                return false;
-            }
-        });*/
 
         this.refresh();
 
@@ -116,9 +99,9 @@ public class CharactersActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        this.deleteSearchContent();
-        this.refresh();
-        cursorAdapter.notifyDataSetChanged();
+        CharactersActivity.this.deleteSearchContent();
+        CharactersActivity.this.refresh();
+        CharactersActivity.this.cursorAdapter.notifyDataSetChanged();
         if (!CharactersActivity.this.session.isSessionActive()) {
             this.finish();
         }
@@ -133,7 +116,6 @@ public class CharactersActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         super.onCreateOptionsMenu(menu);
         CharactersActivity.this.getMenuInflater().inflate(R.menu.menu_characters, menu);
         return true;
@@ -203,13 +185,10 @@ public class CharactersActivity extends AppCompatActivity {
         AlertDialog.Builder DLG = new AlertDialog.Builder(this);
         DLG.setTitle(R.string.delete);
         DLG.setMessage(R.string.delete_character_msg);
-        DLG.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                characterMapper.deleteCharacter(id);
-                Toast.makeText(CharactersActivity.this,R.string.character_remove_successful,Toast.LENGTH_SHORT).show();
-                CharactersActivity.this.refresh();
-            }
+        DLG.setPositiveButton(R.string.yes, (dialog, which) -> {
+            CharactersActivity.this.characterMapper.deleteCharacter(id);
+            Toast.makeText(CharactersActivity.this,R.string.character_remove_successful,Toast.LENGTH_SHORT).show();
+            CharactersActivity.this.refresh();
         });
 
         DLG.setNegativeButton(R.string.no,null);
@@ -220,22 +199,22 @@ public class CharactersActivity extends AppCompatActivity {
     }
 
     private void startAddCharacterActivity() {
-        this.startActivity(new Intent(CharactersActivity.this, AddCharacterActivity.class));
+        CharactersActivity.this.startActivity(new Intent(CharactersActivity.this, AddCharacterActivity.class));
     }
 
     private void startAboutActivity() {
-        this.startActivity(new Intent(CharactersActivity.this, AboutActivity.class));
+        CharactersActivity.this.startActivity(new Intent(CharactersActivity.this, AboutActivity.class));
     }
 
     private void startDetailCharacterActivity(long id) {
         Intent intent = new Intent(CharactersActivity.this, DetailCharacterActivity.class);
         intent.putExtra("id", id);
-        this.startActivity(intent);
+        CharactersActivity.this.startActivity(intent);
     }
 
     private void startEditCharacterActivity(long id) {
         Intent intent = new Intent(CharactersActivity.this, EditCharacterActivity.class);
         intent.putExtra("id", id);
-        this.startActivity(intent);
+        CharactersActivity.this.startActivity(intent);
     }
 }

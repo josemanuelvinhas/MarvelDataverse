@@ -32,31 +32,34 @@ public class EditCharacterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_character);
 
         //Inicialización de variables
-        this.character = new Character();
-        this.characterMapper = new CharacterMapper(this);
+        EditCharacterActivity.this.character = new Character();
+        EditCharacterActivity.this.characterMapper = new CharacterMapper(this);
         EditCharacterActivity.this.session = Session.getSession(EditCharacterActivity.this);
+
         final Button BT_RESET = EditCharacterActivity.this.findViewById(R.id.btnReset);
         final Button BT_EDIT = EditCharacterActivity.this.findViewById(R.id.btEditCharacter);
+
         final EditText ED_NAME = EditCharacterActivity.this.findViewById(R.id.edName);
         final EditText ED_DESC = EditCharacterActivity.this.findViewById(R.id.edDescription);
-        id = this.getIntent().getLongExtra("id", -1);
-        characterMapper = new CharacterMapper(this);
-        character = characterMapper.getCharacterById(id);
-        characterOld = new Character(character.getName(), character.getDescription());
 
-        ED_NAME.setText(character.getName());
-        ED_DESC.setText(character.getDescription());
+        EditCharacterActivity.this.id = this.getIntent().getLongExtra("id", -1);
+        EditCharacterActivity.this.characterMapper = new CharacterMapper(this);
+        EditCharacterActivity.this.character = characterMapper.getCharacterById(id);
+        EditCharacterActivity.this.characterOld = new Character(EditCharacterActivity.this.character.getName(), EditCharacterActivity.this.character.getDescription());
+
+        ED_NAME.setText(EditCharacterActivity.this.character.getName());
+        ED_DESC.setText(EditCharacterActivity.this.character.getDescription());
 
         BT_RESET.setOnClickListener(v -> EditCharacterActivity.this.reset());
         BT_EDIT.setOnClickListener(v -> EditCharacterActivity.this.editCharacter());
         ED_NAME.setOnFocusChangeListener((v, hasFocus) -> {
             try {
                 Character.validateName(ED_NAME.getText().toString());
-                if (!characterOld.getName().equals(character.getName()) && this.characterMapper.thisCharacterExist(this.character.getName())){
+                if (!EditCharacterActivity.this.characterOld.getName().equals(character.getName()) && EditCharacterActivity.this.characterMapper.thisCharacterExist(EditCharacterActivity.this.character.getName())) {
                     ED_NAME.setError(getResources().getString(R.string.character_exists));
                 }
             } catch (ValidationException e) {
-                ED_NAME.setError(getResources().getString(e.getError()));
+                ED_NAME.setError(EditCharacterActivity.this.getResources().getString(e.getError()));
             }
         });
 
@@ -64,7 +67,7 @@ public class EditCharacterActivity extends AppCompatActivity {
             try {
                 Character.validateDescription(ED_DESC.getText().toString());
             } catch (ValidationException e) {
-                ED_DESC.setError(getResources().getString(e.getError()));
+                ED_DESC.setError(EditCharacterActivity.this.getResources().getString(e.getError()));
             }
         });
 
@@ -78,6 +81,7 @@ public class EditCharacterActivity extends AppCompatActivity {
     private void reset() {
         final EditText ED_NAME = EditCharacterActivity.this.findViewById(R.id.edName);
         final EditText ED_DESCRIPTION = EditCharacterActivity.this.findViewById(R.id.edDescription);
+
         ED_NAME.setText(characterOld.getName());
         ED_DESCRIPTION.setText(characterOld.getDescription());
 
@@ -87,15 +91,15 @@ public class EditCharacterActivity extends AppCompatActivity {
         final EditText ED_NAME = EditCharacterActivity.this.findViewById(R.id.edName);
         final EditText ED_DESCRIPTION = EditCharacterActivity.this.findViewById(R.id.edDescription);
         Toast.makeText(this, ED_NAME.getText().toString(), Toast.LENGTH_SHORT);
-        this.character.setName(ED_NAME.getText().toString());
-        this.character.setDescription(ED_DESCRIPTION.getText().toString());
-        if (!characterOld.getName().equals(character.getName()) && this.characterMapper.thisCharacterExist(this.character.getName())) {
+        EditCharacterActivity.this.character.setName(ED_NAME.getText().toString());
+        EditCharacterActivity.this.character.setDescription(ED_DESCRIPTION.getText().toString());
+        if (!EditCharacterActivity.this.characterOld.getName().equals(EditCharacterActivity.this.character.getName()) && EditCharacterActivity.this.characterMapper.thisCharacterExist(EditCharacterActivity.this.character.getName())) {
             Toast.makeText(EditCharacterActivity.this, R.string.character_exists, Toast.LENGTH_SHORT).show();
         } else {
             try {
-                this.character.validateForCreate();
+                EditCharacterActivity.this.character.validateForCreate();
                 try {
-                    characterMapper.updateCharacter(character);
+                    EditCharacterActivity.this.characterMapper.updateCharacter(character);
                     Toast.makeText(EditCharacterActivity.this, R.string.character_edit_successful, Toast.LENGTH_SHORT).show();
                     EditCharacterActivity.this.finish();
                 } catch (RuntimeException ex) {
@@ -152,6 +156,6 @@ public class EditCharacterActivity extends AppCompatActivity {
     }
 
     private void startAboutActivity() {
-        this.startActivity(new Intent(EditCharacterActivity.this, AboutActivity.class));
+        EditCharacterActivity.this.startActivity(new Intent(EditCharacterActivity.this, AboutActivity.class));
     }
 }
