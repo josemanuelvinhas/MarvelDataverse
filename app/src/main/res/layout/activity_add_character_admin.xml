@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context=".ui.CharactersActivity">
+    tools:context=".ui.admin.CharactersAdminActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/character_details"
+            android:text="@string/CreateCharacter"
             android:textAlignment="center"
             android:textColor="@android:color/black"
             android:textSize="30sp"
@@ -40,13 +40,13 @@
             android:layout_height="wrap_content"
             android:text="@string/name" />
 
-        <TextView
+        <EditText
             android:id="@+id/edName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            android:hint="@string/name"
+            android:inputType="text"
+            android:maxLength="20" />
 
     </LinearLayout>
 
@@ -62,13 +62,14 @@
             android:layout_height="wrap_content"
             android:text="@string/description" />
 
-        <TextView
+        <EditText
             android:id="@+id/edDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            android:gravity="top"
+            android:hint="@string/description"
+            android:inputType="textMultiLine"
+            android:maxLength="255" />
 
     </LinearLayout>
 
@@ -89,13 +90,13 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/btnDelete"
+                android:id="@+id/btnReset"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
                 android:background="@drawable/custom_button"
                 android:padding="10dp"
-                android:text="@string/delete"
+                android:text="@string/reset"
                 android:textColor="@android:color/white" />
 
 
@@ -111,12 +112,12 @@
 
 
             <Button
-                android:id="@+id/btnEditCharacter"
+                android:id="@+id/btnAddCharacter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_button"
                 android:padding="10dp"
-                android:text="@string/edit"
+                android:text="@string/send"
                 android:textColor="@android:color/white" />
 
 

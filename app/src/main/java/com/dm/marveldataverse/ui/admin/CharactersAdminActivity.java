@@ -1,10 +1,9 @@
-package com.dm.marveldataverse.ui;
+package com.dm.marveldataverse.ui.admin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -22,10 +21,10 @@ import android.widget.Toast;
 import com.dm.marveldataverse.R;
 import com.dm.marveldataverse.core.DBManager;
 import com.dm.marveldataverse.core.Session;
-import com.dm.marveldataverse.model.Character;
 import com.dm.marveldataverse.model.CharacterMapper;
+import com.dm.marveldataverse.ui.AboutActivity;
 
-public class CharactersActivity extends AppCompatActivity {
+public class CharactersAdminActivity extends AppCompatActivity {
 
     private Session session;
     private SimpleCursorAdapter cursorAdapter;
@@ -35,38 +34,38 @@ public class CharactersActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_characters);
+        setContentView(R.layout.activity_characters_admin);
 
         //Inicialización las variables
-        CharactersActivity.this.session = Session.getSession(CharactersActivity.this);
-        CharactersActivity.this.characterMapper = new CharacterMapper(this);
-        CharactersActivity.this.cursorAdapter = new SimpleCursorAdapter(this,
-                R.layout.entry_character,
+        CharactersAdminActivity.this.session = Session.getSession(CharactersAdminActivity.this);
+        CharactersAdminActivity.this.characterMapper = new CharacterMapper(this);
+        CharactersAdminActivity.this.cursorAdapter = new SimpleCursorAdapter(this,
+                R.layout.entry_character_admin,
                 null,
                 new String[]{DBManager.CAMPO_PERSONAJES_NAME},
                 new int[]{R.id.lblName},
                 0
         );
 
-        final Button BT_ADDCHAR = CharactersActivity.this.findViewById(R.id.btnAddCharacter);
-        final ListView LV_CHARACTERS = CharactersActivity.this.findViewById(R.id.lvCharacters);
-        final SearchView SV_CHARACTERS = CharactersActivity.this.findViewById(R.id.svSearch);
+        final Button BT_ADDCHAR = CharactersAdminActivity.this.findViewById(R.id.btnAddCharacter);
+        final ListView LV_CHARACTERS = CharactersAdminActivity.this.findViewById(R.id.lvCharacters);
+        final SearchView SV_CHARACTERS = CharactersAdminActivity.this.findViewById(R.id.svSearch);
 
-        CharactersActivity.this.registerForContextMenu(LV_CHARACTERS);
-        BT_ADDCHAR.setOnClickListener(v -> CharactersActivity.this.startAddCharacterActivity());
+        CharactersAdminActivity.this.registerForContextMenu(LV_CHARACTERS);
+        BT_ADDCHAR.setOnClickListener(v -> CharactersAdminActivity.this.startAddCharacterActivity());
         LV_CHARACTERS.setAdapter(this.cursorAdapter);
 
         SV_CHARACTERS.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                CharactersActivity.this.search(query);
+                CharactersAdminActivity.this.search(query);
                 return false;
             }
 
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                CharactersActivity.this.search(newText);
+                CharactersAdminActivity.this.search(newText);
                 return false;
             }
         });
@@ -75,14 +74,14 @@ public class CharactersActivity extends AppCompatActivity {
             Cursor cursor = cursorAdapter.getCursor();
             cursor.moveToFirst();
             cursor.move(position);
-            CharactersActivity.this.startDetailCharacterActivity(cursor.getInt(cursor.getColumnIndex(DBManager.CAMPO_PERSONAJES_ID)));
+            CharactersAdminActivity.this.startDetailCharacterActivity(cursor.getInt(cursor.getColumnIndex(DBManager.CAMPO_PERSONAJES_ID)));
         });
 
         this.refresh();
 
         //Si no existe la sesion
-        if (!CharactersActivity.this.session.isSessionActive()) {
-            this.finish();
+        if (!CharactersAdminActivity.this.session.isSessionActive() || !CharactersAdminActivity.this.session.isAdmin()) {
+            CharactersAdminActivity.this.finish();
         }
     }
 
@@ -99,16 +98,16 @@ public class CharactersActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        CharactersActivity.this.deleteSearchContent();
-        CharactersActivity.this.refresh();
-        CharactersActivity.this.cursorAdapter.notifyDataSetChanged();
-        if (!CharactersActivity.this.session.isSessionActive()) {
-            this.finish();
+        CharactersAdminActivity.this.deleteSearchContent();
+        CharactersAdminActivity.this.refresh();
+        CharactersAdminActivity.this.cursorAdapter.notifyDataSetChanged();
+        if (!CharactersAdminActivity.this.session.isSessionActive() || !CharactersAdminActivity.this.session.isAdmin()) {
+            CharactersAdminActivity.this.finish();
         }
     }
 
     private void deleteSearchContent() {
-        final SearchView SV_CHARACTERS = CharactersActivity.this.findViewById(R.id.svSearch);
+        final SearchView SV_CHARACTERS = CharactersAdminActivity.this.findViewById(R.id.svSearch);
         SV_CHARACTERS.setQuery("", false);
         SV_CHARACTERS.clearFocus();
         SV_CHARACTERS.onActionViewCollapsed();
@@ -117,7 +116,7 @@ public class CharactersActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        CharactersActivity.this.getMenuInflater().inflate(R.menu.menu_characters, menu);
+        CharactersAdminActivity.this.getMenuInflater().inflate(R.menu.menu_characters, menu);
         return true;
     }
 
@@ -128,16 +127,16 @@ public class CharactersActivity extends AppCompatActivity {
 
         switch (menuItem.getItemId()) {
             case R.id.itLogout:
-                CharactersActivity.this.session.closeSession();
-                CharactersActivity.this.finish();
+                CharactersAdminActivity.this.session.closeSession();
+                CharactersAdminActivity.this.finish();
                 toret = true;
                 break;
             case R.id.itAcercaDe:
-                CharactersActivity.this.startAboutActivity();
+                CharactersAdminActivity.this.startAboutActivity();
                 toret = true;
                 break;
             case R.id.itGoBack:
-                CharactersActivity.this.finish();
+                CharactersAdminActivity.this.finish();
                 toret = true;
                 break;
             default:
@@ -166,14 +165,14 @@ public class CharactersActivity extends AppCompatActivity {
                 cursor = cursorAdapter.getCursor();
                 cursor.moveToFirst();
                 cursor.move(menu.position);
-                CharactersActivity.this.startEditCharacterActivity(cursor.getInt(cursor.getColumnIndex(DBManager.CAMPO_PERSONAJES_ID)));
+                CharactersAdminActivity.this.startEditCharacterActivity(cursor.getInt(cursor.getColumnIndex(DBManager.CAMPO_PERSONAJES_ID)));
                 toret = true;
                 break;
             case R.id.itDelete:
                 cursor = cursorAdapter.getCursor();
                 cursor.moveToFirst();
                 cursor.move(menu.position);
-                CharactersActivity.this.deleteCharacter(cursor.getInt(cursor.getColumnIndex(DBManager.CAMPO_PERSONAJES_ID)));
+                CharactersAdminActivity.this.deleteCharacter(cursor.getInt(cursor.getColumnIndex(DBManager.CAMPO_PERSONAJES_ID)));
                 toret = true;
                 break;
         }
@@ -186,9 +185,9 @@ public class CharactersActivity extends AppCompatActivity {
         DLG.setTitle(R.string.delete);
         DLG.setMessage(R.string.delete_character_msg);
         DLG.setPositiveButton(R.string.yes, (dialog, which) -> {
-            CharactersActivity.this.characterMapper.deleteCharacter(id);
-            Toast.makeText(CharactersActivity.this,R.string.character_remove_successful,Toast.LENGTH_SHORT).show();
-            CharactersActivity.this.refresh();
+            CharactersAdminActivity.this.characterMapper.deleteCharacter(id);
+            Toast.makeText(CharactersAdminActivity.this,R.string.character_remove_successful,Toast.LENGTH_SHORT).show();
+            CharactersAdminActivity.this.refresh();
         });
 
         DLG.setNegativeButton(R.string.no,null);
@@ -199,22 +198,22 @@ public class CharactersActivity extends AppCompatActivity {
     }
 
     private void startAddCharacterActivity() {
-        CharactersActivity.this.startActivity(new Intent(CharactersActivity.this, AddCharacterActivity.class));
+        CharactersAdminActivity.this.startActivity(new Intent(CharactersAdminActivity.this, AddCharacterAdminActivity.class));
     }
 
     private void startAboutActivity() {
-        CharactersActivity.this.startActivity(new Intent(CharactersActivity.this, AboutActivity.class));
+        CharactersAdminActivity.this.startActivity(new Intent(CharactersAdminActivity.this, AboutActivity.class));
     }
 
     private void startDetailCharacterActivity(long id) {
-        Intent intent = new Intent(CharactersActivity.this, DetailCharacterActivity.class);
+        Intent intent = new Intent(CharactersAdminActivity.this, DetailCharacterAdminActivity.class);
         intent.putExtra("id", id);
-        CharactersActivity.this.startActivity(intent);
+        CharactersAdminActivity.this.startActivity(intent);
     }
 
     private void startEditCharacterActivity(long id) {
-        Intent intent = new Intent(CharactersActivity.this, EditCharacterActivity.class);
+        Intent intent = new Intent(CharactersAdminActivity.this, EditCharacterAdminActivity.class);
         intent.putExtra("id", id);
-        CharactersActivity.this.startActivity(intent);
+        CharactersAdminActivity.this.startActivity(intent);
     }
 }

@@ -22,6 +22,7 @@ public class DBManager extends SQLiteOpenHelper {
     public static final String CAMPO_USUARIOS_USERNAME = "username";
     public static final String CAMPO_USUARIOS_PASSWD = "passwd";
     public static final String CAMPO_USUARIOS_EMAIL = "email";
+    public static final String CAMPO_USUARIOS_IS_ADMIN = "isAdmin";
 
     public static final String TABLA_PERSONAJES = "characters";
     public static final String CAMPO_PERSONAJES_ID = "_id";
@@ -81,7 +82,8 @@ public class DBManager extends SQLiteOpenHelper {
                     + "("
                     + CAMPO_USUARIOS_USERNAME + " TEXT PRIMARY KEY,"
                     + CAMPO_USUARIOS_PASSWD + " TEXT NOT NULL,"
-                    + CAMPO_USUARIOS_EMAIL + " TEXT NOT NULL UNIQUE"
+                    + CAMPO_USUARIOS_EMAIL + " TEXT NOT NULL UNIQUE,"
+                    + CAMPO_USUARIOS_IS_ADMIN + " INTEGER NOT NULL"
                     + ")"
             );
 
