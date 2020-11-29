@@ -35,7 +35,7 @@ public class SplashActivity extends AppCompatActivity {
         TV_NOMBRE.setAnimation(ANIMACION_NOMBRE);
         TV_WELCOME.setAnimation(ANIMACION_NOMBRE);
 
-        new Handler().postDelayed(() -> SplashActivity.this.startMainActivity(), 4000);
+        new Handler().postDelayed(() -> SplashActivity.this.startMainActivity(), 2000);
 
 
     }
