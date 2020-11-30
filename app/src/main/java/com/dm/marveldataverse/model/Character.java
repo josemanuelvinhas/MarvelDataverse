@@ -18,7 +18,7 @@ public class Character {
         this.description = description;
     }
 
-    public Character(String name, String description, int id) {
+    public Character(String name, String description, long id) {
         this.name = name;
         this.description = description;
         this.id = id;

@@ -10,8 +10,9 @@ public class User {
     private String username;
     private String passwd;
     private String email;
+    private Boolean admin;
 
-    public User(String username, String passwd, String email) {
+    public User(String username, String passwd, String email, Boolean admin) {
         this.username = username;
         this.passwd = passwd;
         this.email = email;
@@ -47,6 +48,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
     }
 
     public void validateForRegister() throws ValidationException {

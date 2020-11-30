@@ -9,21 +9,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.EditCharacterActivity"></activity>
-        <activity android:name=".ui.DetailCharacterActivity" />
-        <activity android:name=".ui.AddCharacterActivity" />
-        <activity android:name=".ui.CharactersActivity" />
-        <activity android:name=".ui.CoreActivity" />
-        <activity android:name=".ui.RegisterActivity" />
-        <activity android:name=".ui.LoginActivity" />
-        <activity android:name=".ui.AboutActivity" />
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.SplashActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.user.CharactersUserActivity" />
+        <activity android:name=".ui.user.CoreUserActivity" />
+        <activity android:name=".ui.admin.AdminActivity" />
+        <activity android:name=".ui.admin.EditCharacterAdminActivity" />
+        <activity android:name=".ui.admin.DetailCharacterAdminActivity" />
+        <activity android:name=".ui.admin.AddCharacterAdminActivity" />
+        <activity android:name=".ui.admin.CharactersAdminActivity" />
+        <activity android:name=".ui.admin.CoreAdminActivity" />
+        <activity android:name=".ui.RegisterActivity" />
+        <activity android:name=".ui.LoginActivity" />
+        <activity android:name=".ui.AboutActivity" />
+        <activity android:name=".ui.MainActivity" />
     </application>
 
 </manifest>

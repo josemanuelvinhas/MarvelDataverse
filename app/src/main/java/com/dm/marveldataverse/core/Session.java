@@ -23,6 +23,7 @@ public class Session {
 
     /**
      * Este método permite acceder a la sesión. Si no existe, la crea.
+     *
      * @param context El contexto de la applicación
      * @return La instancia de la sesión.
      */
@@ -42,14 +43,15 @@ public class Session {
     private Session(Context context) {
         this.userMapper = new UserMapper(context);
         this.prefs = context.getSharedPreferences("session", Context.MODE_PRIVATE);
-        this.sessionActive = getSesion();
+        this.sessionActive = getSession();
     }
 
     /**
      * Este método inicia la sesión con los datos almacenados en las preferencias.
+     *
      * @return true si los datos son correctos y false en otro cualquier caso
      */
-    private boolean getSesion() {
+    private boolean getSession() {
         String username = prefs.getString("username", null);
         String passwd = prefs.getString("passwd", null);
         if (username != null && passwd != null) {
@@ -57,6 +59,7 @@ public class Session {
             try {
                 user.validateForLogin();
                 if (userMapper.isValidUser(user)) {
+                    user.setAdmin(userMapper.isAdminUser(username));
                     return true;
                 } else {
                     return false;
@@ -71,6 +74,7 @@ public class Session {
 
     /**
      * Este método inicia la sesión con un User.
+     *
      * @param user Almacena los datos del usuario
      * @return true si los datos son correctos y false en cualquier otro caso
      */
@@ -83,6 +87,7 @@ public class Session {
         }
 
         if (userMapper.isValidUser(user)) {
+            user.setAdmin(userMapper.isAdminUser(user.getUsername()));
             SharedPreferences.Editor editor = this.prefs.edit();
             editor.putString("username", user.getUsername());
             editor.putString("passwd", user.getPasswd());
@@ -111,9 +116,20 @@ public class Session {
 
     /**
      * Este método permite saber si la sesión está o no activa
+     *
      * @return true si está activa y false si no lo está
      */
     public boolean isSessionActive() {
         return sessionActive;
     }
+
+    public boolean isAdmin() {
+        return user.isAdmin();
+    }
+
+    public String getUsername() {
+        return user.getUsername();
+    }
+
+    ;
 }

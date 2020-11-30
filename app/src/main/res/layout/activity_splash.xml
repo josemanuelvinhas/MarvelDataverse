@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    tools:context=".ui.SplashActivity">
+
+    <ImageView
+        android:id="@+id/ivLogoSplash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="50dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/logo_circular" />
+
+
+
+    <TextView
+        android:id="@+id/tvWelcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:textColor="@android:color/black"
+        android:text="@string/welcome_to"/>
+
+
+    <TextView
+        android:id="@+id/tvNameApp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="50sp"
+        android:fontFamily="@font/bangers_regular"
+        android:textColor="@color/colorPrimary"
+        android:text="@string/marvel_dataverse"/>
+
+</LinearLayout>

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context=".ui.CharactersActivity">
+    tools:context=".ui.admin.CharactersAdminActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/CreateCharacter"
+            android:text="@string/edit_this_character"
             android:textAlignment="center"
             android:textColor="@android:color/black"
             android:textSize="30sp"
@@ -112,12 +112,12 @@
 
 
             <Button
-                android:id="@+id/btnAddCharacter"
+                android:id="@+id/btEditCharacter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_button"
                 android:padding="10dp"
-                android:text="@string/send"
+                android:text="@string/edit"
                 android:textColor="@android:color/white" />
 
 

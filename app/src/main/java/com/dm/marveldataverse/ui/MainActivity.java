@@ -11,6 +11,8 @@ import android.widget.Button;
 
 import com.dm.marveldataverse.R;
 import com.dm.marveldataverse.core.Session;
+import com.dm.marveldataverse.ui.admin.AdminActivity;
+import com.dm.marveldataverse.ui.user.CoreUserActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,18 +32,26 @@ public class MainActivity extends AppCompatActivity {
         BT_REGISTER.setOnClickListener(v -> MainActivity.this.startActivity(new Intent(MainActivity.this, RegisterActivity.class)));
 
         if (MainActivity.this.session.isSessionActive()) {
-            MainActivity.this.startCoreActivity();
+            if (MainActivity.this.session.isAdmin()){
+                MainActivity.this.startAdminActivity();
+            }else{
+                MainActivity.this.startUserActivity();
+            }
         }
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
         if (MainActivity.this.session.isSessionActive()) {
-            MainActivity.this.startCoreActivity();
+            if (MainActivity.this.session.isAdmin()){
+                MainActivity.this.startAdminActivity();
+            }else{
+                MainActivity.this.startUserActivity();
+            }
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -72,8 +82,13 @@ public class MainActivity extends AppCompatActivity {
         return toret;
     }
 
-    private void startCoreActivity() {
-        MainActivity.this.startActivity(new Intent(MainActivity.this, CoreActivity.class));
+    private void startAdminActivity() {
+        MainActivity.this.startActivity(new Intent(MainActivity.this, AdminActivity.class));
+        MainActivity.this.finish();
+    }
+
+    private void startUserActivity() {
+        MainActivity.this.startActivity(new Intent(MainActivity.this, CoreUserActivity.class));
         MainActivity.this.finish();
     }
 

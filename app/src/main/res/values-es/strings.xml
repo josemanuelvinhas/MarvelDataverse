@@ -41,7 +41,7 @@
     <string name="character_exists">Este personaje ya existe</string>
     <string name="character_add_successful">Personaje creado con éxito</string>
     <string name="character_details">Detalles del personaje</string>
-    <string name="edit_charecter">Edita un personaje</string>
+    <string name="edit_character">Editar Personaje</string>
     <string name="character_edit_successful">Personaje editado con éxito</string>
     <string name="edit">Editar</string>
     <string name="delete">Eliminar</string>
@@ -49,4 +49,13 @@
     <string name="yes">Si</string>
     <string name="no">No</string>
     <string name="character_remove_successful">Personaje eliminado con éxito</string>
+    <string name="comment_invalid">Los comentarios deben tener entre 1-255 letras o números</string>
+    <string name="admin_view">Vista de Administrador</string>
+    <string name="user_view">Vista de Usuario</string>
+    <string name="isAdmin">¿Es Administrador?</string>
+    <string name="characters">Personajes</string>
+    <string name="comics">Comics</string>
+    <string name="series">Series</string>
+    <string name="edit_this_character">Edita este personaje</string>
+    <string name="welcome_to">Bienvenido a</string>
 </resources>
