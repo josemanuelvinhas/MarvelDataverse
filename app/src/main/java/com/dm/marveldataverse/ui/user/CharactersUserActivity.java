@@ -71,6 +71,14 @@ public class CharactersUserActivity extends AppCompatActivity {
 
         });
 
+        LV_CHARACTERS.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Pair<Character, Long> pair = lista.get(position);
+                CharactersUserActivity.this.startDetailCharacterActivity(pair.first.getId());
+            }
+        });
+
 
         final SearchView SV_CHARACTERS = CharactersUserActivity.this.findViewById(R.id.svSearch);
         SV_CHARACTERS.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
