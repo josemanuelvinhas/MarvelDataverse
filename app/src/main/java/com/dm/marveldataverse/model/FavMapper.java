@@ -35,7 +35,7 @@ public class FavMapper extends BaseMapper {
         long id = -1;
 
         VALORES.put(CAMPO_FAV_PERSONAJE, fav.getCharacter());
-        VALORES.put(CAMPO_FAV_PERSONAJE, fav.getUser());
+        VALORES.put(CAMPO_FAV_USUARIO, fav.getUser());
 
 
         try {

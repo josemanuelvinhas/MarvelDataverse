@@ -9,7 +9,10 @@ import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import static com.dm.marveldataverse.core.DBManager.CAMPO_FAV_ID;
 import static com.dm.marveldataverse.core.DBManager.CAMPO_FAV_PERSONAJE;
 import static com.dm.marveldataverse.core.DBManager.CAMPO_FAV_USUARIO;
 import static com.dm.marveldataverse.core.DBManager.CAMPO_PERSONAJES_ID;
@@ -191,21 +194,23 @@ public class CharacterMapper extends BaseMapper {
      * @return una lista de personajes que coincidan con el criterio de busqueda
      * @throws RuntimeException si se produce algun error en la BD
      */
-    public ArrayList<Pair<Character, Boolean>> searchCharacterWithFav(String character, String username) {
+    public ArrayList<Pair<Character, Long>> searchCharacterWithFav(String character, String username) {
         final SQLiteDatabase DB = instance.getReadableDatabase();
 
         String[] argsFav = new String[]{username};
-        ArrayList<Long> favs = new ArrayList<>();
+        Map<Long,Long> favs = new HashMap<>();
         try (Cursor cursor = DB.query(TABLA_FAVS, null, CAMPO_FAV_USUARIO + " = ?", argsFav, null, null, null, null)) {
             if (cursor.moveToFirst()) {
                 do {
-                    favs.add((cursor.getLong(cursor.getColumnIndex(CAMPO_FAV_PERSONAJE))));
+                    long tempChar=cursor.getLong(cursor.getColumnIndex(CAMPO_FAV_PERSONAJE));
+                    long tempIdFav=cursor.getLong(cursor.getColumnIndex(CAMPO_FAV_ID));
+                    favs.put(tempChar,tempIdFav);
                 } while (cursor.moveToNext());
             }
         }
 
         String[] argsCharacter = new String[]{"%" + character + "%"};
-        ArrayList<Pair<Character, Boolean>> toret = new ArrayList<>();
+        ArrayList<Pair<Character, Long>> toret = new ArrayList<>();
         try (Cursor cursor = DB.query(TABLA_PERSONAJES, null, CAMPO_PERSONAJES_NAME + " LIKE ?", argsCharacter, null, null, CAMPO_PERSONAJES_NAME + " ASC", null)) {
             if (cursor.moveToFirst()) {
                 do {
@@ -213,10 +218,10 @@ public class CharacterMapper extends BaseMapper {
                     long idCharacter = cursor.getLong(cursor.getColumnIndex(CAMPO_PERSONAJES_ID));
                     String descriptionCharacter = cursor.getString(cursor.getColumnIndex(CAMPO_PERSONAJES_DESCRIPTION));
 
-                    if (favs.contains(idCharacter)){
-                        toret.add(new Pair<>(new Character(nameCharacter,descriptionCharacter, idCharacter),true));
+                    if (favs.containsKey(idCharacter)){
+                        toret.add(new Pair<>(new Character(nameCharacter,descriptionCharacter, idCharacter),favs.get(idCharacter)));
                     }else{
-                        toret.add(new Pair<>(new Character(nameCharacter,descriptionCharacter, idCharacter),false));
+                        toret.add(new Pair<>(new Character(nameCharacter,descriptionCharacter, idCharacter),new Long(-1)));
                     }
                 } while (cursor.moveToNext());
             }

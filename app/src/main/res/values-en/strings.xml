@@ -58,6 +58,8 @@
     <string name="series">Series</string>
     <string name="edit_this_character">Edit this character</string>
     <string name="welcome_to">Welcome to</string>
+    <string name="fav">Add to favourites</string>
+    <string name="unfav">Remove from favourites</string>
     <string name="comment">Comment</string>
     <string name="comments">Comments</string>
     <string name="enter_comment">Enter your comment</string>

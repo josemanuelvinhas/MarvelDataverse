@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,8 @@ import com.dm.marveldataverse.core.DBManager;
 import com.dm.marveldataverse.core.Session;
 import com.dm.marveldataverse.model.Character;
 import com.dm.marveldataverse.model.CharacterMapper;
+import com.dm.marveldataverse.model.Fav;
+import com.dm.marveldataverse.model.FavMapper;
 import com.dm.marveldataverse.ui.AboutActivity;
 import com.dm.marveldataverse.ui.admin.CharactersAdminActivity;
 import com.dm.marveldataverse.ui.admin.DetailCharacterAdminActivity;
@@ -32,7 +35,8 @@ public class CharactersUserActivity extends AppCompatActivity {
     private Session session;
     private CharacterUserArrayAdapter characterUserArrayAdapter;
     private CharacterMapper characterMapper;
-    private ArrayList<Pair<Character, Boolean>> lista;
+    private FavMapper favMapper;
+    private ArrayList<Pair<Character, Long>> lista;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,16 +50,25 @@ public class CharactersUserActivity extends AppCompatActivity {
 
         CharactersUserActivity.this.characterMapper = new CharacterMapper(this);
 
-        CharactersUserActivity.this.lista = CharactersUserActivity.this.characterMapper.searchCharacterWithFav("", session.getUsername());
+        CharactersUserActivity.this.favMapper = new FavMapper(this);
+
+        CharactersUserActivity.this.lista = CharactersUserActivity.this.characterMapper.searchCharacterWithFav("",session.getUsername());
 
         CharactersUserActivity.this.characterUserArrayAdapter = new CharacterUserArrayAdapter(this, CharactersUserActivity.this.lista);
 
         final ListView LV_CHARACTERS = CharactersUserActivity.this.findViewById(R.id.lvCharacters);
         LV_CHARACTERS.setAdapter(CharactersUserActivity.this.characterUserArrayAdapter);
+      
+        LV_CHARACTERS.setOnItemLongClickListener((parent, view, position, id) -> {
+            Pair<Character,Long> par = lista.get(position);
+            if (par.second == -1){
+                favMapper.addFav(new Fav(session.getUsername(),par.first.getId()));
+            }else {
+                favMapper.deleteFav(par.second);
+            }
+            search("");//TODO Poner la query
+            return true;
 
-        LV_CHARACTERS.setOnItemClickListener((parent, view, position, id) -> {
-            Pair<Character, Boolean> par = lista.get(position);
-            CharactersUserActivity.this.startDetailCharacterActivity(par.first.getId());
         });
 
 
@@ -79,6 +92,9 @@ public class CharactersUserActivity extends AppCompatActivity {
             this.finish();
         }
     }
+
+
+
 
     private void search(String query) {
         final ListView LV_CHARACTERS = CharactersUserActivity.this.findViewById(R.id.lvCharacters);
