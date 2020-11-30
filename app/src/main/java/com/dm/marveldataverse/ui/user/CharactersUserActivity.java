@@ -10,6 +10,7 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
@@ -53,10 +54,11 @@ public class CharactersUserActivity extends AppCompatActivity {
 
         CharactersUserActivity.this.lista = CharactersUserActivity.this.characterMapper.searchCharacterWithFav("",session.getUsername());
 
-        CharactersUserActivity.this.characterUserArrayAdapter = new CharacterUserArrayAdapter(this,CharactersUserActivity.this.lista);
+        CharactersUserActivity.this.characterUserArrayAdapter = new CharacterUserArrayAdapter(this, CharactersUserActivity.this.lista);
 
         final ListView LV_CHARACTERS = CharactersUserActivity.this.findViewById(R.id.lvCharacters);
         LV_CHARACTERS.setAdapter(CharactersUserActivity.this.characterUserArrayAdapter);
+      
         LV_CHARACTERS.setOnItemLongClickListener((parent, view, position, id) -> {
             Pair<Character,Long> par = lista.get(position);
             if (par.second == -1){
@@ -66,6 +68,7 @@ public class CharactersUserActivity extends AppCompatActivity {
             }
             search("");//TODO Poner la query
             return true;
+
         });
 
 
@@ -95,8 +98,8 @@ public class CharactersUserActivity extends AppCompatActivity {
 
     private void search(String query) {
         final ListView LV_CHARACTERS = CharactersUserActivity.this.findViewById(R.id.lvCharacters);
-        CharactersUserActivity.this.lista = CharactersUserActivity.this.characterMapper.searchCharacterWithFav(query,session.getUsername());
-        CharactersUserActivity.this.characterUserArrayAdapter = new CharacterUserArrayAdapter(this,CharactersUserActivity.this.lista);
+        CharactersUserActivity.this.lista = CharactersUserActivity.this.characterMapper.searchCharacterWithFav(query, session.getUsername());
+        CharactersUserActivity.this.characterUserArrayAdapter = new CharacterUserArrayAdapter(this, CharactersUserActivity.this.lista);
         LV_CHARACTERS.setAdapter(CharactersUserActivity.this.characterUserArrayAdapter);
     }
 
@@ -139,12 +142,18 @@ public class CharactersUserActivity extends AppCompatActivity {
         return toret;
     }
 
-    private void logOut(){
+    private void logOut() {
         CharactersUserActivity.this.session.closeSession();
         CharactersUserActivity.this.finish();
     }
 
     private void startAboutActivity() {
         CharactersUserActivity.this.startActivity(new Intent(this, AboutActivity.class));
+    }
+
+    private void startDetailCharacterActivity(long id) {
+        Intent intent = new Intent(CharactersUserActivity.this, DetailCharacterUser.class);
+        intent.putExtra("id", id);
+        CharactersUserActivity.this.startActivity(intent);
     }
 }

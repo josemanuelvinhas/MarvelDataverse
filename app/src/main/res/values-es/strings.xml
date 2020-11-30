@@ -60,4 +60,11 @@
     <string name="welcome_to">Bienvenido a</string>
     <string name="fav">Añadir a favoritos</string>
     <string name="unfav">Quitar de favoritos</string>
+
+    <string name="comment">Comentar</string>
+    <string name="comments">Comentarios</string>
+    <string name="enter_comment">Introduce tu comentario</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancelar</string>
+    <string name="delete_comment_msg">¿Estás seguro de que quieres eliminar este comentario?</string>
 </resources>
