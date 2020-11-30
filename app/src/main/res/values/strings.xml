@@ -61,4 +61,10 @@
     <string name="edit_this_character">Edit this character</string>
     <string name="welcome_to">Welcome to</string>
     <string name="marvel_dataverse" translatable="false">Marvel Dataverse</string>
+    <string name="comment">comment</string>
+    <string name="comments">comments</string>
+    <string name="enter_comment">commentary</string>
+    <string name="ok">ok</string>
+    <string name="cancel">cancel</string>
+    <string name="delete_comment_msg">delete_comment_msg</string>
 </resources>

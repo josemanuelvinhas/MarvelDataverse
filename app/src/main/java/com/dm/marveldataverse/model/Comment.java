@@ -10,13 +10,23 @@ public class Comment {
     private long comment_id;
     private String user;
     private String comment;
-    private String character;
+    private long character;
 
-    public Comment(long comment_id, String user, String comment, String character) {
+    public Comment(long comment_id, String user, String comment, long character) {
         this.comment_id = comment_id;
         this.user = user;
         this.comment = comment;
         this.character = character;
+    }
+
+    public Comment(String user, String comment, long character) {
+        this.user = user;
+        this.comment = comment;
+        this.character = character;
+    }
+
+    public Comment(){
+
     }
 
     public String getUser() {
@@ -43,11 +53,11 @@ public class Comment {
         this.comment = comment;
     }
 
-    public String getCharacter() {
+    public long getCharacter() {
         return character;
     }
 
-    public void setCharacter(String character) {
+    public void setCharacter(long character) {
         this.character = character;
     }
 

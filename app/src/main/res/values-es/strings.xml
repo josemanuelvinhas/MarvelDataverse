@@ -58,4 +58,10 @@
     <string name="series">Series</string>
     <string name="edit_this_character">Edita este personaje</string>
     <string name="welcome_to">Bienvenido a</string>
+    <string name="comment">Comentar</string>
+    <string name="comments">Comentarios</string>
+    <string name="enter_comment">Introduce tu comentario</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancelar</string>
+    <string name="delete_comment_msg">¿Estás seguro de que quieres eliminar este comentario?</string>
 </resources>
