@@ -112,7 +112,8 @@ public class DBManager extends SQLiteOpenHelper {
                     + CAMPO_FAV_PERSONAJE + " INTEGER NOT NULL ,"
                     + CAMPO_FAV_USUARIO + " TEXT NOT NULL,"
                     + "FOREIGN KEY(" + CAMPO_FAV_PERSONAJE + ") REFERENCES " + TABLA_PERSONAJES + "(" + CAMPO_PERSONAJES_ID + "),"
-                    + "FOREIGN KEY(" + CAMPO_FAV_USUARIO + ") REFERENCES " + TABLA_USUARIOS + "(" + CAMPO_USUARIOS_USERNAME + ")"
+                    + "FOREIGN KEY(" + CAMPO_FAV_USUARIO + ") REFERENCES " + TABLA_USUARIOS + "(" + CAMPO_USUARIOS_USERNAME + "),"
+                    + "UNIQUE(" + CAMPO_FAV_PERSONAJE + "," + CAMPO_FAV_USUARIO + ")"
                     + ")"
             );
 

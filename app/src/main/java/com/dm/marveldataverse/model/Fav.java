@@ -6,10 +6,14 @@ public class Fav {
 
     private long fav_id;
     private String user;
-    private String character;
+    private long character;
 
-    public Fav(long fav_id, String user, String character) {
+    public Fav(long fav_id, String user, long character) {
         this.fav_id = fav_id;
+        this.user = user;
+        this.character = character;
+    }
+    public Fav(String user, long character) {
         this.user = user;
         this.character = character;
     }
@@ -30,11 +34,11 @@ public class Fav {
         this.user = user;
     }
 
-    public String getCharacter() {
+    public long getCharacter() {
         return character;
     }
 
-    public void setCharacter(String character) {
+    public void setCharacter(long character) {
         this.character = character;
     }
 
