@@ -55,4 +55,7 @@
     <string name="isAdmin">Is Admin?</string>
     <string name="characters">Characters</string>
     <string name="comics">Comics</string>
+    <string name="series">Series</string>
+    <string name="edit_this_character">Edit this character</string>
+    <string name="welcome_to">Welcome to</string>
 </resources>

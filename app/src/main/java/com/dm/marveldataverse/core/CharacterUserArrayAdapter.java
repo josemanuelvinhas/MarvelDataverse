@@ -10,19 +10,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dm.marveldataverse.R;
+import com.dm.marveldataverse.model.Character;
 
 import java.util.ArrayList;
 
 public class CharacterUserArrayAdapter extends ArrayAdapter {
 
-    public CharacterUserArrayAdapter(Context context, ArrayList<Pair<String, Boolean>> items) {
+    public CharacterUserArrayAdapter(Context context, ArrayList<Pair<Character, Boolean>> items) {
         super(context, 0, items);
     }
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         final LayoutInflater INFLATER = LayoutInflater.from(this.getContext());
-        final Pair<String, Boolean> par = (Pair<String, Boolean>) this.getItem(position);
+        final Pair<Character, Boolean> par = (Pair<Character, Boolean>) this.getItem(position);
 
         if (view == null) {
             view = INFLATER.inflate(R.layout.entry_character_user, null);
@@ -36,7 +37,8 @@ public class CharacterUserArrayAdapter extends ArrayAdapter {
         } else {
             IV_FAV.setImageResource(R.drawable.ic_estrella_vacia);
         }
-        TV_NAME.setText(par.first);
+
+        TV_NAME.setText(par.first.getName());
 
         return view;
     }

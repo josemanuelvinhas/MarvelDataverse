@@ -79,8 +79,7 @@ public class CharactersAdminActivity extends AppCompatActivity {
             Cursor cursor = cursorAdapter.getCursor();
             cursor.moveToFirst();
             cursor.move(position);
-            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, view , "characterName");
-            CharactersAdminActivity.this.startDetailCharacterActivity(cursor.getInt(cursor.getColumnIndex(DBManager.CAMPO_PERSONAJES_ID)),options);
+            CharactersAdminActivity.this.startDetailCharacterActivity(cursor.getInt(cursor.getColumnIndex(DBManager.CAMPO_PERSONAJES_ID)));
         });
 
         this.refresh();
@@ -211,10 +210,10 @@ public class CharactersAdminActivity extends AppCompatActivity {
         CharactersAdminActivity.this.startActivity(new Intent(CharactersAdminActivity.this, AboutActivity.class));
     }
 
-    private void startDetailCharacterActivity(long id, ActivityOptions options) {
+    private void startDetailCharacterActivity(long id) {
         Intent intent = new Intent(CharactersAdminActivity.this, DetailCharacterAdminActivity.class);
         intent.putExtra("id", id);
-        CharactersAdminActivity.this.startActivity(intent, options.toBundle());
+        CharactersAdminActivity.this.startActivity(intent);
     }
 
     private void startEditCharacterActivity(long id) {

@@ -25,7 +25,6 @@ import com.dm.marveldataverse.ui.AboutActivity;
 public class DetailCharacterAdminActivity extends AppCompatActivity {
 
     private CharacterMapper characterMapper;
-    private Cursor cursorAdapter;
     private Session session;
     private Character character;
     private long id;

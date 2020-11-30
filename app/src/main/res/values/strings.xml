@@ -60,5 +60,5 @@
     <string name="series">Series</string>
     <string name="edit_this_character">Edit this character</string>
     <string name="welcome_to">Welcome to</string>
-    <string name="marvel_dataverse">Marvel Dataverse</string>
+    <string name="marvel_dataverse" translatable="false">Marvel Dataverse</string>
 </resources>

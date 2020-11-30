@@ -191,7 +191,7 @@ public class CharacterMapper extends BaseMapper {
      * @return una lista de personajes que coincidan con el criterio de busqueda
      * @throws RuntimeException si se produce algun error en la BD
      */
-    public ArrayList<Pair<String, Boolean>> searchCharacterWithFav(String character, String username) {
+    public ArrayList<Pair<Character, Boolean>> searchCharacterWithFav(String character, String username) {
         final SQLiteDatabase DB = instance.getReadableDatabase();
 
         String[] argsFav = new String[]{username};
@@ -205,16 +205,18 @@ public class CharacterMapper extends BaseMapper {
         }
 
         String[] argsCharacter = new String[]{"%" + character + "%"};
-        ArrayList<Pair<String, Boolean>> toret = new ArrayList<>();
+        ArrayList<Pair<Character, Boolean>> toret = new ArrayList<>();
         try (Cursor cursor = DB.query(TABLA_PERSONAJES, null, CAMPO_PERSONAJES_NAME + " LIKE ?", argsCharacter, null, null, CAMPO_PERSONAJES_NAME + " ASC", null)) {
             if (cursor.moveToFirst()) {
                 do {
-                    String tempCharacter = cursor.getString(cursor.getColumnIndex(CAMPO_PERSONAJES_NAME));
-                    long tempId = cursor.getLong(cursor.getColumnIndex(CAMPO_PERSONAJES_ID));
-                    if (favs.contains(tempId)){
-                        toret.add(new Pair<>(tempCharacter,true));
+                    String nameCharacter = cursor.getString(cursor.getColumnIndex(CAMPO_PERSONAJES_NAME));
+                    long idCharacter = cursor.getLong(cursor.getColumnIndex(CAMPO_PERSONAJES_ID));
+                    String descriptionCharacter = cursor.getString(cursor.getColumnIndex(CAMPO_PERSONAJES_DESCRIPTION));
+
+                    if (favs.contains(idCharacter)){
+                        toret.add(new Pair<>(new Character(nameCharacter,descriptionCharacter, idCharacter),true));
                     }else{
-                        toret.add(new Pair<>(tempCharacter,false));
+                        toret.add(new Pair<>(new Character(nameCharacter,descriptionCharacter, idCharacter),false));
                     }
                 } while (cursor.moveToNext());
             }

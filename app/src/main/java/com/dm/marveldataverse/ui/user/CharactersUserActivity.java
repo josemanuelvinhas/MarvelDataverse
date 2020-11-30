@@ -11,14 +11,17 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 import com.dm.marveldataverse.R;
 import com.dm.marveldataverse.core.CharacterUserArrayAdapter;
 import com.dm.marveldataverse.core.DBManager;
 import com.dm.marveldataverse.core.Session;
+import com.dm.marveldataverse.model.Character;
 import com.dm.marveldataverse.model.CharacterMapper;
 import com.dm.marveldataverse.ui.AboutActivity;
 import com.dm.marveldataverse.ui.admin.CharactersAdminActivity;
+import com.dm.marveldataverse.ui.admin.DetailCharacterAdminActivity;
 
 import java.util.ArrayList;
 
@@ -27,7 +30,7 @@ public class CharactersUserActivity extends AppCompatActivity {
     private Session session;
     private CharacterUserArrayAdapter characterUserArrayAdapter;
     private CharacterMapper characterMapper;
-    private ArrayList<Pair<String, Boolean>> lista;
+    private ArrayList<Pair<Character, Boolean>> lista;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,8 @@ public class CharactersUserActivity extends AppCompatActivity {
         final ListView LV_CHARACTERS = CharactersUserActivity.this.findViewById(R.id.lvCharacters);
         LV_CHARACTERS.setAdapter(CharactersUserActivity.this.characterUserArrayAdapter);
 
+
+
         final SearchView SV_CHARACTERS = CharactersUserActivity.this.findViewById(R.id.svSearch);
         SV_CHARACTERS.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -64,18 +69,16 @@ public class CharactersUserActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
         if (!CharactersUserActivity.this.session.isSessionActive()) {
             this.finish();
         }
     }
 
     private void search(String query) {
-        CharactersUserActivity.this.characterMapper.searchCharacterWithFav(query,session.getUsername());
-        CharactersUserActivity.this.characterUserArrayAdapter.notifyDataSetChanged();
+        final ListView LV_CHARACTERS = CharactersUserActivity.this.findViewById(R.id.lvCharacters);
+        CharactersUserActivity.this.lista = CharactersUserActivity.this.characterMapper.searchCharacterWithFav(query,session.getUsername());
+        CharactersUserActivity.this.characterUserArrayAdapter = new CharacterUserArrayAdapter(this,CharactersUserActivity.this.lista);
+        LV_CHARACTERS.setAdapter(CharactersUserActivity.this.characterUserArrayAdapter);
     }
 
     @Override
