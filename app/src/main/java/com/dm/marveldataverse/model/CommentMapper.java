@@ -124,8 +124,6 @@ public class CommentMapper extends BaseMapper {
     }
 
 
-
-
     /**
      * Este método devuelve los comentarios de un personaje.
      *
@@ -133,33 +131,33 @@ public class CommentMapper extends BaseMapper {
      * @throws RuntimeException si se produce algun error en la BD
      */
 
-    public Cursor getCharactersList(long character_id) {
+    public Cursor getCommentList(long character_id) {
         final SQLiteDatabase DB = instance.getReadableDatabase();
         String[] args = new String[]{Long.toString(character_id)};
         Log.i("DB", "recuperando lista de todos los comentarios de un personaje: ");
 
-        Cursor cursor = DB.query(TABLA_COMENTARIOS, new String[]{CAMPO_COMENTARIO}, CAMPO_COMENTARIO_PERSONAJE+ "=?" , args, null, null, null, null);
+        Cursor cursor = DB.query(TABLA_COMENTARIOS, null, CAMPO_COMENTARIO_PERSONAJE + "=?", args, null, null, null, null);
 
         return cursor;
     }
 
 
 /**
-    public Character getCharacterById(long id) {
-        final SQLiteDatabase DB = instance.getReadableDatabase();
-        Character character = null;
-        Log.i("DB", "recuperando un personaje por su id: " + id);
+ public Character getCharacterById(long id) {
+ final SQLiteDatabase DB = instance.getReadableDatabase();
+ Character character = null;
+ Log.i("DB", "recuperando un personaje por su id: " + id);
 
-        String[] args = new String[]{Long.toString(id)};
+ String[] args = new String[]{Long.toString(id)};
 
-        try (Cursor cursor = DB.query(TABLA_PERSONAJES, null, CAMPO_PERSONAJES_ID + " = ?", args, null, null, null, null)) {
-            if (cursor.moveToFirst()) {
-                character = new Character(cursor.getString(1), cursor.getString(2), cursor.getInt(0));
-            }
-        }
+ try (Cursor cursor = DB.query(TABLA_PERSONAJES, null, CAMPO_PERSONAJES_ID + " = ?", args, null, null, null, null)) {
+ if (cursor.moveToFirst()) {
+ character = new Character(cursor.getString(1), cursor.getString(2), cursor.getInt(0));
+ }
+ }
 
-        return character;
-    }
-**/
+ return character;
+ }
+ **/
 
 }
