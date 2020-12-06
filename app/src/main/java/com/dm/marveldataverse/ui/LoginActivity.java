@@ -27,10 +27,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //Personalizar ActionBar
         final ActionBar ACTION_BAR = this.getSupportActionBar();
         ACTION_BAR.setTitle(R.string.login);
 
-        //Inicialización de variables
+        //Inicialización de atributos
         LoginActivity.this.session = Session.getSession(LoginActivity.this);
         LoginActivity.this.user = new User();
 
@@ -56,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        //Salir si existe una sesión
+        //Control de sesión
         if (LoginActivity.this.session.isSessionActive()) {
             LoginActivity.this.finish();
         }

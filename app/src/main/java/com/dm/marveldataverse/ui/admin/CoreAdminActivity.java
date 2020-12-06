@@ -24,11 +24,14 @@ public class CoreAdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_core_admin);
 
+        //Personalizar ActionBar
         final ActionBar ACTION_BAR = this.getSupportActionBar();
         ACTION_BAR.setTitle(R.string.admin_view);
 
+        //Inicialización de atributos
         CoreAdminActivity.this.session = Session.getSession(CoreAdminActivity.this);
 
+        //Inicialización de eventos
         final Button BT_CHARACTERS_MANAGEMENT = CoreAdminActivity.this.findViewById(R.id.btnCharactersManagement);
         BT_CHARACTERS_MANAGEMENT.setOnClickListener(v -> CoreAdminActivity.this.startCharactersActivity());
 
@@ -38,6 +41,7 @@ public class CoreAdminActivity extends AppCompatActivity {
         final Button BT_SERIES_MANAGEMENT = CoreAdminActivity.this.findViewById(R.id.btnSeriesManagement);
         BT_SERIES_MANAGEMENT.setOnClickListener(v -> Toast.makeText( CoreAdminActivity.this, R.string.soon, Toast.LENGTH_SHORT ).show());
 
+        //Control de sesión
         if (!CoreAdminActivity.this.session.isSessionActive() || !CoreAdminActivity.this.session.isAdmin()) {
             CoreAdminActivity.this.finish();
         }

@@ -69,4 +69,5 @@
     <string name="ok">ok</string>
     <string name="cancel">cancel</string>
     <string name="delete_comment_msg">delete_comment_msg</string>
+    <string name="github">[GitHub]</string>
 </resources>

@@ -33,20 +33,41 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
         android:gravity="center_vertical"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/name" />
+            android:layout_weight=".9"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/edName"
-            android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/name" />
+
+            <TextView
+                android:id="@+id/edName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            android:layout_weight=".1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/ivFav"
+                android:layout_width="30dp"
+                android:layout_height="30dp"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -78,28 +99,24 @@
         android:text="@string/comments" />
 
     <LinearLayout
-
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="30dp"
-        android:layout_weight=".5"
-        android:orientation="horizontal">
-
+        android:layout_height="wrap_content"
+        android:layout_weight=".8"
+        android:layout_marginBottom="20dp">
 
         <ListView
-            android:id="@+id/lvCommets"
+            android:id="@+id/lvComment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
 
-    <LinearLayout
 
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="30dp"
-        android:layout_weight=".9"
-        android:gravity="bottom">
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btComment"

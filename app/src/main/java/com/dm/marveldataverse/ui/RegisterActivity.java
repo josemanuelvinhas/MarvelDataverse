@@ -34,13 +34,13 @@ public class RegisterActivity extends AppCompatActivity {
         final ActionBar ACTION_BAR = this.getSupportActionBar();
         ACTION_BAR.setTitle(R.string.singin);
 
-        //Inicialización de variables
+        //Inicialización de atributos
         RegisterActivity.this.session = Session.getSession(RegisterActivity.this);
         RegisterActivity.this.userMapper = new UserMapper(RegisterActivity.this);
         RegisterActivity.this.user = new User();
 
         //Inicialización de eventos
-        Button BT_REGISTER = RegisterActivity.this.findViewById(R.id.btnSingin);
+        final Button BT_REGISTER = RegisterActivity.this.findViewById(R.id.btnSingin);
         BT_REGISTER.setOnClickListener(v -> RegisterActivity.this.register());
 
         final EditText ED_USERNAME = RegisterActivity.this.findViewById(R.id.edUsername);
@@ -85,7 +85,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        //Salir si existe una sesión
+        //Control de sesión
         if (RegisterActivity.this.session.isSessionActive()) {
             RegisterActivity.this.finish();
         }

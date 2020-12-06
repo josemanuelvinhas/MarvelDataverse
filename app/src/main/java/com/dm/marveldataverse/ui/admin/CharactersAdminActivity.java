@@ -25,23 +25,28 @@ import com.dm.marveldataverse.core.DBManager;
 import com.dm.marveldataverse.core.Session;
 import com.dm.marveldataverse.model.CharacterMapper;
 import com.dm.marveldataverse.ui.AboutActivity;
+import com.dm.marveldataverse.ui.user.CharactersUserActivity;
 
 public class CharactersAdminActivity extends AppCompatActivity {
 
     private Session session;
-    private SimpleCursorAdapter cursorAdapter;
+
     private CharacterMapper characterMapper;
 
+    private SimpleCursorAdapter cursorAdapter;
+
+    private String currentQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_characters_admin);
 
+        //Personalizar ActionBar
         final ActionBar ACTION_BAR = this.getSupportActionBar();
         ACTION_BAR.setTitle(R.string.characters);
 
-        //Inicialización las variables
+        //Inicialización las atributos
         CharactersAdminActivity.this.session = Session.getSession(CharactersAdminActivity.this);
         CharactersAdminActivity.this.characterMapper = new CharacterMapper(this);
         CharactersAdminActivity.this.cursorAdapter = new SimpleCursorAdapter(this,
@@ -51,30 +56,35 @@ public class CharactersAdminActivity extends AppCompatActivity {
                 new int[]{R.id.lblName},
                 0
         );
+        CharactersAdminActivity.this.currentQuery = "";
 
+        //Inicialización de eventos
+        //Evento de añadir
         final Button BT_ADDCHAR = CharactersAdminActivity.this.findViewById(R.id.btnAddCharacter);
-        final ListView LV_CHARACTERS = CharactersAdminActivity.this.findViewById(R.id.lvCharacters);
-        final SearchView SV_CHARACTERS = CharactersAdminActivity.this.findViewById(R.id.svSearch);
-
-        CharactersAdminActivity.this.registerForContextMenu(LV_CHARACTERS);
         BT_ADDCHAR.setOnClickListener(v -> CharactersAdminActivity.this.startAddCharacterActivity());
-        LV_CHARACTERS.setAdapter(this.cursorAdapter);
 
+        //Evento de buscar
+        final SearchView SV_CHARACTERS = CharactersAdminActivity.this.findViewById(R.id.svSearch);
         SV_CHARACTERS.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                CharactersAdminActivity.this.search(query);
+                CharactersAdminActivity.this.currentQuery = query;
+                CharactersAdminActivity.this.search(CharactersAdminActivity.this.currentQuery);
                 return false;
             }
 
-
             @Override
             public boolean onQueryTextChange(String newText) {
-                CharactersAdminActivity.this.search(newText);
+                CharactersAdminActivity.this.currentQuery = newText;
+                CharactersAdminActivity.this.search(CharactersAdminActivity.this.currentQuery);
                 return false;
             }
         });
 
+        //Evento de listview de personajes
+        final ListView LV_CHARACTERS = CharactersAdminActivity.this.findViewById(R.id.lvCharacters);
+        LV_CHARACTERS.setAdapter(this.cursorAdapter);
+        CharactersAdminActivity.this.registerForContextMenu(LV_CHARACTERS);
         LV_CHARACTERS.setOnItemClickListener((parent, view, position, id) -> {
             Cursor cursor = cursorAdapter.getCursor();
             cursor.moveToFirst();
@@ -84,7 +94,7 @@ public class CharactersAdminActivity extends AppCompatActivity {
 
         this.refresh();
 
-        //Si no existe la sesion
+        //Control de sesión
         if (!CharactersAdminActivity.this.session.isSessionActive() || !CharactersAdminActivity.this.session.isAdmin()) {
             CharactersAdminActivity.this.finish();
         }
@@ -96,26 +106,18 @@ public class CharactersAdminActivity extends AppCompatActivity {
 
 
     private void refresh() {
-        this.search("");
+        this.search(CharactersAdminActivity.this.currentQuery);
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        CharactersAdminActivity.this.deleteSearchContent();
         CharactersAdminActivity.this.refresh();
         CharactersAdminActivity.this.cursorAdapter.notifyDataSetChanged();
         if (!CharactersAdminActivity.this.session.isSessionActive() || !CharactersAdminActivity.this.session.isAdmin()) {
             CharactersAdminActivity.this.finish();
         }
-    }
-
-    private void deleteSearchContent() {
-        final SearchView SV_CHARACTERS = CharactersAdminActivity.this.findViewById(R.id.svSearch);
-        SV_CHARACTERS.setQuery("", false);
-        SV_CHARACTERS.clearFocus();
-        SV_CHARACTERS.onActionViewCollapsed();
     }
 
     @Override

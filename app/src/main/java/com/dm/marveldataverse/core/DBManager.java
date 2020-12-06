@@ -1,10 +1,15 @@
 package com.dm.marveldataverse.core;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
+import android.util.Pair;
+
+import java.util.ArrayList;
 
 
 /**
@@ -101,8 +106,8 @@ public class DBManager extends SQLiteOpenHelper {
                     + CAMPO_COMENTARIO + " TEXT NOT NULL,"
                     + CAMPO_COMENTARIO_PERSONAJE + " INTEGER NOT NULL,"
                     + CAMPO_COMENTARIO_USUARIO + " TEXT NOT NULL,"
-                    + "FOREIGN KEY(" + CAMPO_COMENTARIO_PERSONAJE + ") REFERENCES " + TABLA_PERSONAJES + "(" + CAMPO_PERSONAJES_ID + "),"
-                    + "FOREIGN KEY(" + CAMPO_COMENTARIO_USUARIO + ") REFERENCES " + TABLA_USUARIOS + "(" + CAMPO_USUARIOS_USERNAME + ")"
+                    + "FOREIGN KEY(" + CAMPO_COMENTARIO_PERSONAJE + ") REFERENCES " + TABLA_PERSONAJES + "(" + CAMPO_PERSONAJES_ID + ") ON DELETE CASCADE,"
+                    + "FOREIGN KEY(" + CAMPO_COMENTARIO_USUARIO + ") REFERENCES " + TABLA_USUARIOS + "(" + CAMPO_USUARIOS_USERNAME + ") ON DELETE CASCADE"
                     + ")"
             );
 
@@ -111,8 +116,8 @@ public class DBManager extends SQLiteOpenHelper {
                     + CAMPO_FAV_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + CAMPO_FAV_PERSONAJE + " INTEGER NOT NULL ,"
                     + CAMPO_FAV_USUARIO + " TEXT NOT NULL,"
-                    + "FOREIGN KEY(" + CAMPO_FAV_PERSONAJE + ") REFERENCES " + TABLA_PERSONAJES + "(" + CAMPO_PERSONAJES_ID + "),"
-                    + "FOREIGN KEY(" + CAMPO_FAV_USUARIO + ") REFERENCES " + TABLA_USUARIOS + "(" + CAMPO_USUARIOS_USERNAME + "),"
+                    + "FOREIGN KEY(" + CAMPO_FAV_PERSONAJE + ") REFERENCES " + TABLA_PERSONAJES + "(" + CAMPO_PERSONAJES_ID + ") ON DELETE CASCADE,"
+                    + "FOREIGN KEY(" + CAMPO_FAV_USUARIO + ") REFERENCES " + TABLA_USUARIOS + "(" + CAMPO_USUARIOS_USERNAME + ") ON DELETE CASCADE,"
                     + "UNIQUE(" + CAMPO_FAV_PERSONAJE + "," + CAMPO_FAV_USUARIO + ")"
                     + ")"
             );
@@ -123,6 +128,52 @@ public class DBManager extends SQLiteOpenHelper {
         } finally {
             db.endTransaction();
         }
+
+        this.loadInitData(db);
+    }
+
+    private void loadInitData(SQLiteDatabase db) {
+
+        try {
+            db.beginTransaction();
+
+            ArrayList<Pair<String, String>> lista = new ArrayList<>();
+            lista.add(new Pair<>(
+                    "Iron Man",
+                    "Tony Stark is the genius inventor/billionaire/philanthropist owner of Stark Industries."
+            ));
+            lista.add(new Pair<>(
+                    "Captain America",
+                    "During World War II, Steve Rogers enlisted in the military and was injected with a super-serum that turned him into super-soldier Captain America!"
+            ));
+            lista.add(new Pair<>(
+                    "She-Hulk",
+                    "She-Hulk is the Hulk's action-loving cousin. She's unbelievably strong, pilots the group's heavily armed Jump Jet, and uses a pair of Gamma Gauntlets that give her fists an added energy wallop."
+            ));
+            lista.add(new Pair<>(
+                    "Zuras",
+                    "Zuras was once the leader of the Eternals"
+            ));
+
+            ContentValues temValues;
+            for (Pair<String, String> l : lista) {
+                temValues = new ContentValues();
+                temValues.put(CAMPO_PERSONAJES_NAME, l.first);
+                temValues.put(CAMPO_PERSONAJES_DESCRIPTION, l.second);
+                db.insert(
+                        TABLA_PERSONAJES,
+                        null,
+                        temValues
+                );
+            }
+
+            db.setTransactionSuccessful();
+        } catch (SQLException error) {
+            Log.e("DB", error.getMessage());
+        } finally {
+            db.endTransaction();
+        }
+
     }
 
     /**

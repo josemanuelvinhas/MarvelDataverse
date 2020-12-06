@@ -23,14 +23,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Inicialización de atributos
         MainActivity.this.session = Session.getSession(MainActivity.this);
 
+        //Inicialización de eventos
         final Button BT_LOGIN = MainActivity.this.findViewById(R.id.btnLogin);
         BT_LOGIN.setOnClickListener(v -> MainActivity.this.startActivity(new Intent(MainActivity.this, LoginActivity.class)));
 
         final Button BT_REGISTER = MainActivity.this.findViewById(R.id.btnSingin);
         BT_REGISTER.setOnClickListener(v -> MainActivity.this.startActivity(new Intent(MainActivity.this, RegisterActivity.class)));
 
+        //Control de sesión
         if (MainActivity.this.session.isSessionActive()) {
             if (MainActivity.this.session.isAdmin()){
                 MainActivity.this.startAdminActivity();

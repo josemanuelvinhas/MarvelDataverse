@@ -25,13 +25,16 @@ public class CoreUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
+        //Inicialización de variables
         CoreUserActivity.this.session = Session.getSession(CoreUserActivity.this);
 
+        //Personalizar ActionBar
         if (CoreUserActivity.this.session.isAdmin()) {
             final ActionBar ACTION_BAR = this.getSupportActionBar();
             ACTION_BAR.setTitle(R.string.user_view);
         }
 
+        //Inicialización de eventos
         final Button BT_CHARACTERS = CoreUserActivity.this.findViewById(R.id.btnCharacters);
         BT_CHARACTERS.setOnClickListener(v -> CoreUserActivity.this.startCharactersUserActivity());
 
@@ -41,7 +44,7 @@ public class CoreUserActivity extends AppCompatActivity {
         final Button BT_SERIES = CoreUserActivity.this.findViewById(R.id.btnSeries);
         BT_SERIES.setOnClickListener(v -> Toast.makeText( CoreUserActivity.this, R.string.soon, Toast.LENGTH_SHORT ).show());
 
-        this.getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+        CoreUserActivity.this.getOnBackPressedDispatcher().addCallback( CoreUserActivity.this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 if (!CoreUserActivity.this.session.isAdmin()) {
@@ -51,11 +54,12 @@ public class CoreUserActivity extends AppCompatActivity {
             }
         });
 
+        //Control de sesión
         if (!CoreUserActivity.this.session.isSessionActive()) {
             if (!CoreUserActivity.this.session.isAdmin()) {
                 CoreUserActivity.this.startMainActivity();
             }
-            this.finish();
+            CoreUserActivity.this.finish();
         }
     }
 
@@ -66,7 +70,7 @@ public class CoreUserActivity extends AppCompatActivity {
             if (!CoreUserActivity.this.session.isAdmin()) {
                 CoreUserActivity.this.startMainActivity();
             }
-            this.finish();
+            CoreUserActivity.this.finish();
         }
     }
 

@@ -5,13 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.transition.Fade;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
-import android.view.View;
+import android.os.Looper;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,20 +20,19 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        final Animation ANIMACION_NOMBRE = AnimationUtils.loadAnimation(this, R.anim.desplazamiento_arriba);
-        final Animation ANIMACION_LOGO = AnimationUtils.loadAnimation(this, R.anim.desplazamiento_abajo);
+        final Animation ANIMACION_NOMBRE = AnimationUtils.loadAnimation(this, R.anim.alpha);
+        final Animation ANIMACION_LOGO = AnimationUtils.loadAnimation(this, R.anim.alpha);
 
         final ImageView TV_LOGO = this.findViewById(R.id.ivLogoSplash);
-        final TextView TV_NOMBRE = this.findViewById(R.id.tvNameApp);
-        final TextView TV_WELCOME = this.findViewById(R.id.tvWelcome);
-
         TV_LOGO.setAnimation(ANIMACION_LOGO);
+
+        final TextView TV_NOMBRE = this.findViewById(R.id.tvNameApp);
         TV_NOMBRE.setAnimation(ANIMACION_NOMBRE);
+
+        final TextView TV_WELCOME = this.findViewById(R.id.tvWelcome);
         TV_WELCOME.setAnimation(ANIMACION_NOMBRE);
 
-        new Handler().postDelayed(() -> SplashActivity.this.startMainActivity(), 2000);
-
-
+        new Handler(Looper.getMainLooper()).postDelayed(() -> SplashActivity.this.startMainActivity(), 2000);
     }
 
     private void startMainActivity() {

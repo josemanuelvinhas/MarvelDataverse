@@ -23,15 +23,19 @@ public class AdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
+        //Inicialización de atributos
         AdminActivity.this.session = Session.getSession(AdminActivity.this);
 
+        //Inicialización de eventos
+        //Evento de administracion
         final Button BT_ADMIN = AdminActivity.this.findViewById(R.id.btnAdmin);
         BT_ADMIN.setOnClickListener(v -> AdminActivity.this.startCoreAdminActivity());
 
+        //Evento de usuario
         final Button BT_USER = AdminActivity.this.findViewById(R.id.btnUser);
         BT_USER.setOnClickListener(v -> AdminActivity.this.startUserActivity());
 
-        //Salir si no existe una sesión
+        //Control de sesión
         if (!AdminActivity.this.session.isSessionActive() || !AdminActivity.this.session.isAdmin()) {
             AdminActivity.this.finish();
         }
@@ -43,7 +47,7 @@ public class AdminActivity extends AppCompatActivity {
         super.onResume();
         if (!AdminActivity.this.session.isSessionActive() || !AdminActivity.this.session.isAdmin()) {
             AdminActivity.this.startMainActivity();
-            this.finish();
+            AdminActivity.this.finish();
         }
     }
 

@@ -1,119 +1,121 @@
 package com.dm.marveldataverse.ui.user;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.dm.marveldataverse.R;
 import com.dm.marveldataverse.core.CharacterUserArrayAdapter;
-import com.dm.marveldataverse.core.DBManager;
 import com.dm.marveldataverse.core.Session;
 import com.dm.marveldataverse.model.Character;
 import com.dm.marveldataverse.model.CharacterMapper;
 import com.dm.marveldataverse.model.Fav;
 import com.dm.marveldataverse.model.FavMapper;
 import com.dm.marveldataverse.ui.AboutActivity;
-import com.dm.marveldataverse.ui.admin.CharactersAdminActivity;
-import com.dm.marveldataverse.ui.admin.DetailCharacterAdminActivity;
 
 import java.util.ArrayList;
 
 public class CharactersUserActivity extends AppCompatActivity {
 
     private Session session;
-    private CharacterUserArrayAdapter characterUserArrayAdapter;
+
     private CharacterMapper characterMapper;
     private FavMapper favMapper;
+
+    private CharacterUserArrayAdapter characterUserArrayAdapter;
     private ArrayList<Pair<Character, Long>> lista;
+
+    private String currentQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_characters_user);
 
+        //Personalizar ActionBar
         final ActionBar ACTION_BAR = this.getSupportActionBar();
         ACTION_BAR.setTitle(R.string.characters);
 
+        //Inicialización de atributos
         CharactersUserActivity.this.session = Session.getSession(CharactersUserActivity.this);
 
-        CharactersUserActivity.this.characterMapper = new CharacterMapper(this);
+        CharactersUserActivity.this.characterMapper = new CharacterMapper(CharactersUserActivity.this);
+        CharactersUserActivity.this.favMapper = new FavMapper(CharactersUserActivity.this);
 
-        CharactersUserActivity.this.favMapper = new FavMapper(this);
+        CharactersUserActivity.this.currentQuery = "";
 
-        CharactersUserActivity.this.lista = CharactersUserActivity.this.characterMapper.searchCharacterWithFav("",session.getUsername());
+        CharactersUserActivity.this.lista = CharactersUserActivity.this.characterMapper.searchCharacterWithFav(CharactersUserActivity.this.currentQuery, CharactersUserActivity.this.session.getUsername());
+        CharactersUserActivity.this.characterUserArrayAdapter = new CharacterUserArrayAdapter(CharactersUserActivity.this, CharactersUserActivity.this.lista);
 
-        CharactersUserActivity.this.characterUserArrayAdapter = new CharacterUserArrayAdapter(this, CharactersUserActivity.this.lista);
-
+        //Inicialización de eventos
+        //Eventos de ListView de Personajes
         final ListView LV_CHARACTERS = CharactersUserActivity.this.findViewById(R.id.lvCharacters);
+
         LV_CHARACTERS.setAdapter(CharactersUserActivity.this.characterUserArrayAdapter);
-      
+
         LV_CHARACTERS.setOnItemLongClickListener((parent, view, position, id) -> {
-            Pair<Character,Long> par = lista.get(position);
-            if (par.second == -1){
-                favMapper.addFav(new Fav(session.getUsername(),par.first.getId()));
-            }else {
-                favMapper.deleteFav(par.second);
+            Pair<Character, Long> par = CharactersUserActivity.this.lista.get(position);
+            if (par.second == -1) {
+                CharactersUserActivity.this.favMapper.addFav(new Fav(CharactersUserActivity.this.session.getUsername(), par.first.getId()));
+            } else {
+                CharactersUserActivity.this.favMapper.deleteFav(par.second);
             }
-            search("");//TODO Poner la query
+            search(CharactersUserActivity.this.currentQuery);
             return true;
 
         });
 
-        LV_CHARACTERS.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Pair<Character, Long> pair = lista.get(position);
-                CharactersUserActivity.this.startDetailCharacterActivity(pair.first.getId());
-            }
+        LV_CHARACTERS.setOnItemClickListener((parent, view, position, id) -> {
+            Pair<Character, Long> pair = CharactersUserActivity.this.lista.get(position);
+            CharactersUserActivity.this.startDetailCharacterActivity(pair.first.getId());
         });
 
-
+        //Eventos de la barra de busqueda
         final SearchView SV_CHARACTERS = CharactersUserActivity.this.findViewById(R.id.svSearch);
         SV_CHARACTERS.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                CharactersUserActivity.this.currentQuery = query;
                 CharactersUserActivity.this.search(query);
                 return false;
             }
 
-
             @Override
             public boolean onQueryTextChange(String newText) {
+                CharactersUserActivity.this.currentQuery = newText;
                 CharactersUserActivity.this.search(newText);
                 return false;
             }
         });
 
+        //Control de sesión
         if (!CharactersUserActivity.this.session.isSessionActive()) {
             this.finish();
         }
     }
 
-
-
-
     private void search(String query) {
         final ListView LV_CHARACTERS = CharactersUserActivity.this.findViewById(R.id.lvCharacters);
-        CharactersUserActivity.this.lista = CharactersUserActivity.this.characterMapper.searchCharacterWithFav(query, session.getUsername());
+        CharactersUserActivity.this.lista = CharactersUserActivity.this.characterMapper.searchCharacterWithFav(query, CharactersUserActivity.this.session.getUsername());
         CharactersUserActivity.this.characterUserArrayAdapter = new CharacterUserArrayAdapter(this, CharactersUserActivity.this.lista);
         LV_CHARACTERS.setAdapter(CharactersUserActivity.this.characterUserArrayAdapter);
     }
 
+
+
     @Override
     protected void onResume() {
         super.onResume();
+
+        CharactersUserActivity.this.search(CharactersUserActivity.this.currentQuery);
+
         if (!CharactersUserActivity.this.session.isSessionActive()) {
             this.finish();
         }
@@ -133,7 +135,8 @@ public class CharactersUserActivity extends AppCompatActivity {
 
         switch (menuItem.getItemId()) {
             case R.id.itLogout:
-                CharactersUserActivity.this.logOut();
+                CharactersUserActivity.this.session.closeSession();
+                CharactersUserActivity.this.finish();
                 toret = true;
                 break;
             case R.id.itAcercaDe:
@@ -148,11 +151,6 @@ public class CharactersUserActivity extends AppCompatActivity {
                 toret = false;
         }
         return toret;
-    }
-
-    private void logOut() {
-        CharactersUserActivity.this.session.closeSession();
-        CharactersUserActivity.this.finish();
     }
 
     private void startAboutActivity() {

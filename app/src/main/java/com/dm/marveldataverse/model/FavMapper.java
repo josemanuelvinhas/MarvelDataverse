@@ -10,7 +10,9 @@ import android.util.Log;
 import static com.dm.marveldataverse.core.DBManager.CAMPO_FAV_ID;
 import static com.dm.marveldataverse.core.DBManager.CAMPO_FAV_PERSONAJE;
 import static com.dm.marveldataverse.core.DBManager.CAMPO_FAV_USUARIO;
+import static com.dm.marveldataverse.core.DBManager.CAMPO_USUARIOS_USERNAME;
 import static com.dm.marveldataverse.core.DBManager.TABLA_FAVS;
+import static com.dm.marveldataverse.core.DBManager.TABLA_USUARIOS;
 
 public class FavMapper extends BaseMapper {
     /**
@@ -84,6 +86,27 @@ public class FavMapper extends BaseMapper {
         } finally {
             DB.endTransaction();
         }
+    }
+
+    public long isFav(long idPersonaje, String username ){
+        final SQLiteDatabase DB = instance.getReadableDatabase();
+
+        String[] args = new String[]{Long.toString(idPersonaje), username};
+
+        long toret = -1;
+        try {
+            try (Cursor cursor = DB.query(TABLA_FAVS, new String[]{CAMPO_FAV_ID}, CAMPO_FAV_PERSONAJE + "=? AND " + CAMPO_FAV_USUARIO + "=?", args, null, null, null)) {
+                if (cursor.moveToFirst()) {
+                    toret = cursor.getLong(cursor.getColumnIndex(CAMPO_FAV_ID));
+                }
+            }
+        } catch (SQLException error) {
+            Log.e("DB", error.getMessage());
+            throw new RuntimeException("Error en la BD");
+        }
+        return toret;
+
+
     }
 
 

@@ -20,11 +20,12 @@ import com.dm.marveldataverse.ui.AboutActivity;
 
 public class EditCharacterAdminActivity extends AppCompatActivity {
 
-
     private Session session;
+
+    private CharacterMapper characterMapper;
+
     private Character character;
     private Character characterOld;
-    private CharacterMapper characterMapper;
     private long id;
 
     @Override
@@ -32,30 +33,37 @@ public class EditCharacterAdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_character_admin);
 
+        //Personalizar ActionBar
         final ActionBar ACTION_BAR = this.getSupportActionBar();
         ACTION_BAR.setTitle(R.string.edit_character);
 
-        //Inicialización de variables
-        EditCharacterAdminActivity.this.character = new Character();
-        EditCharacterAdminActivity.this.characterMapper = new CharacterMapper(this);
+        //Inicialización de atributos
         EditCharacterAdminActivity.this.session = Session.getSession(EditCharacterAdminActivity.this);
-
-        final Button BT_RESET = EditCharacterAdminActivity.this.findViewById(R.id.btnReset);
-        final Button BT_EDIT = EditCharacterAdminActivity.this.findViewById(R.id.btEditCharacter);
-
-        final EditText ED_NAME = EditCharacterAdminActivity.this.findViewById(R.id.edName);
-        final EditText ED_DESC = EditCharacterAdminActivity.this.findViewById(R.id.edDescription);
+        EditCharacterAdminActivity.this.characterMapper = new CharacterMapper(this);
 
         EditCharacterAdminActivity.this.id = this.getIntent().getLongExtra("id", -1);
-        EditCharacterAdminActivity.this.characterMapper = new CharacterMapper(this);
         EditCharacterAdminActivity.this.character = characterMapper.getCharacterById(id);
         EditCharacterAdminActivity.this.characterOld = new Character(EditCharacterAdminActivity.this.character.getName(), EditCharacterAdminActivity.this.character.getDescription());
 
-        ED_NAME.setText(EditCharacterAdminActivity.this.character.getName());
-        ED_DESC.setText(EditCharacterAdminActivity.this.character.getDescription());
-
+        //Inicialización de eventos
+        final Button BT_RESET = EditCharacterAdminActivity.this.findViewById(R.id.btnReset);
         BT_RESET.setOnClickListener(v -> EditCharacterAdminActivity.this.reset());
+
+        final Button BT_EDIT = EditCharacterAdminActivity.this.findViewById(R.id.btEditCharacter);
         BT_EDIT.setOnClickListener(v -> EditCharacterAdminActivity.this.editCharacter());
+
+        final EditText ED_DESC = EditCharacterAdminActivity.this.findViewById(R.id.edDescription);
+        ED_DESC.setText(EditCharacterAdminActivity.this.character.getDescription());
+        ED_DESC.setOnFocusChangeListener((v, hasFocus) -> {
+            try {
+                Character.validateDescription(ED_DESC.getText().toString());
+            } catch (ValidationException e) {
+                ED_DESC.setError(EditCharacterAdminActivity.this.getResources().getString(e.getError()));
+            }
+        });
+
+        final EditText ED_NAME = EditCharacterAdminActivity.this.findViewById(R.id.edName);
+        ED_NAME.setText(EditCharacterAdminActivity.this.character.getName());
         ED_NAME.setOnFocusChangeListener((v, hasFocus) -> {
             try {
                 Character.validateName(ED_NAME.getText().toString());
@@ -67,16 +75,7 @@ public class EditCharacterAdminActivity extends AppCompatActivity {
             }
         });
 
-        ED_DESC.setOnFocusChangeListener((v, hasFocus) -> {
-            try {
-                Character.validateDescription(ED_DESC.getText().toString());
-            } catch (ValidationException e) {
-                ED_DESC.setError(EditCharacterAdminActivity.this.getResources().getString(e.getError()));
-            }
-        });
-
-
-        //Salir si existe una sesión
+        //Control de sesión
         if (!EditCharacterAdminActivity.this.session.isSessionActive() || !EditCharacterAdminActivity.this.session.isAdmin()) {
             EditCharacterAdminActivity.this.finish();
         }
@@ -88,7 +87,6 @@ public class EditCharacterAdminActivity extends AppCompatActivity {
 
         ED_NAME.setText(characterOld.getName());
         ED_DESCRIPTION.setText(characterOld.getDescription());
-
     }
 
     private void editCharacter() {
@@ -113,8 +111,6 @@ public class EditCharacterAdminActivity extends AppCompatActivity {
                 Toast.makeText(EditCharacterAdminActivity.this, R.string.invalid_fields, Toast.LENGTH_SHORT).show();
             }
         }
-
-
     }
 
     @Override
@@ -128,7 +124,6 @@ public class EditCharacterAdminActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         super.onCreateOptionsMenu(menu);
         EditCharacterAdminActivity.this.getMenuInflater().inflate(R.menu.menu_characters, menu);
         return true;

@@ -6,12 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.transition.Transition;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,8 +21,10 @@ import com.dm.marveldataverse.ui.AboutActivity;
 
 public class DetailCharacterAdminActivity extends AppCompatActivity {
 
-    private CharacterMapper characterMapper;
     private Session session;
+
+    private CharacterMapper characterMapper;
+
     private Character character;
     private long id;
 
@@ -34,32 +33,35 @@ public class DetailCharacterAdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_character_admin);
 
+        //Personalizar ActionBar
         final ActionBar ACTION_BAR = this.getSupportActionBar();
         ACTION_BAR.setTitle(R.string.character_details);
 
+        //Inicialización de atributos
         DetailCharacterAdminActivity.this.session = Session.getSession(DetailCharacterAdminActivity.this);
 
-        //inicializar las variables
-        DetailCharacterAdminActivity.this.id = this.getIntent().getLongExtra("id", -1);
         DetailCharacterAdminActivity.this.characterMapper = new CharacterMapper(this);
-        DetailCharacterAdminActivity.this.character = characterMapper.getCharacterById(id);
-        final Button BT_EDITAR = DetailCharacterAdminActivity.this.findViewById(R.id.btnEditCharacter);
-        final Button BT_ELIMINAR = DetailCharacterAdminActivity.this.findViewById(R.id.btnDelete);
 
+        DetailCharacterAdminActivity.this.id = this.getIntent().getLongExtra("id", -1);
+        DetailCharacterAdminActivity.this.character = characterMapper.getCharacterById(id);
+
+        //Inicialización de eventos
+        final Button BT_EDITAR = DetailCharacterAdminActivity.this.findViewById(R.id.btnEditCharacter);
         BT_EDITAR.setOnClickListener(v -> startEditCharacterActivity(id));
 
+        final Button BT_ELIMINAR = DetailCharacterAdminActivity.this.findViewById(R.id.btnDelete);
         BT_ELIMINAR.setOnClickListener(v -> DetailCharacterAdminActivity.this.deleteCharacter());
 
+        //Mostrar el personaje
+        DetailCharacterAdminActivity.this.showCharacter();
 
-        DetailCharacterAdminActivity.this.show();
-
-        //Salir si existe una sesión
+        //Control de sesión
         if (!DetailCharacterAdminActivity.this.session.isSessionActive() || !DetailCharacterAdminActivity.this.session.isAdmin()) {
             DetailCharacterAdminActivity.this.finish();
         }
     }
 
-    private void show() {
+    private void showCharacter() {
         final TextView TW_NAME = DetailCharacterAdminActivity.this.findViewById(R.id.edName);
         final TextView TW_DESCRIPTION = DetailCharacterAdminActivity.this.findViewById(R.id.edDescription);
 
@@ -71,7 +73,7 @@ public class DetailCharacterAdminActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         DetailCharacterAdminActivity.this.character = DetailCharacterAdminActivity.this.characterMapper.getCharacterById(id);
-        this.show();
+        this.showCharacter();
         //Salir si existe una sesión
         if (!DetailCharacterAdminActivity.this.session.isSessionActive() || !DetailCharacterAdminActivity.this.session.isAdmin()) {
             DetailCharacterAdminActivity.this.finish();

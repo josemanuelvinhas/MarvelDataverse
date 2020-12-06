@@ -3,4 +3,5 @@
     <color name="colorPrimary">#ED1D24</color>
     <color name="colorPrimaryDark">#96131E</color>
     <color name="colorDisable">#E36E72</color>
+    <color name="link">#0645AD</color>
 </resources>

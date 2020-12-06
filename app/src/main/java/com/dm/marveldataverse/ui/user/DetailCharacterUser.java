@@ -1,22 +1,19 @@
 package com.dm.marveldataverse.ui.user;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.dm.marveldataverse.R;
 import com.dm.marveldataverse.core.ComentUserCursorAdapter;
@@ -26,16 +23,23 @@ import com.dm.marveldataverse.model.Character;
 import com.dm.marveldataverse.model.CharacterMapper;
 import com.dm.marveldataverse.model.Comment;
 import com.dm.marveldataverse.model.CommentMapper;
+import com.dm.marveldataverse.model.Fav;
+import com.dm.marveldataverse.model.FavMapper;
 import com.dm.marveldataverse.ui.AboutActivity;
 
 public class DetailCharacterUser extends AppCompatActivity {
 
-    private CharacterMapper characterMapper;
     private Session session;
-    private Character character;
-    private long id;
-    private Comment comment;
+
+    private CharacterMapper characterMapper;
     private CommentMapper commentMapper;
+    private FavMapper favMapper;
+
+    private Character character;
+    private Comment comment;
+
+    private long idFav;
+
     private ComentUserCursorAdapter commentUserCursorAdapter;
     private Cursor cursor;
 
@@ -44,81 +48,110 @@ public class DetailCharacterUser extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_character_user);
 
+        //Personalizar ActionBar
         final ActionBar ACTION_BAR = this.getSupportActionBar();
         ACTION_BAR.setTitle(R.string.character_details);
 
-
+        //Inicialización de atributos
         DetailCharacterUser.this.session = Session.getSession(DetailCharacterUser.this);
-        DetailCharacterUser.this.id = this.getIntent().getLongExtra("id", -1);
-        DetailCharacterUser.this.characterMapper = new CharacterMapper(this);
-        DetailCharacterUser.this.character = characterMapper.getCharacterById(id);
-        DetailCharacterUser.this.commentMapper = new CommentMapper(DetailCharacterUser.this);
-        DetailCharacterUser.this.cursor = commentMapper.getCommentList(DetailCharacterUser.this.id);
-        DetailCharacterUser.this.comment = new Comment();
-        DetailCharacterUser.this.commentUserCursorAdapter = new ComentUserCursorAdapter(this, DetailCharacterUser.this.cursor);
-        final Button BT_COMMENT = this.findViewById(R.id.btComment);
-        final ListView LV_COMMENTS = this.findViewById(R.id.lvCommets);
-        LV_COMMENTS.setAdapter(DetailCharacterUser.this.commentUserCursorAdapter);
 
-        BT_COMMENT.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DetailCharacterUser.this.comment();
-            }
-        });
+        DetailCharacterUser.this.characterMapper = new CharacterMapper(this);
+        DetailCharacterUser.this.commentMapper = new CommentMapper(DetailCharacterUser.this);
+        DetailCharacterUser.this.favMapper = new FavMapper(DetailCharacterUser.this);
+
+        DetailCharacterUser.this.character = characterMapper.getCharacterById(DetailCharacterUser.this.getIntent().getLongExtra("id", -1));
+        DetailCharacterUser.this.comment = new Comment();
+
+        DetailCharacterUser.this.idFav = this.favMapper.isFav(DetailCharacterUser.this.character.getId(), DetailCharacterUser.this.session.getUsername());
+
+        DetailCharacterUser.this.cursor = commentMapper.getCommentList(DetailCharacterUser.this.character.getId());
+        DetailCharacterUser.this.commentUserCursorAdapter = new ComentUserCursorAdapter(DetailCharacterUser.this, DetailCharacterUser.this.cursor);
+
+        //Inicialización de eventos
+        //Eventos de comentar
+        final Button BT_COMMENT = DetailCharacterUser.this.findViewById(R.id.btComment);
+        BT_COMMENT.setOnClickListener(v -> DetailCharacterUser.this.commentDialog());
+
+        //Eventos de ListView de Comentarios
+        final ListView LV_COMMENTS = DetailCharacterUser.this.findViewById(R.id.lvComment);
+
+        LV_COMMENTS.setAdapter(DetailCharacterUser.this.commentUserCursorAdapter);
 
         LV_COMMENTS.setOnItemLongClickListener((parent, view, position, id) -> {
             if (DetailCharacterUser.this.cursor.moveToFirst()) {
                 DetailCharacterUser.this.cursor.move(position);
                 if (DetailCharacterUser.this.cursor.getString(DetailCharacterUser.this.cursor.getColumnIndex(DBManager.CAMPO_COMENTARIO_USUARIO)).equals(DetailCharacterUser.this.session.getUsername())) {
-                    DetailCharacterUser.this.delete(DetailCharacterUser.this.cursor.getLong(DetailCharacterUser.this.cursor.getColumnIndex(DBManager.CAMPO_COMENTARIO_ID)));
+                    DetailCharacterUser.this.deleteDialog(DetailCharacterUser.this.cursor.getLong(DetailCharacterUser.this.cursor.getColumnIndex(DBManager.CAMPO_COMENTARIO_ID)));
                 }
             }
             return false;
         });
 
-        DetailCharacterUser.this.show();
+        //Eventos de Fav
+        final ImageView IV_FAV = DetailCharacterUser.this.findViewById(R.id.ivFav);
 
-        //Salir si existe una sesión
+        if (this.idFav != -1) {
+            IV_FAV.setImageResource(R.drawable.ic_estrella_llena);
+        } else {
+            IV_FAV.setImageResource(R.drawable.ic_estrella_vacia);
+        }
+
+        IV_FAV.setOnClickListener(v -> {
+            if (DetailCharacterUser.this.idFav == -1) {
+                DetailCharacterUser.this.idFav = DetailCharacterUser.this.favMapper.addFav(new Fav(DetailCharacterUser.this.session.getUsername(), DetailCharacterUser.this.character.getId()));
+                IV_FAV.setImageResource(R.drawable.ic_estrella_llena);
+            } else {
+                DetailCharacterUser.this.favMapper.deleteFav(this.idFav);
+                DetailCharacterUser.this.idFav = -1;
+                IV_FAV.setImageResource(R.drawable.ic_estrella_vacia);
+            }
+        });
+
+        //Mostrar la informacion del personaje
+        DetailCharacterUser.this.showCharacter();
+
+
+        //Control de sesión
         if (!DetailCharacterUser.this.session.isSessionActive()) {
             DetailCharacterUser.this.finish();
         }
     }
 
-    private void comment() {
+    //Diálogo para realizar un comentario
+    private void commentDialog() { //TODO validación de comentario
         AlertDialog.Builder DLG = new AlertDialog.Builder(this);
-        final EditText edComment = new EditText(this);
+        final EditText ED_COMMENT = new EditText(this);
         DLG.setTitle(R.string.enter_comment);
-        DLG.setView(edComment);
-        DLG.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                comment.setCharacter(character.getId());
-                comment.setComment(edComment.getText().toString());
-                comment.setUser(DetailCharacterUser.this.session.getUsername());
-                commentMapper.addComment(comment);
-                DetailCharacterUser.this.refresh();
-            }
+        DLG.setView(ED_COMMENT);
+        DLG.setPositiveButton(R.string.ok, (dialog, which) -> {
+            DetailCharacterUser.this.comment.setCharacter(DetailCharacterUser.this.character.getId());
+            DetailCharacterUser.this.comment.setComment(ED_COMMENT.getText().toString());
+            DetailCharacterUser.this.comment.setUser(DetailCharacterUser.this.session.getUsername());
+            DetailCharacterUser.this.commentMapper.addComment(DetailCharacterUser.this.comment);
+            DetailCharacterUser.this.refresh();
         });
         DLG.setNegativeButton(R.string.cancel, null);
         DLG.create().show();
     }
 
+    //Actualizar el ListView de comentarios
     private void refresh() {
-        DetailCharacterUser.this.cursor = commentMapper.getCommentList(DetailCharacterUser.this.id);
-        DetailCharacterUser.this.commentUserCursorAdapter.swapCursor(cursor);
+        DetailCharacterUser.this.cursor = DetailCharacterUser.this.commentMapper.getCommentList(DetailCharacterUser.this.character.getId());
+        DetailCharacterUser.this.commentUserCursorAdapter.swapCursor(DetailCharacterUser.this.cursor);
     }
 
-    private void show() {
-        final TextView TW_NAME = DetailCharacterUser.this.findViewById(R.id.edName);
-        final TextView TW_DESCRIPTION = DetailCharacterUser.this.findViewById(R.id.edDescription);
+    //Mostrar la informacion del personaje
+    private void showCharacter() {
+        final TextView TV_NAME = DetailCharacterUser.this.findViewById(R.id.edName);
+        final TextView TV_DESCRIPTION = DetailCharacterUser.this.findViewById(R.id.edDescription);
 
-        TW_NAME.setText(DetailCharacterUser.this.character.getName());
-        TW_DESCRIPTION.setText(DetailCharacterUser.this.character.getDescription());
+        TV_NAME.setText(DetailCharacterUser.this.character.getName());
+        TV_DESCRIPTION.setText(DetailCharacterUser.this.character.getDescription());
     }
 
-    private void delete(long id_comment) {
-        AlertDialog.Builder DLG = new AlertDialog.Builder(this);
+    //Borrar un comentario
+    private void deleteDialog(long id_comment) {
+        AlertDialog.Builder DLG = new AlertDialog.Builder(DetailCharacterUser.this);
         DLG.setTitle(R.string.delete);
         DLG.setMessage(R.string.delete_comment_msg);
         DLG.setNegativeButton(R.string.no, null);
