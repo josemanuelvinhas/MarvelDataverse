@@ -11,11 +11,7 @@ import static com.dm.marveldataverse.core.DBManager.CAMPO_COMENTARIO;
 import static com.dm.marveldataverse.core.DBManager.CAMPO_COMENTARIO_ID;
 import static com.dm.marveldataverse.core.DBManager.CAMPO_COMENTARIO_PERSONAJE;
 import static com.dm.marveldataverse.core.DBManager.CAMPO_COMENTARIO_USUARIO;
-import static com.dm.marveldataverse.core.DBManager.CAMPO_PERSONAJES_ID;
-import static com.dm.marveldataverse.core.DBManager.CAMPO_PERSONAJES_NAME;
-import static com.dm.marveldataverse.core.DBManager.CAMPO_PERSONAJES_DESCRIPTION;
 import static com.dm.marveldataverse.core.DBManager.TABLA_COMENTARIOS;
-import static com.dm.marveldataverse.core.DBManager.TABLA_PERSONAJES;
 
 public class CommentMapper extends BaseMapper {
     /**

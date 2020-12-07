@@ -1,12 +1,10 @@
 package com.dm.marveldataverse.ui.user;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,7 +28,6 @@ import com.dm.marveldataverse.model.CommentMapper;
 import com.dm.marveldataverse.model.Fav;
 import com.dm.marveldataverse.model.FavMapper;
 import com.dm.marveldataverse.ui.AboutActivity;
-import com.dm.marveldataverse.ui.admin.AddCharacterAdminActivity;
 
 public class DetailCharacterUser extends AppCompatActivity {
 
@@ -123,7 +120,7 @@ public class DetailCharacterUser extends AppCompatActivity {
     }
 
     //Diálogo para realizar un comentario
-    private void commentDialog(String comentario) { //TODO validación de comentario
+    private void commentDialog(String comentario) {
         AlertDialog.Builder DLG = new AlertDialog.Builder(this);
         final EditText ED_COMMENT = new EditText(this);
 

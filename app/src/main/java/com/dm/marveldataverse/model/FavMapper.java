@@ -10,9 +10,7 @@ import android.util.Log;
 import static com.dm.marveldataverse.core.DBManager.CAMPO_FAV_ID;
 import static com.dm.marveldataverse.core.DBManager.CAMPO_FAV_PERSONAJE;
 import static com.dm.marveldataverse.core.DBManager.CAMPO_FAV_USUARIO;
-import static com.dm.marveldataverse.core.DBManager.CAMPO_USUARIOS_USERNAME;
 import static com.dm.marveldataverse.core.DBManager.TABLA_FAVS;
-import static com.dm.marveldataverse.core.DBManager.TABLA_USUARIOS;
 
 public class FavMapper extends BaseMapper {
     /**

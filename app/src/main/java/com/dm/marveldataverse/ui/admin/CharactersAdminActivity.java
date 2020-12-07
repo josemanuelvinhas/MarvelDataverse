@@ -1,11 +1,5 @@
 package com.dm.marveldataverse.ui.admin;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -20,12 +14,16 @@ import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.dm.marveldataverse.R;
 import com.dm.marveldataverse.core.DBManager;
 import com.dm.marveldataverse.core.Session;
 import com.dm.marveldataverse.model.CharacterMapper;
 import com.dm.marveldataverse.ui.AboutActivity;
-import com.dm.marveldataverse.ui.user.CharactersUserActivity;
 
 public class CharactersAdminActivity extends AppCompatActivity {
 

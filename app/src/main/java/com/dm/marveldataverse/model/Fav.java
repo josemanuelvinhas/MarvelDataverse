@@ -1,7 +1,5 @@
 package com.dm.marveldataverse.model;
 
-import com.dm.marveldataverse.R;
-
 public class Fav {
 
     private long fav_id;

@@ -2,20 +2,13 @@ package com.dm.marveldataverse.core;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dm.marveldataverse.R;
-import com.dm.marveldataverse.model.Character;
-import com.dm.marveldataverse.model.Comment;
-
-import java.util.ArrayList;
 
 public class ComentUserCursorAdapter extends CursorAdapter {
 
