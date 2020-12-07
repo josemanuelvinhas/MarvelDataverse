@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="@string/github"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/link" />
 
@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="@string/github"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/link" />
 
@@ -119,7 +119,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="@string/github"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/link" />
 

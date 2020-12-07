@@ -32,8 +32,8 @@
     <string name="jose_manuel_vinas_cid" translatable="false">José Manuel Viñas Cid</string>
     <string name="soon">Soon...</string>
     <string name="go_back">Go Back</string>
-    <string name="description_invalid">The description must be 3-255 letters (a-zA-Z) or numbers</string>
-    <string name="name_invalid">The name must be 3-20 letters (a-zA-Z) or numbers</string>
+    <string name="description_invalid">Descriptions can only contain alphanumerics and punctuation marks ( ) . , ; \' -</string>
+    <string name="name_invalid">Names can only contain alphanumeric, spaces and dash</string>
     <string name="search_invalid">Must be between 0 and 20 characters ( number, letters . or - )</string>
     <string name="CreateCharacter">Create your own character</string>
     <string name="send">Send</string>
@@ -51,7 +51,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="character_remove_successful">Character successfully remove</string>
-    <string name="comment_invalid">Comments must have 1-255 letters (a-zA-Z) or numbers</string>
+    <string name="comment_invalid">Comments can only contain alphanumerics and punctuation marks ( ) . , ;  \' -</string>
     <string name="admin_view">Admin View</string>
     <string name="user_view">User View</string>
     <string name="isAdmin">Is Admin?</string>

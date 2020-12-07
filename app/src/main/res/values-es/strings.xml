@@ -30,8 +30,7 @@
     <string name="authors">Autores</string>
     <string name="soon">Próximamente...</string>
     <string name="go_back">Volver</string>
-    <string name="description_invalid">La descripción debe tener entre 3-255 letras o numeros</string>
-    <string name="name_invalid">El nombre debe tener entre 3 y 20 letras (a-zA-Z) o números</string>
+    <string name="description_invalid">Las descripciones solo pueden contener alfanuméricos y los signos de puntuación ( ) . , ;  \' -</string>
     <string name="search_invalid">Debe haber entre 0 y 20 caracteres ( números, letras . o - )</string>
     <string name="CreateCharacter">Crea tu propio personaje</string>
     <string name="send">Enviar</string>
@@ -49,7 +48,7 @@
     <string name="yes">Si</string>
     <string name="no">No</string>
     <string name="character_remove_successful">Personaje eliminado con éxito</string>
-    <string name="comment_invalid">Los comentarios deben tener entre 1-255 letras o números</string>
+    <string name="comment_invalid">Los comentarios solo pueden contener alfanuméricos y los signos de puntuación ( ) . , ; \' -</string>
     <string name="admin_view">Vista de Administrador</string>
     <string name="user_view">Vista de Usuario</string>
     <string name="isAdmin">¿Es Administrador?</string>
@@ -67,4 +66,5 @@
     <string name="ok">Ok</string>
     <string name="cancel">Cancelar</string>
     <string name="delete_comment_msg">¿Estás seguro de que quieres eliminar este comentario?</string>
+    <string name="name_invalid">Los nombres sólo puede contener alfanuméricos, espacios y guiones</string>
 </resources>

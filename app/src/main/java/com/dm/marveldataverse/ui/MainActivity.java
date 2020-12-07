@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -88,11 +89,13 @@ public class MainActivity extends AppCompatActivity {
     private void startAdminActivity() {
         MainActivity.this.startActivity(new Intent(MainActivity.this, AdminActivity.class));
         MainActivity.this.finish();
+        Log.i("CREAR ACTIVIDAD", " ACTIVIDAD DE ADMIN CREADA");
     }
 
     private void startUserActivity() {
         MainActivity.this.startActivity(new Intent(MainActivity.this, CoreUserActivity.class));
         MainActivity.this.finish();
+        Log.i("CREAR ACTIVIDAD", " ACTIVIDAD DE USUARIO CREADA");
     }
 
     private void startAboutActivity() {

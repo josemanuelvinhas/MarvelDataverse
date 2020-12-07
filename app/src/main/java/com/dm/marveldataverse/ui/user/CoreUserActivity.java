@@ -44,16 +44,6 @@ public class CoreUserActivity extends AppCompatActivity {
         final Button BT_SERIES = CoreUserActivity.this.findViewById(R.id.btnSeries);
         BT_SERIES.setOnClickListener(v -> Toast.makeText( CoreUserActivity.this, R.string.soon, Toast.LENGTH_SHORT ).show());
 
-        CoreUserActivity.this.getOnBackPressedDispatcher().addCallback( CoreUserActivity.this, new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                if (!CoreUserActivity.this.session.isAdmin()) {
-                    CoreUserActivity.this.startMainActivity();
-                }
-                CoreUserActivity.this.finish();
-            }
-        });
-
         //Control de sesión
         if (!CoreUserActivity.this.session.isSessionActive()) {
             if (!CoreUserActivity.this.session.isAdmin()) {

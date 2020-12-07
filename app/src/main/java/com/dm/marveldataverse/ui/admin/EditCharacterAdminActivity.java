@@ -99,7 +99,7 @@ public class EditCharacterAdminActivity extends AppCompatActivity {
             Toast.makeText(EditCharacterAdminActivity.this, R.string.character_exists, Toast.LENGTH_SHORT).show();
         } else {
             try {
-                EditCharacterAdminActivity.this.character.validateForCreate();
+                EditCharacterAdminActivity.this.character.validateForUpdate();
                 try {
                     EditCharacterAdminActivity.this.characterMapper.updateCharacter(character);
                     Toast.makeText(EditCharacterAdminActivity.this, R.string.character_edit_successful, Toast.LENGTH_SHORT).show();

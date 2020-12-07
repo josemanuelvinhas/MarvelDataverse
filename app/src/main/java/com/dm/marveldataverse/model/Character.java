@@ -64,20 +64,17 @@ public class Character {
     }
 
     public static void validateName(String name) throws ValidationException {
-        final String regexp = "[a-zA-Z0-9-. ]{3,20}";
+        final String regexp = "[a-zA-Z0-9ÑñÁáÉéÍíÓóÚúÜü -]{3,20}";
         if (!Pattern.matches(regexp, name)) {
             throw new ValidationException("Validation Character Error", R.string.name_invalid);
         }
     }
 
     public static void validateDescription(String description) throws ValidationException {
-        final String regexp = "[a-zA-Z0-9 ]{3,255}"; //TODO Ver tamaño maximo en sqlite del string
+        final String regexp = "[a-zA-Z0-9ÑñÁáÉéÍíÓóÚúÜü'.,;() -]{3,255}";
         if (!Pattern.matches(regexp, description)) {
             throw new ValidationException("Validation Character Error", R.string.description_invalid);
         }
     }
-
-
-
 
 }

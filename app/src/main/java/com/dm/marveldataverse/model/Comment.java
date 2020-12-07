@@ -62,14 +62,13 @@ public class Comment {
     }
 
 
-
     public void validateComment() throws ValidationException {
         validateComment(this.comment);
     }
 
 
     public static void validateComment(String comment) throws ValidationException {
-        final String regexp = "[a-zA-Z0-9 ]{1,255}";
+        final String regexp = "[a-zA-Z0-9ÑñÁáÉéÍíÓóÚúÜü'.,;() -]{1,255}";
         if (!Pattern.matches(regexp, comment)) {
             throw new ValidationException("Validation Comment Error", R.string.comment_invalid);
         }

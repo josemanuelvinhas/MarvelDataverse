@@ -1,15 +1,18 @@
 package com.dm.marveldataverse.ui.user;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -19,6 +22,7 @@ import com.dm.marveldataverse.R;
 import com.dm.marveldataverse.core.ComentUserCursorAdapter;
 import com.dm.marveldataverse.core.DBManager;
 import com.dm.marveldataverse.core.Session;
+import com.dm.marveldataverse.core.ValidationException;
 import com.dm.marveldataverse.model.Character;
 import com.dm.marveldataverse.model.CharacterMapper;
 import com.dm.marveldataverse.model.Comment;
@@ -26,6 +30,7 @@ import com.dm.marveldataverse.model.CommentMapper;
 import com.dm.marveldataverse.model.Fav;
 import com.dm.marveldataverse.model.FavMapper;
 import com.dm.marveldataverse.ui.AboutActivity;
+import com.dm.marveldataverse.ui.admin.AddCharacterAdminActivity;
 
 public class DetailCharacterUser extends AppCompatActivity {
 
@@ -70,7 +75,7 @@ public class DetailCharacterUser extends AppCompatActivity {
         //Inicialización de eventos
         //Eventos de comentar
         final Button BT_COMMENT = DetailCharacterUser.this.findViewById(R.id.btComment);
-        BT_COMMENT.setOnClickListener(v -> DetailCharacterUser.this.commentDialog());
+        BT_COMMENT.setOnClickListener(v -> DetailCharacterUser.this.commentDialog(""));
 
         //Eventos de ListView de Comentarios
         final ListView LV_COMMENTS = DetailCharacterUser.this.findViewById(R.id.lvComment);
@@ -118,20 +123,39 @@ public class DetailCharacterUser extends AppCompatActivity {
     }
 
     //Diálogo para realizar un comentario
-    private void commentDialog() { //TODO validación de comentario
+    private void commentDialog(String comentario) { //TODO validación de comentario
         AlertDialog.Builder DLG = new AlertDialog.Builder(this);
         final EditText ED_COMMENT = new EditText(this);
+
+        ED_COMMENT.setText(comentario);
+
         DLG.setTitle(R.string.enter_comment);
         DLG.setView(ED_COMMENT);
-        DLG.setPositiveButton(R.string.ok, (dialog, which) -> {
-            DetailCharacterUser.this.comment.setCharacter(DetailCharacterUser.this.character.getId());
-            DetailCharacterUser.this.comment.setComment(ED_COMMENT.getText().toString());
-            DetailCharacterUser.this.comment.setUser(DetailCharacterUser.this.session.getUsername());
-            DetailCharacterUser.this.commentMapper.addComment(DetailCharacterUser.this.comment);
-            DetailCharacterUser.this.refresh();
-        });
+
+        DLG.setPositiveButton(R.string.ok, null);
+
         DLG.setNegativeButton(R.string.cancel, null);
-        DLG.create().show();
+        AlertDialog ALERT_DLG = DLG.create();
+
+        ALERT_DLG.setOnShowListener(dialog -> {
+            Button b = ALERT_DLG.getButton(AlertDialog.BUTTON_POSITIVE);
+            b.setOnClickListener(view -> {
+                try {
+                    DetailCharacterUser.this.comment.setCharacter(DetailCharacterUser.this.character.getId());
+                    DetailCharacterUser.this.comment.setComment(ED_COMMENT.getText().toString());
+                    DetailCharacterUser.this.comment.setUser(DetailCharacterUser.this.session.getUsername());
+                    DetailCharacterUser.this.comment.validateComment();
+                    DetailCharacterUser.this.commentMapper.addComment(DetailCharacterUser.this.comment);
+                    DetailCharacterUser.this.refresh();
+                    ALERT_DLG.dismiss();
+                } catch (ValidationException e) {
+                    Toast.makeText(DetailCharacterUser.this, R.string.invalid_fields, Toast.LENGTH_SHORT).show();
+                    ED_COMMENT.setError(DetailCharacterUser.this.getResources().getString(e.getError()));
+                }
+            });
+        });
+
+        ALERT_DLG.show();
     }
 
     //Actualizar el ListView de comentarios
